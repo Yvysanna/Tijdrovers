@@ -29,14 +29,22 @@ for classroom in classrooms_list:
 
     for subject, count in subjects_count.items():
         if classroom._capacity >= count:
-            classroom._possible_subjects.append(subject)
             for course in subjects_list:
                 if subject == course._name:
-                    course._possible_classrooms.append(classroom._classroom)
+                    classroom._possible_subjects.append(course)
+                    course._possible_classrooms.append(classroom)
 
-for subject in subjects_list:
-    print(subject._name,subject._possible_classrooms)
+for student in students_list:
+    for i, course in enumerate(student._courses):
+        #print(i, course, subjects_list)
+        student._courses[i] = list(filter(lambda subj: subj._name == course, subjects_list))[0]
+#print(subjects_list[0].smallest_classroom())
 
 # randomize subject activities and fill in schedule
-# randomize(subjects_list, schedule_dict)
-# print(schedule_dict)
+randomize(subjects_list, schedule_dict)
+
+# Write all dataframes for schedule in csv files
+for key, val in schedule_dict.items():
+    val.to_csv(f'data/results/schedule_{key}.csv',)
+#print(schedule_dict)
+#print(students_list)
