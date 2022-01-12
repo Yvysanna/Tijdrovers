@@ -8,4 +8,5 @@ class Subject:
         self._labs_number = labs_number
         self._lab_max = lab_max
         self._students_number = students_number
-        self._min_timeslots = min_timeslots        
+        self._min_timeslots = min_timeslots
+        self._possible_classrooms = []
