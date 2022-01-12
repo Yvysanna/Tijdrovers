@@ -58,4 +58,6 @@ def load_students():
 
     return students_list, subject_counter
 
-load_students()
+
+if __name__ == '__main__':
+    print(load_students())
