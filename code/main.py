@@ -27,6 +27,7 @@ schedule_dict = {}
 for classroom in classrooms_list:
     schedule_dict[classroom._classroom] = pd.DataFrame(columns=days, index=timeslots)
 
+    # Connect room and course objects with eachother
     for subject, count in subjects_count.items():
         if classroom._capacity >= count:
             for course in subjects_list:
@@ -34,6 +35,7 @@ for classroom in classrooms_list:
                     classroom._possible_subjects.append(course)
                     course._possible_classrooms.append(classroom)
 
+# Connect student object with according course objects
 for student in students_list:
     for i, course in enumerate(student._courses):
         #print(i, course, subjects_list)
