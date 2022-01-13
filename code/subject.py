@@ -1,3 +1,5 @@
+import random
+
 class Subject:
 
     def __init__(self, name, lectures_number, tutorials_number, tutorial_max, labs_number, lab_max, students_number, min_timeslots):
@@ -11,8 +13,26 @@ class Subject:
         self._min_timeslots = int(min_timeslots)
         self._possible_classrooms = []
 
-    # Method to find smallest classroom out of all possibilities
+
+    def schedule(self):
+        """
+        Schedules subject(self) at its timeslot on random day and time
+        RETURNS NONE
+        """
+        days = ['ma', 'di', 'wo', 'do', 'vr']
+        timeslots = ['9-11', '11-13', '13-15', '15-17']
+        for i in range(self._min_timeslots):
+            while True:
+                day = random.choice(days)
+                time = random.choice(timeslots)
+                if self.smallest_classroom().plan(day, time, self) == True:
+                    #print (i, day, time, self._name) 
+                    break
+                 
     def smallest_classroom(self):
+        """
+        RETURNS object: smallest classroom out of all possibilities
+        """
         return min(self._possible_classrooms, key=lambda o: o._capacity)
 
 
@@ -20,26 +40,26 @@ class Subject:
     def __str__(self) -> str:
         return str([
             self._name,
-            self._lectures_number,
-            self._tutorials_number,
-            self._tutorials_max,
-            self._labs_number,
-            self._lab_max,
-            self._students_number,
-            self._min_timeslots,
+            #self._lectures_number,
+            #self._tutorials_number,
+            #self._tutorials_max,
+            #self._labs_number,
+            #self._lab_max,
+            #self._students_number,
+            #self._min_timeslots,
             self._possible_classrooms
         ])
 
     def __repr__(self) -> str:
         return str([
             self._name,
-            self._lectures_number,
-            self._tutorials_number,
-            self._tutorials_max,
-            self._labs_number,
-            self._lab_max,
-            self._students_number,
-            self._min_timeslots,
+            #self._lectures_number,
+            #self._tutorials_number,
+            #self._tutorials_max,
+            #self._labs_number,
+            #self._lab_max,
+            #self._students_number,
+            #self._min_timeslots,
             self._possible_classrooms
         ])
         

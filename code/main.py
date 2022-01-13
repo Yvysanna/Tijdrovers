@@ -42,9 +42,10 @@ for student in students_list:
 
 # randomize subject activities and fill in schedule
 randomize(subjects_list, schedule_dict)
+print([l for l in classrooms_list])
 
 # Write all dataframes for schedule in csv files
-for key, val in schedule_dict.items():
-    val.to_csv(f'data/results/schedule_{key}.csv',)
+#for key, val in schedule_dict.items():
+#    val.to_csv(f'data/results/schedule_{key}.csv',)
 #print(schedule_dict)
 #print(students_list)
