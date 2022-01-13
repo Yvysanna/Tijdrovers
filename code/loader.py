@@ -34,6 +34,7 @@ def load_classrooms():
 
 
 def load_students():
+# creates a list of student objects and a dictionary of subjects with number of students
     students_list = []
     subject_counter = {}
 
@@ -46,14 +47,18 @@ def load_students():
                 if row[-i] == '':
                     end = len(row) - i                   
 
+            # counts the students per subject
             for subject in row[3:]:
                 if subject == '':
                     continue
+                # adds subject if not yet in subject_counter
                 elif subject not in subject_counter:
                     subject_counter[subject] = 1
+                # adds to student number in subject_counter
                 else:
                     subject_counter[subject] += 1
                 
+            # creates new student object and adds it to students_list
             students_list.append(Student(row[0], row[1], row[2], row[3:end]))
 
     return students_list, subject_counter
