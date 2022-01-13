@@ -34,7 +34,9 @@ def load_classrooms():
 
 
 def load_students():
-# creates a list of student objects and a dictionary of subjects with number of students
+    """
+    creates a list of student objects and a dictionary of subjects with number of students
+    """
     students_list = []
     subject_counter = {}
 
