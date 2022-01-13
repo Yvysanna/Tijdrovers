@@ -5,7 +5,7 @@ from classroom import Classroom
 from student import Student
 
 
-def load_subjects():
+def load_subjects(subjects_count):
     # create objects from csv
     subjects_list = []
 
@@ -16,7 +16,7 @@ def load_subjects():
         next(reader, None)
         # create and add subject one by one
         for row in reader:
-            subjects_list.append(Subject(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]))
+            subjects_list.append(Subject(row[0], row[1], row[2], row[3], row[4], row[5], subjects_count[row[0]], row[7]))
 
     return subjects_list
 
@@ -67,4 +67,11 @@ def load_students():
 
 
 if __name__ == '__main__':
-    print(load_students())
+    (students_list, subjects_count) = load_students()
+    subjects_list = load_subjects(subjects_count)
+
+    for subject in subjects_list:
+        print(subject._name, subject._students_number)
+        
+    print(subjects_count)
+

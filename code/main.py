@@ -19,8 +19,8 @@ timeslots = ['9-11', '11-13', '13-15', '15-17']
 
 # load classrooms and subjects
 classrooms_list = loader.load_classrooms()
-subjects_list = loader.load_subjects()
 (students_list, subjects_count) = loader.load_students()
+subjects_list = loader.load_subjects(subjects_count)
 
 # create schedule for every classroom
 schedule_dict = {}
@@ -28,12 +28,10 @@ for classroom in classrooms_list:
     schedule_dict[classroom._classroom] = pd.DataFrame(columns=days, index=timeslots)
 
     # Connect room and course objects with eachother
-    for subject, count in subjects_count.items():
-        if classroom._capacity >= count:
-            for course in subjects_list:
-                if subject == course._name:
-                    classroom._possible_subjects.append(course)
-                    course._possible_classrooms.append(classroom)
+    for subject in subjects_list:
+        if classroom._capacity >= subject._students_number:
+            classroom._possible_subjects.append(subject)
+            subject._possible_classrooms.append(classroom)
 
 # Connect student object with according course objects
 for student in students_list:
@@ -44,7 +42,7 @@ for student in students_list:
 
 # randomize subject activities and fill in schedule
 randomize(subjects_list, schedule_dict)
-print([l for l in classrooms_list])
+# print([l for l in classrooms_list])
 
 # Write all dataframes for schedule in csv files
 #for key, val in schedule_dict.items():
