@@ -22,13 +22,21 @@ def load_subjects(subjects_count):
 
 
 def load_classrooms():
+    classrooms_dict = {}
     classrooms_list = []
 
+    # create dictionary with classrooms and their capacity
     with open('data/classrooms.csv', 'r') as f:
         reader = csv.reader(f, delimiter=';')
         next(reader, None)
         for row in reader:
-            classrooms_list.append(Classroom(row[0], int(row[1])))
+            classrooms_dict[row[0]] = int(row[1])
+
+    # creates classrooms objects and inserts them sorted into classrooms_list
+    # min() function format from https://stackoverflow.com/questions/3282823/get-the-key-corresponding-to-the-minimum-value-within-a-dictionary
+    while len(classrooms_dict) > 0:
+        classroom = min(classrooms_dict, key=classrooms_dict.get)
+        classrooms_list.append(Classroom(classroom, classrooms_dict.pop(classroom)))
 
     return classrooms_list
 
@@ -67,11 +75,5 @@ def load_students():
 
 
 if __name__ == '__main__':
-    (students_list, subjects_count) = load_students()
-    subjects_list = load_subjects(subjects_count)
-
-    for subject in subjects_list:
-        print(subject._name, subject._students_number)
-        
-    print(subjects_count)
+    load_classrooms()
 
