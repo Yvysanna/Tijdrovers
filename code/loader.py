@@ -65,25 +65,28 @@ def load_students():
 
         # Locate the first empty value which marks the end of student's courses
         for row in reader:
-            for i in range(len(row)):
-                if row[-i] == '':
-                    end = len(row) - i
-
-            # Count the students per course
+            courses = []
+            # Creates list of courses per student and counts the students per course
             for course in row[3:]:
+                # Stops loop if end of student's course list is reached
                 if course == '':
-                    continue
-                # Add course if not yet in course_counter
-                elif course not in course_counter:
-                    course_counter[course] = 1
-                # Adds to student number in course_counter
+                    break
                 else:
-                    course_counter[course] += 1
+                    courses.append(course)
+                    # Add course if not yet in course_counter
+                    if course not in course_counter:
+                        course_counter[course] = 1
+                    # Adds to student number in course_counter
+                    else:
+                        course_counter[course] += 1
 
             # Creates new student object and adds it to students_list
-            students_list.append(Student(row[0], row[1], row[2], row[3:end]))
+            students_list.append(Student(row[0], row[1], row[2], courses))
+
+            print(row[0], courses)
+
     return students_list, course_counter
 
 
 if __name__ == '__main__':
-    load_classrooms()
+    load_students()
