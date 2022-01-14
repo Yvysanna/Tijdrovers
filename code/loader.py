@@ -26,6 +26,7 @@ def load_courses(course_count):
         # Create course object from course data
         for row in reader:
             course_list.append(Course(row[0], row[1], row[2], row[3], row[4], row[5], course_count[row[0]], row[7]))
+            #course_list.append(Course(row[0], row[1], int(row[2)), int(row[3]) if row[3] != 'nvt' else 0, int(row[4]), int(row[5]) if row[5] != 'nvt' else 0, int(course_count[row[0]]), int(row[7])))
     return course_list
 
 
