@@ -65,6 +65,7 @@ class Course:
         self.students_number = int(students_number)
         self._min_timeslots = int(min_timeslots)
         self.possible_classrooms = []
+        self.students_list = []
 
     def schedule(self):
         """
@@ -89,27 +90,32 @@ class Course:
     def __str__(self) -> str:
         '''Represents class as a string'''
         return str([
-            self._name,
+            self.name,
             #self._lectures_number,
             #self._tutorials_number,
             #self._tutorials_max,
             #self._labs_number,
             #self._lab_max,
-            #self._students_number,
+            self.students_number,
             #self._min_timeslots,
-            self._possible_classrooms
+            # self.possible_classrooms
+            # self.students_list
+            len(self.students_list)
+
         ])
 
     def __repr__(self) -> str:
         '''Represents class as a string'''
         return str([
-            self._name,
+            self.name,
             #self._lectures_number,
             #self._tutorials_number,
             #self._tutorials_max,
             #self._labs_number,
             #self._lab_max,
-            #self._students_number,
+            self.students_number,
             #self._min_timeslots,
-            self._possible_classrooms
+            # self.possible_classrooms
+            # self.students_list
+            len(self.students_list)
         ])

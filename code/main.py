@@ -33,11 +33,13 @@ for classroom in classrooms_list:
             classroom.possible_courses.append(course)
             course.possible_classrooms.append(classroom)
 
-# Connect student object with according course objects
+# Connect student objects with according course objects
 for student in students_list:
     for i, course in enumerate(student.courses):
-        #print(i, course, course_list)
-        student.courses[i] = list(filter(lambda subj: subj.name == course, course_list))[0]
+        course_object = list(filter(lambda subj: subj.name == course, course_list))[0]
+        student.courses[i] = course_object
+        course_object.students_list.append(student)
+
 #print(course_list[0].smallest_classroom())
 
 # Randomize course activities and fill in schedule

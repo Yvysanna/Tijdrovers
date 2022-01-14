@@ -39,16 +39,16 @@ class Student:
         '''Represents the class as a string'''
         return str([
             self._last_name,
-            self._first_name,
-            self._student_number,
-            self._courses
+            # self._first_name,
+            # self._student_number,
+            # self.courses
         ])
 
     def __repr__(self) -> str:
         '''Represents the class as a string'''
         return str([
             self._last_name,
-            self._first_name,
-            self._student_number,
-            self._courses
+            # self._first_name,
+            # self._student_number,
+            # self.courses
         ])

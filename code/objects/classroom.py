@@ -63,14 +63,14 @@ class Classroom:
             self._name,
             #self._capacity,
             #self._possible_courses
-            [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
+            # [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
         ])
 
     def __repr__(self) -> str:
         '''Represents the class as a string'''
         return str([
-            self._name,
+            self.name,
             #self._capacity,
             #self._possible_courses
-            [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
+            # [(x,[(z,a.name) for z,a in y.items()]) for x,y in self._plan.items()]
         ])

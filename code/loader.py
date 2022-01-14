@@ -83,8 +83,6 @@ def load_students():
             # Creates new student object and adds it to students_list
             students_list.append(Student(row[0], row[1], row[2], courses))
 
-            print(row[0], courses)
-
     return students_list, course_counter
 
 
