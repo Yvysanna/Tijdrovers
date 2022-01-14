@@ -36,13 +36,13 @@ for classroom in classrooms_list:
 # Connect student object with according course objects
 for student in students_list:
     for i, course in enumerate(student._courses):
-        #print(i, course, subjects_list)
+        # print(i, course, subjects_list)
         student._courses[i] = list(filter(lambda subj: subj._name == course, subjects_list))[0]
 #print(subjects_list[0].smallest_classroom())
 
 # randomize subject activities and fill in schedule
 randomize(subjects_list, schedule_dict)
-# print([l for l in classrooms_list])
+print([l for l in classrooms_list])
 
 # Write all dataframes for schedule in csv files
 #for key, val in schedule_dict.items():

@@ -45,9 +45,9 @@ class Subject:
             #self._tutorials_max,
             #self._labs_number,
             #self._lab_max,
-            #self._students_number,
+            # self._students_number,
             #self._min_timeslots,
-            self._possible_classrooms
+            #self._possible_classrooms
         ])
 
     def __repr__(self) -> str:
@@ -58,8 +58,8 @@ class Subject:
             #self._tutorials_max,
             #self._labs_number,
             #self._lab_max,
-            #self._students_number,
+            # self._students_number,
             #self._min_timeslots,
-            self._possible_classrooms
+            #self._possible_classrooms
         ])
         

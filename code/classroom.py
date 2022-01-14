@@ -22,7 +22,7 @@ class Classroom:
         return str([
             self._classroom, 
             #self._capacity, 
-            #self._possible_subjects
+            # self._possible_subjects,
             [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
         ])
 
@@ -30,6 +30,6 @@ class Classroom:
         return str([
             self._classroom, 
             #self._capacity, 
-            #self._possible_subjects
+            # self._possible_subjects,
             [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
         ])
