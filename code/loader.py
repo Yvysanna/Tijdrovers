@@ -11,7 +11,7 @@ import csv
 
 from objects.course import Course
 from objects.classroom import Classroom
-from objects.student import Course
+from objects.student import Student
 
 
 # Loads all courses and returns a list of Course objects
@@ -80,7 +80,7 @@ def load_students():
                     course_counter[course] += 1
 
             # Creates new student object and adds it to students_list
-            students_list.append(Course(row[0], row[1], row[2], row[3:end]))
+            students_list.append(Student(row[0], row[1], row[2], row[3:end]))
     return students_list, course_counter
 
 

@@ -84,7 +84,7 @@ class Course:
         """
         Returns Classroom object with smallest capacity out of all possibilities
         """
-        return min(self._possible_classrooms, key=lambda o: o._capacity)
+        return min(self.possible_classrooms, key=lambda o: o.capacity)
 
     def __str__(self) -> str:
         '''Represents class as a string'''
