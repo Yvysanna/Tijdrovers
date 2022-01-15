@@ -3,46 +3,43 @@
 #
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #
-# - Find conflicts between two courses so that they should not be scheduled
-# - in the same time slot
+# - For every course, finds the number of overlapping students with every
+# - other course in order to prevent conflicting courses in the schedule
 # ==================================================================================
 
-import csv
 from itertools import combinations
+import loader
 
 
-# Make list of courses
-courses = []
-with open("data/courses.csv", "r") as file:
-    reader = csv.DictReader(file, delimiter=";")
-    for row in reader:
-        courses.append(row["Vakken"])
+(students_list, course_count) = loader.load_students()
+course_list = loader.load_courses(course_count)
 
-# Make dictionary of every possible pair of courses and number of conflicts
-# Taken from https://stackoverflow.com/questions/42591283/all-possible-combinations-of-a-set-as-a-list-of-strings
-pairs = {"/".join(map(str, comb)):0 for comb in combinations(courses, 2)}
+# Creates the desired data structure {Course : {Course : list[Student]}}
+course_dict = {}
+for course in course_list:
+    course_dict[course] = {}
+for element in course_dict.values():
+    for course in course_list:
+        element[course] = []
 
-# Make list of list of courses for every student
-with open("data/students.csv", "r", encoding="ISO-8859-1") as file:
-    reader = csv.DictReader(file, delimiter=";")
-    course_per_student = []
-    for row in reader:
-        temp = [row["Vak1"], row["Vak2"], row["Vak3"], row["Vak4"], row["Vak5"]]
-        while "" in temp:
-            temp.remove("")
-        course_per_student.append(temp)
+# If a student follows more than one course, get every combination of those courses
+for student in students_list:
+    if len(student.courses) > 1:
+        combs = list(combinations(student.courses, 2))
 
-# Create list of conflicting course pairs
-conflicting_pairs = []
-for courses_one_student in course_per_student:
-    if len(courses_one_student) > 1:
-        conflicting_pairs.extend(["/".join(map(str, comb)) for comb in combinations(courses_one_student, 2)])
+        # For every conflicting pair of courses, search for the first course within the dictionary
+        for conflict in combs:
+            for course_key in course_dict.keys():
+                if conflict[0] == course_key.name:
+                    # Search for the second course in the dictionary values
+                    for course_value in course_dict[course_key]:
+                        if conflict[1] == course_value.name:
+                            # Add students to the list for the conflicting pair
+                            course_dict[course_key][course_value].append(student)
+                            course_dict[course_value][course_key].append(student)
 
-# Count the number of conflicts
-for pair in conflicting_pairs:
-    if pair in pairs:
-        pairs[pair] += 1
-
-# Sort dictionary (taken from https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value)
-sorted_dict = {k: v for k, v in sorted(pairs.items(), key=lambda item: item[1])}
-print(sorted_dict)
+# Output
+for x in course_dict:
+    print('\n', x.name, '\n')
+    for y in course_dict[x]:
+        print(y,":",course_dict[x][y])
