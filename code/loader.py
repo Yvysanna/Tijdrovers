@@ -1,5 +1,5 @@
 # ==================================================================================
-# main.py
+# loader.py
 #
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #
