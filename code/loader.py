@@ -87,4 +87,4 @@ def load_students():
 
 
 if __name__ == '__main__':
-    load_students()
+    print(load_classrooms())

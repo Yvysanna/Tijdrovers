@@ -22,32 +22,32 @@ classrooms_list = loader.load_classrooms()
 (students_list, course_count) = loader.load_students()
 course_list = loader.load_courses(course_count)
 
+# Create activity objects in course
+for course in course_list:
+    course.create_activities(classrooms_list)
+    
+    # The only important line from randomize !!!!! RANDOMIZE NO LONGER NEEDED :D
+    course.schedule(classrooms_list) # Creates schedule; might needs to be put further down in code
+
 # Create schedule for every classroom
 schedule_dict = {}
 for classroom in classrooms_list:
     schedule_dict[classroom.name] = pd.DataFrame(columns=days, index=timeslots)
 
-    # Connect room and course objects with eachother
-    for course in course_list:
-        if classroom.capacity >= course.students_number:
-            classroom.possible_courses.append(course)
-            course.possible_classrooms.append(classroom)
-
+    
 # Connect student objects with according course objects
 for student in students_list:
     for i, course in enumerate(student.courses):
         course_object = list(filter(lambda subj: subj.name == course, course_list))[0]
         student.courses[i] = course_object
-        course_object.students_list.append(student)
+
+        # Add students to courses
+        student.courses[i].register(student)
+        # course_object.students_list.append(student)
 
 #print(course_list[0].smallest_classroom())
 
 # Randomize course activities and fill in schedule
-randomize(course_list, schedule_dict)
+#randomize(course_list, schedule_dict)
 # print([l for l in classrooms_list])
-
-# Write all dataframes for schedule to csv files
-#for key, val in schedule_dict.items():
-#    val.to_csv(f'data/results/schedule_{key}.csv',)
-#print(schedule_dict)
-#print(students_list)
+print(classrooms_list)

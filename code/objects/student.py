@@ -35,6 +35,13 @@ class Student:
         self._student_number = student_number
         self.courses = courses
 
+
+    def give_schedule(self):
+        '''
+        Hold schedule for each student
+        '''
+        pass
+
     def __str__(self) -> str:
         '''Represents the class as a string'''
         return str([
