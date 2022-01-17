@@ -15,30 +15,6 @@ class Activity:
             return True
         return False
 
-    def plan(self, rooms):
-        '''
-        Plans timeslot for activity in given room
-        RETURNS: True if found, False if could not be planned (doesn't happen ATM :D )
-        '''
-        # Could later be replaced / sent as arguments
-        days = ['ma', 'di', 'wo', 'do', 'vr']
-        timeslots = ['9-11', '11-13', '13-15', '15-17']
-
-        self._timeslot = self._room.plan(days[0],timeslots[0], self)
-        if self._timeslot != None:
-            return True
-
-        # Find alternative rooms (next greatest)
-        i = rooms.index(self._room)
-        for r in rooms[i+1::]:
-            self._timeslot = r.plan(days[0],timeslots[0], self)
-            #print(self._timeslot, r._classroom)
-            if self._timeslot != None:
-                self._room = r
-                return True
-        return False
-
-
     def add_students(self, student):
         '''
         Connect student objects to according activity

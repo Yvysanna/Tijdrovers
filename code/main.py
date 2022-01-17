@@ -8,8 +8,9 @@
 # - Creates schedule
 # ==================================================================================
 
+from numpy import NaN
 import pandas as pd
-from objects.planner import Planner
+from algorithms.planner import Planner
 
 import loader
 
@@ -47,8 +48,8 @@ for student in students_list:
             df_dict['vak'].append(activity._name)
             df_dict['activiteit'].append(activity._type)
             df_dict['zaal'].append(activity._room.name)
-            df_dict['dag'].append(day)
-            df_dict['tijdslot'].append(time)
+            df_dict['dag'].append(day or 'tba')
+            df_dict['tijdslot'].append(time or 'tba') 
             if (room):
                 #pass
                 print(f"{activity._name} ({activity._type}) - {room.name}/ ('{day}', '{time}')")
@@ -60,9 +61,15 @@ for student in students_list:
 print('\n\n')
 print (planner.get_capacity_info())
 
+for course in course_list:
+    print(course._activities)
+
 c = ['student','vak','activiteit','zaal','dag','tijdslot']
 results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
 print(results_df)
-with open('results.csv', 'w'):
+with open('data/results/results.csv', 'w'):
     pass
-results_df.to_csv('results.csv', sep='\t', index=False)
+
+
+results_df.to_csv('data/results/results.csv', sep = ';', index=False)
+
