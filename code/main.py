@@ -22,13 +22,8 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 # Load classrooms and courses
 classrooms_list = loader.load_classrooms()
 (students_list, course_count) = loader.load_students()
-course_list = loader.load_courses(classrooms_list, students_list, course_count)
+course_list = loader.load_courses(classrooms_list, course_count)
 loader.load_activities(classrooms_list, students_list,course_list)
-
-# Create activity objects in course
-
-    # The only important line from randomize !!!!! RANDOMIZE NO LONGER NEEDED :D
-    #course.schedule(classrooms_list) # Creates schedule; might needs to be put further down in code
 
 # Create schedule for every classroom
 schedule_dict = {}
@@ -43,7 +38,6 @@ for course in course_list:
 
 
 for student in students_list:
-    print('\n',student._last_name)
     for course in student.courses:
         activities = [activity for activity in course._activities if activity.confirm_registration(student)]
         for activity in activities:
@@ -57,3 +51,5 @@ for student in students_list:
 print('\n\n')
 print (planner.get_capacity_info())
 
+# for course in course_list:
+#     print(course._activities)

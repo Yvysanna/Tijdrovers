@@ -36,7 +36,7 @@ class Student:
         self.courses = courses
 
 
-    def give_schedule(self):
+    def print_schedule(self):
         '''
         Hold schedule for each student
         '''
