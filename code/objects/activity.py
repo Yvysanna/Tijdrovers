@@ -3,6 +3,7 @@ class Activity:
     def __init__(self, act_type, room, student_count, name):
         self._type = act_type
         self._room = room # OPTIMISATION: GET ALL ROOMS IN A LIST
+        self.room_list = []
         self._student_count = student_count
         self._students_list = []
         self._name = name
@@ -24,15 +25,8 @@ class Activity:
             return True
         return False
 
-    def set_timeslot(self, day, time):
-        '''
-        Add timeslot to activity
-        '''
-        self._timeslot = (day, time)
-        #print(self._timeslot, self._room)
-
     def __str__(self):
-        return f'\n{self._name} ({self._type}) - {self._room.name} / {self._timeslot}'
+        return f'\n{self._name} ({self._type}) - {self._room.name} / {self._timeslot} --- {self.room_list}'
 
     def __repr__(self):
-        return f'\n{self._name} ({self._type}) - {self._room.name}/ {self._timeslot}'
+        return f'\n{self._name} ({self._type}) - {self._room.name}/ {self._timeslot} --- {self.room_list}'

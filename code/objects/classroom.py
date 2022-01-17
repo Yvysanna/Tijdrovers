@@ -109,7 +109,7 @@ class Classroom:
             self.name,
             #self.capacity,
             #self._possible_courses
-            [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
+            # [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
         ])
 
     def __repr__(self) -> str:
@@ -118,5 +118,5 @@ class Classroom:
             self.name,
             #self.capacity,
             #self._possible_courses
-            [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
+            # [(x,[(z,a._name) for z,a in y.items()]) for x,y in self._plan.items()]
         ])
