@@ -12,7 +12,7 @@ import csv
 from objects.course import Course
 from objects.classroom import Classroom
 from objects.student import Student
-from objects.register import Register
+from algorithms.register import Register
 
 
 # Loads all classrooms and returns a list of Classroom objects sorted by capacity
@@ -74,7 +74,7 @@ def load_students():
 # Loads all courses and returns a list of Course objects
 
 
-def load_courses(classroom_list, students_list, course_count):
+def load_courses(classroom_list, course_count):
     course_list = []
 
     # Open csv
