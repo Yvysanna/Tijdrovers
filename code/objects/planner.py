@@ -1,5 +1,4 @@
 import math
-from collections import Counter
 
 class Planner:
 
@@ -16,16 +15,26 @@ class Planner:
         """
         Get info for activity (more efficient than looping)
         """
-        try:
+        if activity in self.slots:
             index = self.slots.index(activity)
 
             day = Planner.days[math.floor(index / (len(Planner.times) * len(self.rooms)))]
             idx = index % (len(Planner.times) * len(self.rooms))
             room = self.rooms[math.floor(idx / len(Planner.times))]
             time = Planner.times[idx % len(Planner.times)]
-
             return room, day, time
-        except: return None, None, None
+        return None, None, None
+        
+        # try:
+        #     index = self.slots.index(activity)
+
+        #     day = Planner.days[math.floor(index / (len(Planner.times) * len(self.rooms)))]
+        #     idx = index % (len(Planner.times) * len(self.rooms))
+        #     room = self.rooms[math.floor(idx / len(Planner.times))]
+        #     time = Planner.times[idx % len(Planner.times)]
+
+        #     return room, day, time
+        # except: return None, None, None
 
 
     def plan(self, activity, room, day, time):

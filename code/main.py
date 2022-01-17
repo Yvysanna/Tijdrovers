@@ -28,7 +28,7 @@ for course in course_list:
     course.create_activities(classrooms_list)
     
     # The only important line from randomize !!!!! RANDOMIZE NO LONGER NEEDED :D
-    course.schedule(classrooms_list) # Creates schedule; might needs to be put further down in code
+    #course.schedule(classrooms_list) # Creates schedule; might needs to be put further down in code
 
 # Create schedule for every classroom
 schedule_dict = {}
