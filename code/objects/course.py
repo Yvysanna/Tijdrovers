@@ -147,10 +147,11 @@ class Course:
             #self._labs_number,
             #self._lab_max,
             self.students_number,
+            self._activities
             #self._timeslots,
             # self.possible_classrooms
             # self.students_list
-            len(self.students_list)
+            #len(self.students_list)
 
         ])
 
@@ -164,8 +165,9 @@ class Course:
             #self._labs_number,
             #self._lab_max,
             self.students_number,
+            self._activities
             #self._timeslots,
             # self.possible_classrooms
             # self.students_list
-            len(self.students_list)
+            #len(self.students_list)
         ])

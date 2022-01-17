@@ -9,6 +9,7 @@
 # ==================================================================================
 
 import pandas as pd
+from objects.planner import Planner
 
 import loader
 from randomize import randomize
@@ -43,6 +44,8 @@ for student in students_list:
 
         # Add students to courses
         student.courses[i].register(student)
+
+    #student.give_schedule()
         # course_object.students_list.append(student)
 
 #print(course_list[0].smallest_classroom())
@@ -50,4 +53,27 @@ for student in students_list:
 # Randomize course activities and fill in schedule
 #randomize(course_list, schedule_dict)
 # print([l for l in classrooms_list])
-print(classrooms_list)
+#print(classrooms_list)
+
+planner = Planner(classrooms_list)
+for course in course_list:
+    for activity in course._activities:
+        planner.plan_free(classrooms_list[classrooms_list.index(activity._room):], activity)
+
+#print(planner.slots)
+#print('\n\n\n')
+for student in students_list:
+    print('\n',student._last_name)
+    for course in student.courses:
+        activities = [activity for activity in course._activities if activity.confirm_registration(student)]
+        for activity in activities:
+            room, day, time = planner.get_info(activity)
+            if (room):
+                print(f"{activity._name} ({activity._type}) - {room.name}/ ('{day}', '{time}')")
+            else:
+                print(f"{activity._name} ({activity._type}) - {activity._room.name}/ ('{day}', '{time}') - not planned")
+
+
+print('\n\n')
+print (planner.get_capacity_info())
+

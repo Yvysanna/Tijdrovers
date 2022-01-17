@@ -40,7 +40,9 @@ class Student:
         '''
         Hold schedule for each student
         '''
-        pass
+        print('\n',self._last_name)
+        for course in self.courses:
+            print([activity for activity in course._activities if activity.confirm_registration(self)])
 
     def __str__(self) -> str:
         '''Represents the class as a string'''

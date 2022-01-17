@@ -8,6 +8,12 @@ class Activity:
         self._name = name
         self._timeslot = None
 
+    def confirm_registration(self, student):
+        try: 
+            self._students_list.index(student)
+            return True
+        except:
+            return False
 
     def plan(self, rooms):
         '''
@@ -51,7 +57,7 @@ class Activity:
         #print(self._timeslot, self._room)
 
     def __str__(self):
-        return f'\n{self._name} ({len(self._students_list)}) - {self._room.name} / {self._timeslot}'
+        return f'\n{self._name} ({self._type}) - {self._room.name} / {self._timeslot}'
 
     def __repr__(self):
-        return f'\n{self._name} ({len(self._students_list)}) - {self._room.name}/ {self._timeslot}'
+        return f'\n{self._name} ({self._type}) - {self._room.name}/ {self._timeslot}'
