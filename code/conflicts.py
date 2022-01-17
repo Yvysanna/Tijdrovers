@@ -8,38 +8,32 @@
 # ==================================================================================
 
 from itertools import combinations
-import loader
 
 
-(students_list, course_count) = loader.load_students()
-course_list = loader.load_courses(course_count)
-
-# Creates the desired data structure {Course : {Course : list[Student]}}
-course_dict = {}
-for course in course_list:
-    course_dict[course] = {}
-for element in course_dict.values():
+def find_conflicts(students_list, course_list):
+    # Creates the desired data structure {Course : {Course : list[Student]}}
+    course_dict = {}
     for course in course_list:
-        element[course] = []
+        course_dict[course] = {}
+    for element in course_dict.values():
+        for course in course_list:
+            element[course] = []
 
-# If a student follows more than one course, get every combination of those courses
-for student in students_list:
-    if len(student.courses) > 1:
-        combs = list(combinations(student.courses, 2))
+    # If a student follows more than one course, get every combination of those courses
+    for student in students_list:
+        if len(student.courses) > 1:
+            combs = list(combinations(student.courses, 2))
 
-        # For every conflicting pair of courses, search for the first course within the dictionary
-        for conflict in combs:
-            for course_key in course_dict.keys():
-                if conflict[0] == course_key.name:
-                    # Search for the second course in the dictionary values
-                    for course_value in course_dict[course_key]:
-                        if conflict[1] == course_value.name:
-                            # Add students to the list for the conflicting pair
-                            course_dict[course_key][course_value].append(student)
-                            course_dict[course_value][course_key].append(student)
-
-# Output
-for x in course_dict:
-    print('\n', x.name, '\n')
-    for y in course_dict[x]:
-        print(y,":",course_dict[x][y])
+            # For every conflicting pair of courses, search for the first course within the dictionary
+            for conflict in combs:
+                for course_key in course_dict.keys():
+                    if conflict[0] == course_key:
+                        # Search for the second course in the dictionary values
+                        for course_value in course_dict[course_key]:
+                            if conflict[1] == course_value:
+                                # Add students to the list for the conflicting pair
+                                course_dict[course_key][course_value].append(
+                                    student)
+                                course_dict[course_value][course_key].append(
+                                    student)
+    return course_dict
