@@ -58,7 +58,7 @@ for student in students_list:
 planner = Planner(classrooms_list)
 for course in course_list:
     for activity in course._activities:
-        planner.plan_free(classrooms_list[classrooms_list.index(activity._room):], activity)
+        planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
 
 #print(planner.slots)
 #print('\n\n\n')

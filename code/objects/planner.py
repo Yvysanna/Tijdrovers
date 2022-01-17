@@ -50,7 +50,7 @@ class Planner:
         index = dindex * (len(Planner.times) * len(self.rooms)) + tindex
         return self.slots[index : index + (len(self.rooms) * len(Planner.times)) - tindex : len(Planner.times)]
 
-    def plan_free(self, rooms, activity):
+    def plan_activity(self, rooms, activity):
         '''
         THE IMPORTANT ALGORITHM
         Tries to check for not planned activity, if student follows this activity and if so, which other activities should not be planned for the same timeslot, day based on students enrollment (logic as in conflicts.py used)
@@ -108,7 +108,7 @@ if __name__ == '__main__':
 
 
 
-    activity = 'Hallo ihc bin eine Activity'
+    activity = 'Hallo ich bin eine Activity'
     index = plan.plan(activity, 'F', 'vr', '13-15')
     print(index, plan.get_info(activity))
     print(plan.get_activities('vr', '13-15'))
