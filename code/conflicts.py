@@ -35,4 +35,11 @@ def find_conflicts(students_list, course_list):
                                     student)
                                 course_dict[course_value][course_key].append(
                                     student)
+
+    for x in course_dict:
+        print('\n', x.name, '\n')
+        for y in course_dict[x]:
+            print(y, ":", course_dict[x][y])
+
+
     return course_dict
