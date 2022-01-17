@@ -2,13 +2,19 @@ class Activity:
 
     def __init__(self, act_type, room, student_count, name):
         self._type = act_type
-        self._room = room # OPTIMISATION: GET ROOM IN ACTIVITY BASED ON LEN(STUDENT_LIST)
+        self._room = room # OPTIMISATION: GET ALL ROOMS IN A LIST
         self._student_count = student_count
         self._students_list = []
         self._name = name
         self._timeslot = None
 
     def confirm_registration(self, student):
+        # Correction
+        if student in self._students_list:
+            return True
+        return False
+    
+
         try: 
             self._students_list.index(student)
             return True
