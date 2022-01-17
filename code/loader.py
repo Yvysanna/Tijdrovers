@@ -91,6 +91,14 @@ def load_courses(classroom_list, students_list, course_count):
                     course.possible_classrooms.append(classroom)
             course_list.append(course)
 
+
+
+    return course_list
+
+def load_activities(classrooms_list, students_list, course_list):
+
+    for course in course_list:
+        course.create_activities(classrooms_list)
     # Connect student objects with according course objects
     for student in students_list:
         for i, course in enumerate(student.courses):
@@ -101,8 +109,6 @@ def load_courses(classroom_list, students_list, course_count):
             # Add students to courses
             student.courses[i].register(student)
             course_object.students_list.append(student)
-
-    return course_list
 
 
 if __name__ == '__main__':

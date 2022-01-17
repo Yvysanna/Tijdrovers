@@ -23,10 +23,9 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 classrooms_list = loader.load_classrooms()
 (students_list, course_count) = loader.load_students()
 course_list = loader.load_courses(classrooms_list, students_list, course_count)
+loader.load_activities(classrooms_list, students_list,course_list)
 
 # Create activity objects in course
-for course in course_list:
-    course.create_activities(classrooms_list)
 
     # The only important line from randomize !!!!! RANDOMIZE NO LONGER NEEDED :D
     #course.schedule(classrooms_list) # Creates schedule; might needs to be put further down in code
