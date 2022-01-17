@@ -13,6 +13,7 @@ from objects.planner import Planner
 
 import loader
 from randomize import randomize
+from conflicts import find_conflicts
 
 
 days = ['ma', 'di', 'wo', 'do', 'vr']
@@ -48,6 +49,13 @@ for student in students_list:
     #student.give_schedule()
         # course_object.students_list.append(student)
 
+conflicts = find_conflicts(students_list, course_list)
+
+for x in conflicts:
+    print('\n', x.name, '\n')
+    for y in conflicts[x]:
+        print(len(conflicts[x][y]), y,":",conflicts[x][y])
+
 #print(course_list[0].smallest_classroom())
 
 # Randomize course activities and fill in schedule
@@ -62,18 +70,18 @@ for course in course_list:
 
 #print(planner.slots)
 #print('\n\n\n')
-for student in students_list:
-    print('\n',student._last_name)
-    for course in student.courses:
-        activities = [activity for activity in course._activities if activity.confirm_registration(student)]
-        for activity in activities:
-            room, day, time = planner.get_info(activity)
-            if (room):
-                print(f"{activity._name} ({activity._type}) - {room.name}/ ('{day}', '{time}')")
-            else:
-                print(f"{activity._name} ({activity._type}) - {activity._room.name}/ ('{day}', '{time}') - not planned")
+# for student in students_list:
+#     print('\n',student._last_name)
+#     for course in student.courses:
+#         activities = [activity for activity in course._activities if activity.confirm_registration(student)]
+#         for activity in activities:
+#             room, day, time = planner.get_info(activity)
+#             if (room):
+#                 print(f"{activity._name} ({activity._type}) - {room.name}/ ('{day}', '{time}')")
+#             else:
+#                 print(f"{activity._name} ({activity._type}) - {activity._room.name}/ ('{day}', '{time}') - not planned")
 
 
-print('\n\n')
-print (planner.get_capacity_info())
+# print('\n\n')
+# print (planner.get_capacity_info())
 
