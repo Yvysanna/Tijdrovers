@@ -14,13 +14,6 @@ class Activity:
         if student in self._students_list:
             return True
         return False
-    
-
-        try: 
-            self._students_list.index(student)
-            return True
-        except:
-            return False
 
     def plan(self, rooms):
         '''
@@ -30,7 +23,7 @@ class Activity:
         # Could later be replaced / sent as arguments
         days = ['ma', 'di', 'wo', 'do', 'vr']
         timeslots = ['9-11', '11-13', '13-15', '15-17']
-        
+
         self._timeslot = self._room.plan(days[0],timeslots[0], self)
         if self._timeslot != None:
             return True
@@ -55,13 +48,6 @@ class Activity:
             self._students_list.append(student)
             return True
         return False
-
-    def set_timeslot(self, day, time):
-        '''
-        Add timeslot to activity
-        '''
-        self._timeslot = (day, time)
-        #print(self._timeslot, self._room)
 
     def __str__(self):
         return f'\n{self._name} ({self._type}) - {self._room.name} / {self._timeslot} --- {self.room_list}'

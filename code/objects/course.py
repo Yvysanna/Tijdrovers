@@ -130,14 +130,6 @@ class Course:
             if activity._type == 'Lab' and activity.add_students(student):
                 break
 
-    def schedule(self, rooms):
-        """
-        Schedules the course at a timeslot on random day and time
-        RETURNS: None
-        """
-        for activity in self._activities:
-            activity.plan(rooms)
-
     def __str__(self) -> str:
         '''Represents class as a string'''
         return str([

@@ -24,18 +24,6 @@ class Planner:
             time = Planner.times[idx % len(Planner.times)]
             return room, day, time
         return None, None, None
-        
-        # try:
-        #     index = self.slots.index(activity)
-
-        #     day = Planner.days[math.floor(index / (len(Planner.times) * len(self.rooms)))]
-        #     idx = index % (len(Planner.times) * len(self.rooms))
-        #     room = self.rooms[math.floor(idx / len(Planner.times))]
-        #     time = Planner.times[idx % len(Planner.times)]
-
-        #     return room, day, time
-        # except: return None, None, None
-
 
     def plan(self, activity, room, day, time):
         """
@@ -51,7 +39,7 @@ class Planner:
             return -1
         self.slots[index] = activity
         return index
-        
+
     def get_activities(self, day, time):
 
         dindex = Planner.days.index(day)
@@ -69,7 +57,7 @@ class Planner:
                 for time in Planner.times:
                     activities = self.get_activities(day, time)
                     students_list = flatten([activity._students_list for activity in activities if activity])
-                    
+
                     # Checks for each student if student already has activity at given time and day
                     students_all = students_list + activity._students_list
                     if not have_duplicates(students_all): 
@@ -87,7 +75,7 @@ class Planner:
         day = Planner.days[math.floor(index / (len(Planner.times) * len(self.rooms)))]
         time = Planner.times[idx % len(Planner.times)]
         return room, day, time
-    
+
     def get_capacity_info(self):
         '''
         Controll function, checks how many free slots stay with algorithm

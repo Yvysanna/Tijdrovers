@@ -36,15 +36,6 @@ for course in course_list:
     for activity in course._activities:
         planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
 
-# df_dict = dict()
-# c = ['student','vak','activiteit','zaal','dag','tijdslot']
-# for i in c:
-#     for key, value in df_dict:
-#         key = str(i)
-#         value = []
-    
-    #df_dict.values = []
-#
 
 df_dict = {'student': [],'vak': [],'activiteit': [],'zaal': [],'dag': [],'tijdslot': []}
 for student in students_list:
@@ -69,14 +60,9 @@ for student in students_list:
 print('\n\n')
 print (planner.get_capacity_info())
 
-# for course in course_list:
-#     print(course._activities)
-#print (planner.get_capacity_info())
-
 c = ['student','vak','activiteit','zaal','dag','tijdslot']
 results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
 print(results_df)
 with open('results.csv', 'w'):
     pass
 results_df.to_csv('results.csv', sep='\t', index=False)
-
