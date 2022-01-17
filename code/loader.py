@@ -88,7 +88,7 @@ def load_courses(classroom_list, students_list, course_count):
             for classroom in classroom_list:
                 if classroom.capacity >= course.students_number:
                     classroom.possible_courses.append(course)
-                    course.possible_classrooms.append(classroom)
+                    #course.possible_classrooms.append(classroom)
             course_list.append(course)
 
 
@@ -108,7 +108,7 @@ def load_activities(classrooms_list, students_list, course_list):
 
             # Add students to courses
             student.courses[i].register(student)
-            course_object.students_list.append(student)
+            #course_object.students_list.append(student)
 
 
 if __name__ == '__main__':
