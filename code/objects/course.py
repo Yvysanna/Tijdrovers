@@ -35,7 +35,7 @@ class Course:
         Represents the class as a string
     '''
 
-    def __init__(self, name, lectures_number, tutorials_number, tutorial_max, labs_number, lab_max, students_number, min_timeslots):
+    def __init__(self, name, lectures_number, tutorials_number, tutorial_max, labs_number, lab_max, students_number):
         '''
         PARAMETERS:
         name : str
@@ -88,7 +88,7 @@ class Course:
         
         # Create as many lecture activity objects as to be planned
         for x in range(self._lectures_number):
-            self._activities.append(Activity('Lecture', classroom, self.students_number, self.name))
+            self._activities.append(Activity('Lecture', classroom, self.students_number, f'{self.name} Lecture {x + 1}'))
         self._timeslots += self._lectures_number # Count timeslots accordingly
         
         # Tutorials, calculate number tutorials through amount student/ max amount accepted per tutorial
@@ -98,7 +98,7 @@ class Course:
             # Same procedure as Lecture; look for ideal classroom
             classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
             for x in range(tutorials_num):
-                self._activities.append(Activity('Tutorial', classroom, student_number, self.name))
+                self._activities.append(Activity('Tutorial', classroom, student_number, f'{self.name} Tutorial {x + 1}'))
             self._timeslots += tutorials_num
 
         # Same procedure for Labs
@@ -108,7 +108,7 @@ class Course:
             # List of all classrooms greater than amount students enrolled
             classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
             for x in range(lab_number):
-                self._activities.append(Activity('Lab', classroom, student_number, self.name))
+                self._activities.append(Activity('Lab', classroom, student_number, f'{self.name} Lab {x + 1}'))
             self._timeslots += lab_number
 
     def register(self, student):
@@ -147,11 +147,11 @@ class Course:
             #self._labs_number,
             #self._lab_max,
             self.students_number,
-            # self._activities
+            self._activities
             #self._timeslots,
             # self.possible_classrooms
             # self.students_list
-            #len(self.students_list)
+            # len(self.students_number)
 
         ])
 
@@ -165,9 +165,9 @@ class Course:
             #self._labs_number,
             #self._lab_max,
             self.students_number,
-            # self._activities
+            self._activities
             #self._timeslots,
             # self.possible_classrooms
             # self.students_list
-            #len(self.students_list)
+            # len(self.students_number)
         ])

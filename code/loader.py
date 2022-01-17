@@ -12,6 +12,7 @@ import csv
 from objects.course import Course
 from objects.classroom import Classroom
 from objects.student import Student
+from objects.register import Register
 
 
 # Loads all classrooms and returns a list of Classroom objects sorted by capacity
@@ -84,7 +85,7 @@ def load_courses(classroom_list, students_list, course_count):
         # Create course object from course data
         for row in reader:
             course = Course(row[0], row[1], row[2], row[3],
-                            row[4], row[5], course_count[row[0]], row[7])
+                            row[4], row[5], course_count[row[0]])
             for classroom in classroom_list:
                 if classroom.capacity >= course.students_number:
                     classroom.possible_courses.append(course)
@@ -107,6 +108,9 @@ def load_activities(classrooms_list, students_list, course_list):
             student.courses[i] = course_object
 
             # Add students to courses
+            # register_course = Register(student.courses[i])
+            # register_course.register(student)
+
             student.courses[i].register(student)
             #course_object.students_list.append(student)
 
