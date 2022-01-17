@@ -8,7 +8,6 @@
 # ==================================================================================
 
 from itertools import combinations
-import loader
 
 def find_conflicts(students_list, course_list):
     # Creates the desired data structure {Course : {Course : list[Student]}}
@@ -32,19 +31,8 @@ def find_conflicts(students_list, course_list):
                         for course_value in course_dict[course_key]:
                             if conflict[1] == course_value:
                                 # Add students to the list for the conflicting pair
-                                course_dict[course_key][course_value].append(student)
-                                course_dict[course_value][course_key].append(student)
+                                course_dict[course_key][course_value].append(
+                                    student)
+                                course_dict[course_value][course_key].append(
+                                    student)
     return course_dict
-
-if __name__ == '__main__':
-
-    (students_list, course_count) = loader.load_students()
-    course_list = loader.load_courses(course_count)
-
-    course_dict = find_conflicts(students_list, course_list)
-
-    # Output
-    for x in course_dict:
-        print('\n', x.name, '\n')
-        for y in course_dict[x]:
-            print(y,":",course_dict[x][y])

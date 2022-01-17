@@ -14,22 +14,6 @@ from objects.classroom import Classroom
 from objects.student import Student
 
 
-# Loads all courses and returns a list of Course objects
-def load_courses(course_count):
-    course_list = []
-
-    # Open csv
-    with open('data/courses.csv', 'r') as f:
-        reader = csv.reader(f, delimiter=';')
-        next(reader, None)
-
-        # Create course object from course data
-        for row in reader:
-            course_list.append(Course(row[0], row[1], row[2], row[3], row[4], row[5], course_count[row[0]], row[7]))
-            #course_list.append(Course(row[0], row[1], int(row[2)), int(row[3]) if row[3] != 'nvt' else 0, int(row[4]), int(row[5]) if row[5] != 'nvt' else 0, int(course_count[row[0]]), int(row[7])))
-    return course_list
-
-
 # Loads all classrooms and returns a list of Classroom objects sorted by capacity
 def load_classrooms():
     classrooms_dict = {}
@@ -48,7 +32,8 @@ def load_classrooms():
     # min() function format from https://stackoverflow.com/questions/3282823/get-the-key-corresponding-to-the-minimum-value-within-a-dictionary
     while len(classrooms_dict) > 0:
         classroom = min(classrooms_dict, key=classrooms_dict.get)
-        classrooms_list.append(Classroom(classroom, classrooms_dict.pop(classroom)))
+        classrooms_list.append(
+            Classroom(classroom, classrooms_dict.pop(classroom)))
     return classrooms_list
 
 
@@ -84,6 +69,46 @@ def load_students():
             students_list.append(Student(row[0], row[1], row[2], courses))
 
     return students_list, course_counter
+
+# Loads all courses and returns a list of Course objects
+
+
+def load_courses(classroom_list, students_list, course_count):
+    course_list = []
+
+    # Open csv
+    with open('data/courses.csv', 'r') as f:
+        reader = csv.reader(f, delimiter=';')
+        next(reader, None)
+
+        # Create course object from course data
+        for row in reader:
+            course = Course(row[0], row[1], row[2], row[3],
+                            row[4], row[5], course_count[row[0]], row[7])
+            for classroom in classroom_list:
+                if classroom.capacity >= course.students_number:
+                    classroom.possible_courses.append(course)
+                    #course.possible_classrooms.append(classroom)
+            course_list.append(course)
+
+
+
+    return course_list
+
+def load_activities(classrooms_list, students_list, course_list):
+
+    for course in course_list:
+        course.create_activities(classrooms_list)
+    # Connect student objects with according course objects
+    for student in students_list:
+        for i, course in enumerate(student.courses):
+            course_object = list(
+                filter(lambda subj: subj.name == course, course_list))[0]
+            student.courses[i] = course_object
+
+            # Add students to courses
+            student.courses[i].register(student)
+            #course_object.students_list.append(student)
 
 
 if __name__ == '__main__':
