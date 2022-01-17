@@ -77,12 +77,10 @@ for student in students_list:
 print('\n\n')
 #print (planner.get_capacity_info())
 
-for course in course_list:
-    print(course._activities)
 
 c = ['student','vak','activiteit','zaal','dag','tijdslot']
 results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
-#print(results_df)
+print(results_df)
 with open('data/results/results.csv', 'w'):
     pass
 results_df.to_csv('data/results/results.csv', sep = ';', index=False)
