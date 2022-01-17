@@ -88,7 +88,7 @@ class Course:
         
         # Create as many lecture activity objects as to be planned
         for x in range(self._lectures_number):
-            self._activities.append(Activity('Lecture', classroom, self.students_number, self.name))
+            self._activities.append(Activity(f'h{x+1}', classroom, self.students_number, self.name))
         self._timeslots += self._lectures_number # Count timeslots accordingly
         
         # Tutorials, calculate number tutorials through amount student/ max amount accepted per tutorial
@@ -98,7 +98,7 @@ class Course:
             # Same procedure as Lecture; look for ideal classroom
             classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
             for x in range(tutorials_num):
-                self._activities.append(Activity('Tutorial', classroom, student_number, self.name))
+                self._activities.append(Activity(f'w{x+1}', classroom, student_number, self.name))
             self._timeslots += tutorials_num
 
         # Same procedure for Labs
@@ -108,7 +108,7 @@ class Course:
             # List of all classrooms greater than amount students enrolled
             classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
             for x in range(lab_number):
-                self._activities.append(Activity('Lab', classroom, student_number, self.name))
+                self._activities.append(Activity(f'p{x+1}', classroom, student_number, self.name))
             self._timeslots += lab_number
 
     def register(self, student):
@@ -118,15 +118,15 @@ class Course:
         DISCLAIMER: Only works if tutorial and lab no more than 1 per course!!!!
         RETURNS NONE
         """
-        [activity.add_students(student) for activity in self._activities if activity._type == 'Lecture']
+        [activity.add_students(student) for activity in self._activities if activity._type.startswith('h')]
 
         # Add student to first possible tutorial and lab
         for activity in self._activities:    
-            if activity._type == 'Tutorial' and activity.add_students(student):
+            if activity._type.startswith('w') and activity.add_students(student):
                 break
         
         for activity in self._activities:
-            if activity._type == 'Lab' and activity.add_students(student):
+            if activity._type.startswith('p') and activity.add_students(student):
                 break
 
     def schedule(self, rooms):
