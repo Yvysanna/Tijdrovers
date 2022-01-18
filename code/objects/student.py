@@ -17,7 +17,7 @@ class Student:
         Represents the class as a string
     '''
 
-    def __init__(self, last_name, first_name, student_number, courses):
+    def __init__(self, last_name, first_name, student_number):
         '''
         ARGUMENTS:
         _last_name : str
@@ -33,7 +33,7 @@ class Student:
         self._last_name = last_name
         self._first_name = first_name
         self._student_number = student_number
-        self.courses = courses
+        self.courses = []
         self.activities = set()
         self.classmates = set()
 
@@ -52,7 +52,7 @@ class Student:
             self._last_name,
             # self._first_name,
             # self._student_number,
-            # self.courses,
+            self.courses,
             # self.activities
         ])
 
@@ -62,6 +62,6 @@ class Student:
             self._last_name,
             # self._first_name,
             # self._student_number,
-            # self.courses,
+            self.courses,
             # self.activities
         ])

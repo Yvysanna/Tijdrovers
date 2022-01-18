@@ -35,7 +35,7 @@ class Course:
         Represents the class as a string
     '''
 
-    def __init__(self, name, lectures_number, tutorials_number, tutorial_max, labs_number, lab_max, students_number):
+    def __init__(self, name, lectures_number, tutorials_number, tutorial_max, labs_number, lab_max, students_number, students_set):
         '''
         PARAMETERS:
         name : str
@@ -65,6 +65,7 @@ class Course:
         self._labs_number = int(labs_number)
         self._lab_max = int(lab_max) if lab_max != 'nvt' else 0
         self.students_number = int(students_number)
+        self._students_set = students_set
 
         # Lists with activity objects, gets filled in create activites
         self._lectures = []
@@ -145,7 +146,7 @@ class Course:
             # self._activities
             #self._timeslots,
             # self.possible_classrooms
-            # self.students_list
+            # self._students_set
             # len(self.students_number)
 
         ])
@@ -163,6 +164,6 @@ class Course:
             # self._activities
             #self._timeslots,
             # self.possible_classrooms
-            # self.students_list
+            # self._students_set
             # len(self.students_number)
         ])

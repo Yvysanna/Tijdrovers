@@ -42,7 +42,7 @@ def load_classrooms():
 # as its key and number of enrolled students as its value
 def load_students():
     students_set = set()
-    course_counter = {}
+    course_students = {}
 
     # Open csv
     with open('data/students.csv', 'r', encoding="ISO-8859-1") as f:
@@ -50,30 +50,33 @@ def load_students():
         next(reader, None)
 
         for row in reader:
-            courses = []
+            # Creates new student object and adds it to students_set
+            student = Student(row[0], row[1], row[2])
+            students_set.add(student)
+
             # Creates list of courses per student and counts the students per course
             for course in row[3:]:
-                # Stops loop if end of student's course list is reached
+                # Stops loop if end of student's course list is reached, otherwise adds course to student's courses
                 if course == '':
                     break
                 else:
-                    courses.append(course)
-                    # Add course if not yet in course_counter
-                    if course not in course_counter:
-                        course_counter[course] = 1
-                    # Adds to student number in course_counter
+                    student.courses.append(course)
+
+                    # Add course with student counter and set if not yet in course_students
+                    if course not in course_students:
+                        course_students[course] = {'count': 1, 'students': set()}
                     else:
-                        course_counter[course] += 1
+                        course_students[course]['count'] += 1
 
-            # Creates new student object and adds it to students_set
-            students_set.add(Student(row[0], row[1], row[2], courses))
+                    # Add student object to set
+                    course_students[course]['students'].add(student)
 
-    return students_set, course_counter
+    return students_set, course_students
 
 # Loads all courses and returns a list of Course objects
 
 
-def load_courses(classroom_list, course_count):
+def load_courses(classroom_list, course_students):
     course_set = set()
 
     # Open csv
@@ -84,7 +87,7 @@ def load_courses(classroom_list, course_count):
         # Create course object from course data
         for row in reader:
             course = Course(row[0], row[1], row[2], row[3],
-                            row[4], row[5], course_count[row[0]])
+                            row[4], row[5], course_students[row[0]]['count'], course_students[row[0]]['students'])
             for classroom in classroom_list:
                 if classroom.capacity >= course.students_number:
                     classroom.possible_courses.append(course)
@@ -93,15 +96,16 @@ def load_courses(classroom_list, course_count):
 
     return course_set
 
-def load_activities(classrooms_list, students_set, course_list):
+def load_activities(classrooms_list, students_set, course_set):
 
-    for course in course_list:
+    for course in course_set:
         course.create_activities(classrooms_list)
+        
     # Connect student objects with according course objects
     for student in students_set:
         for i, course in enumerate(student.courses):
             course_object = list(
-                filter(lambda subj: subj.name == course, course_list))[0]
+                filter(lambda subj: subj.name == course, course_set))[0]
             student.courses[i] = course_object
 
             # Add students to courses

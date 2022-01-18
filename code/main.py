@@ -23,8 +23,8 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 # Load classrooms and courses
 classrooms_list = loader.load_classrooms()
-(students_set, course_count) = loader.load_students()
-course_set = loader.load_courses(classrooms_list, course_count)
+(students_set, course_students) = loader.load_students()
+course_set = loader.load_courses(classrooms_list, course_students)
 
 course_dict, conflicting_pairs = find_course_conflicts(students_set, course_set)
 
@@ -35,7 +35,7 @@ schedule_dict = {}
 for classroom in classrooms_list:
     schedule_dict[classroom.name] = pd.DataFrame(columns=days, index=timeslots)
 
-print(find_activity_conflicts(course_set, students_set))
+# print(find_activity_conflicts(course_set, students_set))
 
 planner = Planner(classrooms_list)
 
@@ -43,6 +43,7 @@ for course in course_set:
     all_activities = course._lectures + course._tutorials + course._labs
     for activity in all_activities:
         planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+        # print(activity)
 
 
 df_dict = {'student': [],'vak': [],'activiteit': [],'zaal': [],'dag': [],'tijdslot': []}
@@ -69,4 +70,4 @@ for student in students_set:
 results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
 # print(results_df)
 
-results_df.to_csv('data/results/results.csv', sep = ';', index=False)
+# results_df.to_csv('data/results/results.csv', sep = ';', index=False)
