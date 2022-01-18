@@ -49,7 +49,6 @@ def load_students():
         reader = csv.reader(f, delimiter=';')
         next(reader, None)
 
-        # Locate the first empty value which marks the end of student's courses
         for row in reader:
             courses = []
             # Creates list of courses per student and counts the students per course
@@ -108,12 +107,12 @@ def load_activities(classrooms_list, students_list, course_list):
             student.courses[i] = course_object
 
             # Add students to courses
-            # register_course = Register(student.courses[i])
-            # register_course.register(student)
+            register_course = Register(student.courses[i])
+            register_course.register(student)
 
-            student.courses[i].register(student)
+            # student.courses[i].register(student)
             #course_object.students_list.append(student)
 
 
 if __name__ == '__main__':
-    print(load_classrooms())
+    print(load_activities())

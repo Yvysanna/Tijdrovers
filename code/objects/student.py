@@ -34,6 +34,8 @@ class Student:
         self._first_name = first_name
         self._student_number = student_number
         self.courses = courses
+        self.activities = []
+        self.classmates = set()
 
 
     def print_schedule(self):
@@ -50,7 +52,8 @@ class Student:
             self._last_name,
             # self._first_name,
             # self._student_number,
-            # self.courses
+            # self.courses,
+            # self.activities
         ])
 
     def __repr__(self) -> str:
@@ -59,5 +62,6 @@ class Student:
             self._last_name,
             # self._first_name,
             # self._student_number,
-            # self.courses
+            # self.courses,
+            # self.activities
         ])

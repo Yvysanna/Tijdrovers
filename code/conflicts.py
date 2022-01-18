@@ -12,6 +12,7 @@ from itertools import combinations
 def find_conflicts(students_list, course_list):
     # Creates the desired data structure {Course : {Course : list[Student]}}
     course_dict = {}
+    conflicting_pairs = {}
     for course in course_list:
         course_dict[course] = {}
     for element in course_dict.values():
@@ -36,10 +37,17 @@ def find_conflicts(students_list, course_list):
                                 course_dict[course_value][course_key].append(
                                     student)
 
-    for x in course_dict:
-        print('\n', x.name, '\n')
-        for y in course_dict[x]:
-            print(y, ":", course_dict[x][y])
+                            conflicting_pairs[f'{course_key}/{course_value}'] = len(course_dict[course_key][course_value])
 
+    # Sort dictionary (taken from https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value)
+    conflicting_pairs = {k: v for k, v in sorted(conflicting_pairs.items(), reverse=True, key=lambda item: item[1])}
+    # print(conflicting_pairs)
 
-    return course_dict
+    # for x in course_dict:
+    #     print('\n', x.name, '\n')
+    #     for y in course_dict[x]:
+    #         print(y, ":", course_dict[x][y])
+
+    # print(conflicting_pairs)
+
+    return course_dict, conflicting_pairs
