@@ -9,7 +9,7 @@
 
 from itertools import combinations
 
-def find_conflicts(students_list, course_list):
+def find_conflicts(students_set, course_list):
     # Creates the desired data structure {Course : {Course : list[Student]}}
     course_dict = {}
     conflicting_pairs = {}
@@ -20,7 +20,7 @@ def find_conflicts(students_list, course_list):
             element[course] = []
 
     # If a student follows more than one course, get every combination of those courses
-    for student in students_list:
+    for student in students_set:
         if len(student.courses) > 1:
             combs = list(combinations(student.courses, 2))
 

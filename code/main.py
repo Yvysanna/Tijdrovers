@@ -8,7 +8,6 @@
 # - Creates schedule
 # ==================================================================================
 
-from numpy import NaN
 import pandas as pd
 from algorithms.planner import Planner
 
@@ -24,12 +23,12 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 # Load classrooms and courses
 classrooms_list = loader.load_classrooms()
-(students_list, course_count) = loader.load_students()
+(students_set, course_count) = loader.load_students()
 course_list = loader.load_courses(classrooms_list, course_count)
 
-course_dict, conflicting_pairs = find_conflicts(students_list, course_list)
+course_dict, conflicting_pairs = find_conflicts(students_set, course_list)
 
-loader.load_activities(classrooms_list, students_list, course_list)
+loader.load_activities(classrooms_list, students_set, course_list)
 
 # Create schedule for every classroom
 schedule_dict = {}
@@ -51,7 +50,7 @@ for course in course_list:
 
 
 df_dict = {'student': [],'vak': [],'activiteit': [],'zaal': [],'dag': [],'tijdslot': []}
-for student in students_list:
+for student in students_set:
     for course in student.courses:
         all_activities = course._lectures + course._tutorials + course._labs
         activities = [activity for activity in all_activities if activity.confirm_registration(student)]
