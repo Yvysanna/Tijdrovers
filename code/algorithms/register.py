@@ -14,7 +14,7 @@ class Register:
         # Add student to every lecture and add every lecture to student activity list
         for lecture in self._course._lectures:
             lecture._students_list.append(student)
-            student.activities.append(lecture)
+            student.activities.add(lecture)
 
             # Add this student as classmate to everyone already in this lecture
             for classmate in lecture._students_list:
@@ -45,7 +45,7 @@ class Register:
             student.classmates.update(assigned_tutorial._students_list)
 
             assigned_tutorial._students_list.append(student)
-            student.activities.append(assigned_tutorial)
+            student.activities.add(assigned_tutorial)
 
         if len(self._course._labs) > 0:
             # Repeat for labs
@@ -64,7 +64,7 @@ class Register:
             student.classmates.update(assigned_lab._students_list)
 
             assigned_lab._students_list.append(student)
-            student.activities.append(assigned_lab)
+            student.activities.add(assigned_lab)
 
 
     def register_helper(self, student, activities):

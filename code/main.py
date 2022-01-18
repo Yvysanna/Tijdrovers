@@ -25,10 +25,11 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 classrooms_list = loader.load_classrooms()
 (students_set, course_count) = loader.load_students()
 course_list = loader.load_courses(classrooms_list, course_count)
+course_set = set(course_list)
 
-course_dict, conflicting_pairs = find_conflicts(students_set, course_list)
+course_dict, conflicting_pairs = find_conflicts(students_set, course_set)
 
-loader.load_activities(classrooms_list, students_set, course_list)
+loader.load_activities(classrooms_list, students_set, course_set)
 
 # Create schedule for every classroom
 schedule_dict = {}
@@ -38,13 +39,13 @@ for classroom in classrooms_list:
 
 planner = Planner(classrooms_list)
 
-for course in course_list:
+for course in course_set:
     all_activities = course._lectures + course._tutorials + course._labs
     for activity in all_activities:
         planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
         # print(activity)
 
-# for course in course_list:
+# for course in course_set:
 #     print(course._tutorials)
     
 
