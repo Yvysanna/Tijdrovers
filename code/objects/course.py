@@ -1,4 +1,6 @@
 import math
+import copy
+
 from objects.activity import Activity
 
 
@@ -91,7 +93,9 @@ class Course:
 
         # Create as many lecture activity objects as to be planned
         for x in range(self._lectures_number):
-            self._lectures.append(Activity('Lecture', f'{self.name} Lecture {x + 1}', classroom))
+            lecture = Activity('Lecture', f'{self.name} Lecture {x + 1}', classroom)
+            lecture._students_list = list(self._students_set)
+            self._lectures.append(lecture)
         self._timeslots += self._lectures_number # Count timeslots accordingly
 
         # Tutorials, calculate number tutorials through amount student/ max amount accepted per tutorial
