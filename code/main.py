@@ -24,8 +24,7 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 # Load classrooms and courses
 classrooms_list = loader.load_classrooms()
 (students_set, course_count) = loader.load_students()
-course_list = loader.load_courses(classrooms_list, course_count)
-course_set = set(course_list)
+course_set = loader.load_courses(classrooms_list, course_count)
 
 course_dict, conflicting_pairs = find_conflicts(students_set, course_set)
 
@@ -43,7 +42,7 @@ for course in course_set:
     all_activities = course._lectures + course._tutorials + course._labs
     for activity in all_activities:
         planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
-        # print(activity)
+        print(activity)
 
 # for course in course_set:
 #     print(course._tutorials)
@@ -82,4 +81,3 @@ with open('data/results/results.csv', 'w'):
 
 
 results_df.to_csv('data/results/results.csv', sep = ';', index=False)
-

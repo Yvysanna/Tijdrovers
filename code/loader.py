@@ -74,7 +74,7 @@ def load_students():
 
 
 def load_courses(classroom_list, course_count):
-    course_list = []
+    course_set = {}
 
     # Open csv
     with open('data/courses.csv', 'r') as f:
@@ -89,11 +89,9 @@ def load_courses(classroom_list, course_count):
                 if classroom.capacity >= course.students_number:
                     classroom.possible_courses.append(course)
                     #course.possible_classrooms.append(classroom)
-            course_list.append(course)
+            course_set.add(course)
 
-
-
-    return course_list
+    return course_set
 
 def load_activities(classrooms_list, students_set, course_list):
 
