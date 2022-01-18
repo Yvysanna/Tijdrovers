@@ -74,7 +74,7 @@ def load_students():
 
 
 def load_courses(classroom_list, course_count):
-    course_set = {}
+    course_set = set()
 
     # Open csv
     with open('data/courses.csv', 'r') as f:
