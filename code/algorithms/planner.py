@@ -49,7 +49,8 @@ class Planner:
     def plan_activity(self, rooms, activity):
         '''
         THE IMPORTANT ALGORITHM
-        Tries to check for not planned activity, if student follows this activity and if so, which other activities should not be planned for the same timeslot, day based on students enrollment (logic as in conflicts.py used)
+        Tries to check for not planned activity, if student follows this activity and if so,
+        which other activities should not be planned for the same timeslot, day based on students enrollment (logic as in conflicts.py used)
         '''
         for room in rooms:
             for day in self.days:
