@@ -7,9 +7,9 @@
 # - other course in order to prevent conflicting courses in the schedule
 # ==================================================================================
 
-from itertools import combinations
+from itertools import combinations, chain
 
-def find_conflicts(students_list, course_list):
+def find_course_conflicts(students_set, course_list):
     # Creates the desired data structure {Course : {Course : list[Student]}}
     course_dict = {}
     conflicting_pairs = {}
@@ -20,7 +20,7 @@ def find_conflicts(students_list, course_list):
             element[course] = []
 
     # If a student follows more than one course, get every combination of those courses
-    for student in students_list:
+    for student in students_set:
         if len(student.courses) > 1:
             combs = list(combinations(student.courses, 2))
 
@@ -41,13 +41,35 @@ def find_conflicts(students_list, course_list):
 
     # Sort dictionary (taken from https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value)
     conflicting_pairs = {k: v for k, v in sorted(conflicting_pairs.items(), reverse=True, key=lambda item: item[1])}
-    # print(conflicting_pairs)
-
-    # for x in course_dict:
-    #     print('\n', x.name, '\n')
-    #     for y in course_dict[x]:
-    #         print(y, ":", course_dict[x][y])
-
-    # print(conflicting_pairs)
 
     return course_dict, conflicting_pairs
+
+
+def find_activity_conflicts(course_set, students_set):
+    # Creates the desired data structure {Activity : {Activity : list[Student]}}
+    activity_dict = {}
+    for course in course_set:
+        for activity in chain(course._tutorials, course._labs):
+            activity_dict[activity] = {}
+    for element in activity_dict.values():
+        for course in course_set:
+            for activity in chain(course._tutorials, course._labs):
+                element[activity] = []
+
+    # If a student follows more than one course, get every combination of activities
+    for student in students_set:
+        if len(student.courses) > 1:
+            activity_list = []
+            for course in student.courses:
+                for activity in chain(course._labs, course._tutorials):
+                    if student in activity._students_list:
+                        activity_list.append(activity)
+            combs = list(combinations(activity_list, 2))
+
+            # For every conflicting pair of courses, add to dictionary
+            for conflict in combs:
+                if conflict[0] in activity_dict:
+                    activity_dict[conflict[0]][conflict[1]].append(student)
+                    activity_dict[conflict[1]][conflict[0]].append(student)
+
+    return activity_dict

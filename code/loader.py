@@ -41,7 +41,7 @@ def load_classrooms():
 # Loads all students and returns a list of Student object and a dictionary with a Course object
 # as its key and number of enrolled students as its value
 def load_students():
-    students_list = []
+    students_set = set()
     course_counter = {}
 
     # Open csv
@@ -65,16 +65,16 @@ def load_students():
                     else:
                         course_counter[course] += 1
 
-            # Creates new student object and adds it to students_list
-            students_list.append(Student(row[0], row[1], row[2], courses))
+            # Creates new student object and adds it to students_set
+            students_set.add(Student(row[0], row[1], row[2], courses))
 
-    return students_list, course_counter
+    return students_set, course_counter
 
 # Loads all courses and returns a list of Course objects
 
 
 def load_courses(classroom_list, course_count):
-    course_list = []
+    course_set = set()
 
     # Open csv
     with open('data/courses.csv', 'r') as f:
@@ -89,18 +89,16 @@ def load_courses(classroom_list, course_count):
                 if classroom.capacity >= course.students_number:
                     classroom.possible_courses.append(course)
                     #course.possible_classrooms.append(classroom)
-            course_list.append(course)
+            course_set.add(course)
 
+    return course_set
 
-
-    return course_list
-
-def load_activities(classrooms_list, students_list, course_list):
+def load_activities(classrooms_list, students_set, course_list):
 
     for course in course_list:
         course.create_activities(classrooms_list)
     # Connect student objects with according course objects
-    for student in students_list:
+    for student in students_set:
         for i, course in enumerate(student.courses):
             course_object = list(
                 filter(lambda subj: subj.name == course, course_list))[0]
@@ -111,7 +109,7 @@ def load_activities(classrooms_list, students_list, course_list):
             register_course.register(student)
 
             # student.courses[i].register(student)
-            #course_object.students_list.append(student)
+            #course_object.students_set.append(student)
 
 
 if __name__ == '__main__':

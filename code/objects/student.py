@@ -34,7 +34,7 @@ class Student:
         self._first_name = first_name
         self._student_number = student_number
         self.courses = courses
-        self.activities = []
+        self.activities = set()
         self.classmates = set()
 
 
