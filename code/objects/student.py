@@ -52,7 +52,7 @@ class Student:
             self._last_name,
             # self._first_name,
             # self._student_number,
-            self.courses,
+            # type(self.courses[0])
             # self.activities
         ])
 
@@ -62,6 +62,6 @@ class Student:
             self._last_name,
             # self._first_name,
             # self._student_number,
-            self.courses,
+            # type(self.courses[0])
             # self.activities
         ])

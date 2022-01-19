@@ -25,8 +25,11 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 classrooms_list = loader.load_classrooms()
 (students_set, course_students) = loader.load_students()
 course_set = loader.load_courses(classrooms_list, course_students)
+loader.connect_courses(students_set, course_set)
 
 course_dict, conflicting_pairs = find_course_conflicts(students_set, course_set)
+
+# print(conflicting_pairs)
 
 loader.load_activities(classrooms_list, students_set, course_set)
 
@@ -43,7 +46,7 @@ for course in course_set:
     all_activities = course._lectures + course._tutorials + course._labs
     for activity in all_activities:
         planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
-        # print(activity)
+        print(activity)
 
 
 df_dict = {'student': [],'vak': [],'activiteit': [],'zaal': [],'dag': [],'tijdslot': []}

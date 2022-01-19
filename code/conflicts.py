@@ -9,14 +9,14 @@
 
 from itertools import combinations, chain
 
-def find_course_conflicts(students_set, course_list):
+def find_course_conflicts(students_set, course_set):
     # Creates the desired data structure {Course : {Course : list[Student]}}
     course_dict = {}
     conflicting_pairs = {}
-    for course in course_list:
+    for course in course_set:
         course_dict[course] = {}
     for element in course_dict.values():
-        for course in course_list:
+        for course in course_set:
             element[course] = []
 
     # If a student follows more than one course, get every combination of those courses
@@ -26,21 +26,27 @@ def find_course_conflicts(students_set, course_list):
 
             # For every conflicting pair of courses, search for the first course within the dictionary
             for conflict in combs:
-                for course_key in course_dict.keys():
-                    if conflict[0] == course_key:
-                        # Search for the second course in the dictionary values
-                        for course_value in course_dict[course_key]:
-                            if conflict[1] == course_value:
-                                # Add students to the list for the conflicting pair
-                                course_dict[course_key][course_value].append(
-                                    student)
-                                course_dict[course_value][course_key].append(
-                                    student)
+                course_dict[conflict[0]][conflict[1]].append(student)
+                course_dict[conflict[1]][conflict[0]].append(student)
 
-                            conflicting_pairs[f'{course_key}/{course_value}'] = len(course_dict[course_key][course_value])
+                # for course_key in course_dict.keys():
+                #     print(course_key, type(course_key), conflict[0], type(conflict[0]))
+                #     if conflict[0] == course_key:
+                #         # Search for the second course in the dictionary values
+                #         for course_value in course_dict[course_key]:
+                #             if conflict[1] == course_value:
+                #                 print("test2")
+                #                 # Add students to the list for the conflicting pair
+                #                 course_dict[course_key][course_value].append(
+                #                     student)
+                #                 course_dict[course_value][course_key].append(
+                #                     student)
+
+                conflicting_pairs[conflict] = len(course_dict[conflict[0]][conflict[1]])
 
     # Sort dictionary (taken from https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value)
     conflicting_pairs = {k: v for k, v in sorted(conflicting_pairs.items(), reverse=True, key=lambda item: item[1])}
+    # print(conflicting_pairs)
 
     return course_dict, conflicting_pairs
 

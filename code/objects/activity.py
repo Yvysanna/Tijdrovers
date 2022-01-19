@@ -25,9 +25,9 @@ class Activity:
     #     return False
 
     def __str__(self):
-        return f'\n{self._name} - {self._students_list}'
+        return f'\n{self._name} - {len(self._students_list)}'
         # return f'\n{self._name} ({self._type}) - {self._room.name} / {self._timeslot} --- {self.room_list}'
 
     def __repr__(self):
-        return f'\n{self._name} - {self._students_list}'
+        return f'\n{self._name} - {len(self._students_list)}'
         # return f'\n{self._name} ({self._type}) - {self._room.name}/ {self._timeslot} --- {self.room_list}'

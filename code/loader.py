@@ -72,10 +72,9 @@ def load_students():
                     course_students[course]['students'].add(student)
 
     return students_set, course_students
+    
 
 # Loads all courses and returns a list of Course objects
-
-
 def load_courses(classroom_list, course_students):
     course_set = set()
 
@@ -100,7 +99,16 @@ def load_activities(classrooms_list, students_set, course_set):
 
     for course in course_set:
         course.create_activities(classrooms_list)
-        
+
+        register_course = Register(course)
+
+        for student in students_set:
+            if course in student.courses:
+                # Add students to courses
+                register_course.register(student)
+
+
+def connect_courses(students_set, course_set):
     # Connect student objects with according course objects
     for student in students_set:
         for i, course in enumerate(student.courses):
@@ -108,12 +116,7 @@ def load_activities(classrooms_list, students_set, course_set):
                 filter(lambda subj: subj.name == course, course_set))[0]
             student.courses[i] = course_object
 
-            # Add students to courses
-            register_course = Register(student.courses[i])
-            register_course.register(student)
 
-            # student.courses[i].register(student)
-            #course_object.students_set.append(student)
 
 
 if __name__ == '__main__':

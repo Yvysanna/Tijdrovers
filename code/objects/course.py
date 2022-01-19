@@ -151,7 +151,7 @@ class Course:
             #self._timeslots,
             # self.possible_classrooms
             # self._students_set
-            # len(self.students_number)
+            # len(self._students_set)
 
         ])
 
@@ -169,5 +169,5 @@ class Course:
             #self._timeslots,
             # self.possible_classrooms
             # self._students_set
-            # len(self.students_number)
+            # len(self._students_set)
         ])
