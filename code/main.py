@@ -14,6 +14,7 @@ from algorithms.planner import Planner
 from algorithms.planner import Planner
 from conflicts import find_course_conflicts, find_activity_conflicts
 import loader
+import checker
 
 
 days = ['ma', 'di', 'wo', 'do', 'vr']
@@ -46,7 +47,6 @@ for course in course_set:
     all_activities = course._lectures + course._tutorials + course._labs
     for activity in all_activities:
         planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
-        print(activity)
 
 
 df_dict = {'student': [],'vak': [],'activiteit': [],'zaal': [],'dag': [],'tijdslot': []}
@@ -71,6 +71,7 @@ for student in students_set:
 
 
 results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
-# print(results_df)
 
-# results_df.to_csv('data/results/results.csv', sep = ';', index=False)
+results_df.to_csv('data/results/results.csv', sep = ';', index=False)
+
+print(checker.count_points(classrooms_list, course_set))
