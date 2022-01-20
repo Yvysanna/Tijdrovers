@@ -45,7 +45,7 @@ def count_points(classroom_list, course_set):
 
                         # Add maluspoint if number of students exceed capacity
                         if len(activity._students_list) > capacity:
-                            print(activity._name, len(activity._students_list))
+                            #print(len(activity._students_list), capacity)
                             malus += 1
 
         # Check for timeslots in each day for each student
