@@ -45,38 +45,50 @@ for classroom in classrooms_list:
 planner = Planner(classrooms_list)
 
 # TEMPORARY FIX FOR SCHEDULING EVERY LEFTOVER ACTIVITY RANDOMLY
-result = find_conflict_free_activities(course_set)
-not_scheduled = set()
-for activities in result:
-    for activity in activities:
-        planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+# result = find_conflict_free_activities(course_set)
+# not_scheduled = set()
+# for activities in result:
+#     for activity in activities:
+#         planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
         
-        # Check if activity can be scheduled
-        room, day, time = planner.get_info(activity)
+#         # Check if activity can be scheduled
+#         room, day, time = planner.get_info(activity)
 
-#---- RANDOM METHOD FIX FROM HERE ----- #
-        if not room:
-            not_scheduled.add(activity)
+# #---- SEMI RANDOM METHOD FIX FROM HERE ----- #
+#         if not room:
+#             not_scheduled.add(activity)
 
-for activity in not_scheduled:
+# print("NOT SCHEDULED", len(not_scheduled))
+# for activity in not_scheduled:
 
-    # Loop until activity could be planned for each activity
-    while planner.get_info(activity) == (None, None, None):
-        room = random.choice(classrooms_list)
-        day = random.choice(days)
-        time = random.choice (timeslots)
+#     # Loop until activity could be planned for each activity
+#     while planner.get_info(activity) == (None, None, None):
+#         room = random.choice(classrooms_list)
+#         day = random.choice(days)
+#         time = random.choice (timeslots)
 
-        # Just try to insert activity with random data there and see if it works
-        planner.insert_activity(activity, room, day, time)
-    activity._room = room # Connect room when broken out of while loop
-    room, day, time = planner.get_info(activity) # Final checkup
+#         # Just try to insert activity with random data there and see if it works
+#         planner.insert_activity(activity, room, day, time)
+#     activity._room = room # Connect room when broken out of while loop
+#     room, day, time = planner.get_info(activity) # Final checkup
 
-# ----- RANDOM METHOD END ----- #
+# ----- SEMI RANDOM METHOD END ----- #
 
+# ------ COMPLETELY RANDOM METHOD ------ ADDS EVERY ACTIVITY TO RANDOM TIMESLOT -------- #
 for course in course_set:
     all_activities = course._lectures + course._tutorials + course._labs
     for activity in all_activities:
-        planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+        while planner.get_info(activity) == (None, None, None):
+            #print('NOT')
+            room = random.choice(classrooms_list)
+            day = random.choice(days)
+            time = random.choice (timeslots)
+            planner.insert_activity(activity, room, day, time)
+            #planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+            activity._room = room
+    #print(activity._name)
+
+        #planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
 
 
 df_dict = {'student': [],'vak': [],'activiteit': [],'zaal': [],'dag': [],'tijdslot': []}
