@@ -24,7 +24,7 @@ def find_course_conflicts(students_set, course_set):
         if len(student.courses) > 1:
             combs = list(combinations(student.courses, 2))
 
-            # For every conflicting pair of courses, search for the first course within the dictionary
+            # Add students to the list for the conflicting pair
             for conflict in combs:
                 course_dict[conflict[0]][conflict[1]].append(student)
                 course_dict[conflict[1]][conflict[0]].append(student)
@@ -46,7 +46,7 @@ def find_course_conflicts(students_set, course_set):
 
     # Sort dictionary (taken from https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value)
     conflicting_pairs = {k: v for k, v in sorted(conflicting_pairs.items(), reverse=True, key=lambda item: item[1])}
-    # print(conflicting_pairs)
+
 
     return course_dict, conflicting_pairs
 

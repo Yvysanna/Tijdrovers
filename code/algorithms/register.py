@@ -67,5 +67,38 @@ class Register:
             student.activities.add(assigned_lab)
 
 
+    def random_register(self, student):
+
+        possible_tutorials = []
+        possible_labs = []
+
+        # Add student to every lecture and add every lecture to student activity list
+        for lecture in self._course._lectures:
+            student.activities.add(lecture)
+
+        if len(self._course._tutorials) > 0:
+            # Check for every tutorial group with available spots how many other students this student is already classmates with
+            for tutorial in self._course._tutorials:
+                if len(tutorial._students_list) < self._course._tutorials_max:
+                    possible_tutorials.append(tutorial)
+
+            assigned_tutorial = random.choice(possible_tutorials)
+
+            assigned_tutorial._students_list.append(student)
+            student.activities.add(assigned_tutorial)
+
+        if len(self._course._labs) > 0:
+            # Repeat for labs
+            for lab in self._course._labs:
+                if len(lab._students_list) < self._course._lab_max:
+                    possible_labs.append(lab)
+
+            assigned_lab = random.choice(possible_labs)
+
+            assigned_lab._students_list.append(student)
+            student.activities.add(assigned_lab)
+
+
+
     def register_helper(self, student, activities):
         pass
