@@ -36,18 +36,14 @@ def count_points(classroom_list, course_set):
                             x[row[4]].append(row[5])
 
             # Compare classroom capacity and students per activity
-            for room in classroom_list:
-                if row[3] == room.name:
-                    capacity = room.capacity
-            for course in course_set:
-                for activity in chain(course._lectures, course._tutorials, course._labs):
-                    if row[1] == activity._name:
+        for course in course_set:
+            for activity in chain(course._lectures, course._tutorials, course._labs):
+                # if row[1] == activity._name:
 
-                        # Add maluspoint if number of students exceed capacity
-                        if len(activity._students_list) > capacity:
-                            print(activity._name, len(activity._students_list))
-                            malus += 1
-
+                # Add maluspoint if number of students exceed capacity
+                    if len(activity._students_list) > activity._room.capacity:
+                        malus += len(activity._students_list) - activity._room.capacity
+                        # malus += 1
         # Check for timeslots in each day for each student
         for student in student_dict.values():
             for day in student:
@@ -62,10 +58,13 @@ def count_points(classroom_list, course_set):
                         # Add maluspoints for free periods
                         if '9-11' in timeslots and '11-13' not in timeslots:
                             if '13-15' in timeslots:
+                                # print(student)
                                 malus += 1
                             else:
+                                print(student)
                                 malus += 3
                         elif '15-17' in timeslots and '13-15' not in timeslots:
+                            # print(student)
                             malus += 1
 
     return malus
