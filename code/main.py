@@ -75,17 +75,24 @@ planner = Planner(classrooms_list)
 # ----- SEMI RANDOM METHOD END ----- #
 
 # ------ COMPLETELY RANDOM METHOD ------ ADDS EVERY ACTIVITY TO RANDOM TIMESLOT -------- #
+all_activities_global = []
 for course in course_set:
     all_activities = course._lectures + course._tutorials + course._labs
+    
     for activity in all_activities:
-        while planner.get_info(activity) == (None, None, None):
-            #print('NOT')
-            room = random.choice(classrooms_list)
-            day = random.choice(days)
-            time = random.choice (timeslots)
-            planner.insert_activity(activity, room, day, time)
-            #planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
-            activity._room = room
+        all_activities_global.append(activity)
+
+random.shuffle(all_activities_global)
+
+for activity in all_activities_global:
+
+    while planner.get_info(activity) == (None, None, None):
+        room = random.choice(classrooms_list)
+        day = random.choice(days)
+        time = random.choice (timeslots)
+        planner.insert_activity(activity, room, day, time)
+        #planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+        activity._room = room
     #print(activity._name)
 
         #planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
