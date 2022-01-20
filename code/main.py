@@ -8,11 +8,12 @@
 # - Creates schedule
 # ==================================================================================
 
+import random
 import pandas as pd
 from algorithms.planner import Planner
 
 from algorithms.planner import Planner
-from conflicts import find_course_conflicts, find_activity_conflicts
+from conflicts import find_course_conflicts, find_activity_conflicts, find_conflict_free_activities, book_rooms_for_parallel_activities
 import loader
 import checker
 
@@ -39,9 +40,38 @@ schedule_dict = {}
 for classroom in classrooms_list:
     schedule_dict[classroom.name] = pd.DataFrame(columns=days, index=timeslots)
 
-# print(find_activity_conflicts(course_set, students_set))
+#print(find_activity_conflicts(course_set, students_set))
 
 planner = Planner(classrooms_list)
+
+# TEMPORARY FIX FOR SCHEDULING EVERY LEFTOVER ACTIVITY RANDOMLY
+result = find_conflict_free_activities(course_set)
+not_scheduled = set()
+for activities in result:
+    for activity in activities:
+        planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+        
+        # Check if activity can be scheduled
+        room, day, time = planner.get_info(activity)
+
+#---- RANDOM METHOD FIX FROM HERE ----- #
+        if not room:
+            not_scheduled.add(activity)
+
+for activity in not_scheduled:
+
+    # Loop until activity could be planned for each activity
+    while planner.get_info(activity) == (None, None, None):
+        room = random.choice(classrooms_list)
+        day = random.choice(days)
+        time = random.choice (timeslots)
+
+        # Just try to insert activity with random data there and see if it works
+        planner.insert_activity(activity, room, day, time)
+    activity._room = room # Connect room when broken out of while loop
+    room, day, time = planner.get_info(activity) # Final checkup
+
+# ----- RANDOM METHOD END ----- #
 
 for course in course_set:
     all_activities = course._lectures + course._tutorials + course._labs
