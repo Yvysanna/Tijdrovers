@@ -8,6 +8,7 @@
 # ==================================================================================
 
 import csv
+import itertools
 
 from objects.course import Course
 from objects.classroom import Classroom
@@ -95,9 +96,9 @@ def load_courses(classroom_list, course_students):
 
     return course_set
 
-def load_activities(classrooms_list, students_set, course_set):
+def load_activities(classrooms_list, students_set, ordered_courses):
 
-    for course in course_set:
+    for course in ordered_courses:
         course.create_activities(classrooms_list)
 
         register_course = Register(course)
@@ -105,18 +106,25 @@ def load_activities(classrooms_list, students_set, course_set):
         for student in students_set:
             if course in student.courses:
                 # Add students to courses
-                register_course.random_register(student)
+                register_course.register(student)
 
 
 def connect_courses(students_set, course_set):
     # Connect student objects with according course objects
     for student in students_set:
+        classmates_list = []
+
         for i, course in enumerate(student.courses):
             course_object = list(
                 filter(lambda subj: subj.name == course, course_set))[0]
             student.courses[i] = course_object
 
+            # Add all students in the same courses to a list and repeat as many times as there are lectures
+            for _ in itertools.repeat(None, course_object._lectures_number):
+                classmates_list.extend(course_object._students_set)
 
+        # Counts how often this student is in the same lecture per classmate
+        student.classmates.update(classmates_list)
 
 
 if __name__ == '__main__':

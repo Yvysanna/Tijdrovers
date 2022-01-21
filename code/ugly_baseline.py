@@ -33,12 +33,12 @@ for x in range(500):
     course_set = loader.load_courses(classrooms_list, course_students)
     loader.connect_courses(students_set, course_set)
 
-    course_dict, conflicting_pairs = find_course_conflicts(
+    course_dict, ordered_courses = find_course_conflicts(
         students_set, course_set)
 
     # print(conflicting_pairs)
 
-    loader.load_activities(classrooms_list, students_set, course_set)
+    loader.load_activities(classrooms_list, students_set, ordered_courses)
 
     # Create schedule for every classroom
     schedule_dict = {}

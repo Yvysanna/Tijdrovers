@@ -1,3 +1,5 @@
+from collections import Counter
+
 class Student:
     '''
     Represents a student at the campus
@@ -35,7 +37,7 @@ class Student:
         self._student_number = student_number
         self.courses = []
         self.activities = set()
-        self.classmates = set()
+        self.classmates = Counter()
 
 
     def print_schedule(self):
