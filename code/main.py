@@ -15,7 +15,7 @@ from algorithms.planner import Planner
 from algorithms.planner import Planner
 from conflicts import find_course_conflicts, find_activity_conflicts, find_conflict_free_activities, book_rooms_for_parallel_activities
 import loader
-import checker
+import ugly_checker as ugly_checker
 
 
 days = ['ma', 'di', 'wo', 'do', 'vr']
@@ -123,4 +123,4 @@ results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, colum
 
 results_df.to_csv('data/results/results.csv', sep = ';', index=False)
 
-print(checker.count_points(classrooms_list, course_set))
+print(ugly_checker.count_points(classrooms_list, course_set))
