@@ -39,3 +39,7 @@ Later we also added an activity class which would consist of all activities for 
 With the activity class now students were already accurately divided into several groups of the same activity type if there was a max amount of students given for each activity. This way, we could better keep count of that different activity groups (even of the same type and subject) could differ in amount of students enrolled to them, offering more flexibility for room planning (less students fit into more rooms).
 
 Our scheduling algorithm to this point would schedule the activity after the smallest possible room that still has timeslots available, where the chosen timeslot would be picked linearly in the order monday-friday, (starting time) 9-15.
+
+
+The first hill climber algorithm was made in order to schedule the lectures with the least amount of conflicts, and a checker was made
+to counter the number of maluspoints resulting from the schedule.

@@ -11,7 +11,7 @@ from itertools import chain
 from collections import Counter
 
 
-def count_points(classroom_list, course_set):
+def count_points(course_set):
     malus = 0
 
     # Open schedule
@@ -31,9 +31,9 @@ def count_points(classroom_list, course_set):
                     student_dict[row[0]].append({row[4]: [row[5]]})
                 # Add entry if student and day are both in dictionary
                 else:
-                    for x in student_dict[row[0]]:
-                        if row[4] in x:
-                            x[row[4]].append(row[5])
+                    for day in student_dict[row[0]]:
+                        if row[4] in day:
+                            day[row[4]].append(row[5])
 
         # Compare classroom capacity and students per activity
         for course in course_set:
