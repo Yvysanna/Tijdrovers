@@ -1,6 +1,6 @@
 import random
 
-def random_method(course_set, planner, classrooms_list, days, timeslots):
+def random_method(course_set, classrooms_list, planner, days, timeslots):
     """
     Completely random method / method to begin from
     Adds every activity to a random timeslot in a random room
