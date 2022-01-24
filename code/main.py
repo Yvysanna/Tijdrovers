@@ -13,7 +13,7 @@ import pandas as pd
 from algorithms.planner import Planner
 from conflicts import find_course_conflicts, find_activity_conflicts, find_conflict_free_activities, book_rooms_for_parallel_activities
 import loader
-import ugly_checker as ugly_checker
+import checker
 
 def main():
     days = ['ma', 'di', 'wo', 'do', 'vr']
@@ -46,7 +46,7 @@ def main():
     for activities in result:
         for activity in activities:
             planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
-            
+
             # Check if activity can be scheduled
             room, day, time = planner.get_info(activity)
 
@@ -77,7 +77,7 @@ def main():
     # all_activities_global = []
     # for course in course_set:
     #     all_activities = course._lectures + course._tutorials + course._labs
-        
+
     #     for activity in all_activities:
     #         all_activities_global.append(activity)
 
@@ -122,9 +122,9 @@ def main():
 
     results_df.to_csv('data/results/results.csv', sep = ';', index=False)
 
-    print(ugly_checker.count_points(classrooms_list, course_set))
+    print(checker.count_points(course_set))
 
-    
+
 
 
     df_dict = {'student': [],'vak': [],'activiteit': [],'zaal': [],'dag': [],'tijdslot': []}
@@ -152,7 +152,7 @@ def main():
 
     results_df.to_csv('data/results/results.csv', sep = ';', index=False)
 
-    print(ugly_checker.count_points(classrooms_list, course_set))
+    # print(checker.count_points(course_set))
 
     return classrooms_list, course_set
 
