@@ -106,7 +106,7 @@ def load_activities(classrooms_list, students_set, ordered_courses):
         for student in students_set:
             if course in student.courses:
                 # Add students to courses
-                register_course.register(student)
+                register_course.random_register(student)
 
 
 def connect_courses(students_set, course_set):
