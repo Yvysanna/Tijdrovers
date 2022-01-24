@@ -17,7 +17,7 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
             if not room:
                 not_scheduled.add(activity)
 
-    print("NOT SCHEDULED", len(not_scheduled))
+    #print("NOT SCHEDULED", len(not_scheduled))
     for activity in not_scheduled:
 
         # Loop until activity could be planned for each activity
@@ -25,11 +25,11 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
             room = random.choice(classrooms_list)
             day = random.choice(days)
             time = random.choice (timeslots)
-            print(room, day, time)
+            #print(room, day, time)
 
             # Just try to insert activity with random data there and see if it works
             planner.insert_activity(activity, room, day, time)
-        print(activity, "planning succeeded")
+        #print(activity, "planning succeeded")
         activity._room = room # Connect room when broken out of while loop
         room, day, time = planner.get_info(activity) # Final checkup
 

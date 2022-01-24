@@ -43,7 +43,7 @@ def main():
 
     #planner = Planner(classrooms_list)
   
-    calls = 50000; min_points = 100000
+    calls = 50; min_points = 100000
     while calls > 0:
         planner = Planner(classrooms_list)
         semirandom(course_set, classrooms_list, planner, days, timeslots)
@@ -57,7 +57,7 @@ def main():
 
     #store(students_set, planner)
 
-    print(checker.count_points(course_set))
+    #print(checker.checker(course_set))
 
 
     return classrooms_list, course_set
