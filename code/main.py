@@ -48,7 +48,7 @@ def main():
         planner = Planner(classrooms_list)
         semirandom(course_set, classrooms_list, planner, days, timeslots)
         student_dict = planner.create_student_dict(students_set)
-        points = checker.malus_points(course_set, student_dict)
+        points = checker.checker(course_set, student_dict)
         if points < min_points:
             min_points = points
             print(min_points)
