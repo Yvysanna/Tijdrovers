@@ -25,7 +25,7 @@ class Register:
                         shared_classes += student.classmates[classmate]
 
                     possible_tutorials[tutorial] = shared_classes
-              
+
             # If all groups have the same number of existing classmates, put student in random group
             # https://stackoverflow.com/questions/35253971/how-to-check-if-all-values-of-a-dictionary-are-0
             if all(value == list(possible_tutorials.values())[0] for value in possible_tutorials.values()):
