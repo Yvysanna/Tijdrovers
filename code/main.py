@@ -43,12 +43,15 @@ def main():
 
     #planner = Planner(classrooms_list)
   
-    calls = 50; min_points = 100000
+    calls = 1; min_points = 100000
     while calls > 0:
         planner = Planner(classrooms_list)
         semirandom(course_set, classrooms_list, planner, days, timeslots)
         student_dict = planner.create_student_dict(students_set)
         points = checker.checker(course_set, student_dict)
+        for slot in planner.slots:
+            print(slot)
+
         if points < min_points:
             min_points = points
             print(min_points)
