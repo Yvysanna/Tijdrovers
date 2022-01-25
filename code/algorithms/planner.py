@@ -1,5 +1,4 @@
 import math
-#from algorithms.conflicts import new_try
 
 class Planner:
 
@@ -59,13 +58,7 @@ class Planner:
         '''
         THE IMPORTANT ALGORITHM
         Tries to check for not planned activity, if student follows this activity and if so, which other activities should not be planned for the same timeslot, day based on students enrollment (logic as in conflicts.py used)
-        '''
-        #for activities in new_try(students_set, course_set):
-            
-        #     for activity in activities:
-        #         print (activity)
-        #         print([student._last_name for student in activity._students_list])
-        
+        '''        
         for room in rooms:
             for day in self.days:
                 for time in self.times:
@@ -102,6 +95,26 @@ class Planner:
             else:
                 busy_slots.append(self.get_slot(idx))
         return {f"free slots: ({len(free_slots)})" :free_slots, "busy slots": len(busy_slots)}
+
+
+    def create_student_dict(self, students_set):
+        """
+        Gets student dict from data in planner
+        RETURNS:
+            student_dict[name] = [{day: [time]}]
+        """
+        student_dict = {}  
+        for student in students_set:
+            slots = {}
+            name = f'{student._last_name} {student._first_name}'
+            student_dict[name] = []
+            for activity in student.activities:
+                room, day, time = self.get_info(activity)
+                if day not in slots:
+                    slots[day] = []
+                slots[day].append(time)
+            student_dict[name].append(slots)
+        return student_dict    
 
     def flatten(lst):
         '''

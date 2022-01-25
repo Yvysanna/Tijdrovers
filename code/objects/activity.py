@@ -30,6 +30,6 @@ class Activity:
         # return f'\n{self._name} ({self._type}) - {self._room.name} / {self._timeslot} --- {self.room_list}'
 
     def __repr__(self):
-        # return self._name
-        return f'\n{self._name} - {self._students_list}'
+        return self._name
+        # return f'\n{self._name} - {self._students_list}'
         # return f'\n{self._name} ({self._type}) - {self._room.name}/ {self._timeslot} --- {self.room_list}'

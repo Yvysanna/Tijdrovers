@@ -126,6 +126,37 @@ def connect_courses(students_set, course_set):
         # Counts how often this student is in the same lecture per classmate
         student.classmates.update(classmates_list)
 
+def load_results():
+    """
+    Loads results from results.csv for maluspoint calculation
+    RETURNS: Dictionary in format according to maluspoint calculation
+    """
+    # Open schedule
+    with open('data/results/results.csv', 'r', encoding="ISO-8859-1") as f:
+        reader = csv.reader(f, delimiter=';')
+        next(reader, None)
+
+        # Desired datatype: {Student : [{Day : [Timeslot]}]}
+        student_dict = {}
+        for row in reader:
+
+            # Add entry if student not in dictionary
+            name = row[0]
+            day = row[4]
+            time = row[5]
+            if name not in student_dict:
+                student_dict[name] = [{day: [time]}]
+            else:
+                # Add entry if day not in dictionary for this student
+                if not any(day in d for d in student_dict[name]):
+                    student_dict[name].append({day: [time]})
+                # Add entry if student and day are both in dictionary
+                else:
+                    for x in student_dict[name]:
+                        if day in x:
+                            x[day].append(time)
+
+        return student_dict
 
 if __name__ == '__main__':
     print(load_activities())
