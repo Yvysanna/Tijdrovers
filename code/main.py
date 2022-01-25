@@ -60,7 +60,7 @@ def main():
     #print(checker.checker(course_set))
 
 
-    return classrooms_list, course_set
+    return course_set, student_dict
 
 if __name__ == '__main__':
     main()

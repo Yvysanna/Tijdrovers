@@ -130,6 +130,19 @@ class Annealing:
                                                     print()
         return malus
 
+    def convert(self):
+        converted = []
+        i = 0
+        for slot in self.timeslots:
+            converted.append([])
+            for activity_str in slot:
+                for course in course_set:
+                    for activity_obj in chain(course._lectures, course._tutorials, course._labs):
+                        if activity_str == activity_obj._name:
+                            converted[i].append(activity_obj)
+            i += 1
+        return converted
+
     def __str__(self):
         string = ""
         a = 0
@@ -145,3 +158,4 @@ print(hill)
 hill.run()
 print(hill)
 hill.plot()
+hill.convert()

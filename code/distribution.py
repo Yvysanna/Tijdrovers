@@ -14,9 +14,10 @@ from main import main
 points = []
 N = 200
 for x in range(N):
-    classrooms_list, course_set = main()
-    print(checker.count_points(course_set))
-    points.append(checker.count_points(course_set))
+    course_set, student_dict = main()
+    print(x)
+    print(checker.checker(course_set, student_dict))
+    points.append(checker.checker(course_set, student_dict))
 
 print("\n Average: " + str(mean(points)))
 plt.hist(points, range=(1300, 2000), color='midnightblue', edgecolor='mediumblue', density=True, bins=28)
