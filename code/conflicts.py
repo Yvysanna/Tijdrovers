@@ -50,11 +50,11 @@ def find_activity_conflicts(course_set, students_set):
     # Creates the desired data structure {Activity : {Activity : list[Student]}}
     activity_dict = {}
     for course in course_set:
-        for activity in chain(course._tutorials, course._labs):
+        for activity in chain(course._lectures,course._tutorials, course._labs):
             activity_dict[activity] = {}
     for element in activity_dict.values():
         for course in course_set:
-            for activity in chain(course._tutorials, course._labs):
+            for activity in chain(course._lectures,course._tutorials, course._labs):
                 element[activity] = []
 
     # If a student follows more than one course, get every combination of activities
@@ -62,7 +62,7 @@ def find_activity_conflicts(course_set, students_set):
         if len(student.courses) > 1:
             activity_list = []
             for course in student.courses:
-                for activity in chain(course._labs, course._tutorials):
+                for activity in chain(course._lectures,course._labs, course._tutorials):
                     if student in activity._students_list:
                         activity_list.append(activity)
             combs = list(combinations(activity_list, 2))

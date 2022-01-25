@@ -9,7 +9,7 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
     for activities in result:
         for activity in activities:
             planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
-            
+
             # Check if activity can be scheduled
             room, day, time = planner.get_info(activity)
 

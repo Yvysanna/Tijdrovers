@@ -19,7 +19,7 @@ def store(students_set, planner):
                 df_dict['zaal'].append(activity._room.name)
                 df_dict['dag'].append(day or 'tba')
                 df_dict['tijdslot'].append(time or 'tba') 
-               
+
 
     results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
 

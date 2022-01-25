@@ -73,7 +73,7 @@ def load_students():
                     course_students[course]['students'].add(student)
 
     return students_set, course_students
-    
+
 
 # Loads all courses and returns a list of Course objects
 def load_courses(classroom_list, course_students):

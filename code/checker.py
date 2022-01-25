@@ -11,8 +11,8 @@ from collections import Counter
 
 def checker(course_set, student_dict):
     """
-    ARGS: 
-        Course set: set of course objects, 
+    ARGS:
+        Course set: set of course objects,
         Student dict: format {Student : [{Day : [Timeslot]}]}
     USAGE:
         Checker function calculating maluspoints for schedule for each student
@@ -30,7 +30,7 @@ def checker(course_set, student_dict):
                     malus += len(activity._students_list) - activity._room.capacity
                     # mal_dict['lack_capacity'] +=1
 
-    
+
     points = [0,1,3] # Maluspoint values
     # Check for timeslots in each day for each student
     for student in student_dict.values():
@@ -66,7 +66,7 @@ def checker(course_set, student_dict):
                                 return False # If more than 2 breaks, invalid result, thus return early and stop
 
                             #mal_dict[f'free_period{idx}'] += 1
-                            malus += points[idx]   
+                            malus += points[idx]
 
     # print('checker', mal_dict)
     return malus
