@@ -44,14 +44,14 @@ def main():
 
     #planner = Planner(classrooms_list)
 
-    calls = 1; min_points = 100000
+    calls = 50; min_points = 100000
     while calls > 0:
         planner = Planner(classrooms_list)
-        #semirandom(course_set, classrooms_list, planner, days, timeslots)
-        random_method(course_set, classrooms_list, planner, days, timeslots)
+        semirandom(course_set, classrooms_list, planner, days, timeslots)
+        #random_method(course_set, classrooms_list, planner, days, timeslots)
         student_dict = planner.create_student_dict(students_set)
         points = checker.checker(course_set, student_dict)
-        if points < min_points:
+        if points < min_points and points != False:
             min_points = points
             print(min_points)
             store(students_set, planner)
