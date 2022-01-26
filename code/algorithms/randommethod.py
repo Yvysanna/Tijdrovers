@@ -1,6 +1,6 @@
 import random
 
-def random_method(course_set, planner, classrooms_list, days, timeslots):
+def random_method(course_set, classrooms_list, planner, days, timeslots):
     """
     Completely random method / method to begin from
     Adds every activity to a random timeslot in a random room
@@ -15,8 +15,8 @@ def random_method(course_set, planner, classrooms_list, days, timeslots):
 
     random.shuffle(all_activities_global)
 
+    
     for activity in all_activities_global:
-
         while planner.get_info(activity) == (None, None, None):
             room = random.choice(classrooms_list)
             day = random.choice(days)
@@ -24,6 +24,6 @@ def random_method(course_set, planner, classrooms_list, days, timeslots):
             planner.insert_activity(activity, room, day, time)
             #planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
             activity._room = room
-        print(activity._name)
+        #print(activity._name)
 
-        planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+        #planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)

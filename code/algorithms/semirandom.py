@@ -8,6 +8,8 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
     result = find_conflict_free_activities(course_set)
     for activities in result:
         for activity in activities:
+
+            # Give planner all classrooms from the smallest possible to the biggest available
             planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
 
             # Check if activity can be scheduled

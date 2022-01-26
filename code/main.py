@@ -10,6 +10,7 @@
 
 import pandas as pd
 from algorithms.planner import Planner
+from algorithms.randommethod import random_method
 from conflicts import find_course_conflicts
 from algorithms.semirandom import semirandom
 from store import store
@@ -43,10 +44,11 @@ def main():
 
     #planner = Planner(classrooms_list)
 
-    calls = 50; min_points = 100000
+    calls = 1; min_points = 100000
     while calls > 0:
         planner = Planner(classrooms_list)
-        semirandom(course_set, classrooms_list, planner, days, timeslots)
+        #semirandom(course_set, classrooms_list, planner, days, timeslots)
+        random_method(course_set, classrooms_list, planner, days, timeslots)
         student_dict = planner.create_student_dict(students_set)
         points = checker.checker(course_set, student_dict)
         if points < min_points:
@@ -54,6 +56,9 @@ def main():
             print(min_points)
             store(students_set, planner)
         calls -= 1
+
+    #planner = Planner(classrooms_list)
+    #random_method(course_set, planner, classrooms_list, days, timeslots)
 
     #store(students_set, planner)
 

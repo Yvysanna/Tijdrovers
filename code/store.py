@@ -22,5 +22,6 @@ def store(students_set, planner):
 
 
     results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
-
-    results_df.to_csv('data/results/results.csv', sep = ';', index=False)
+    with open('data/semirandom.csv', 'w+'):
+        pass
+    results_df.to_csv('data/semirandom.csv', sep = ';', index=False)
