@@ -33,7 +33,7 @@ def main():
     loader.connect_courses(students_set, course_set)
     course_dict, ordered_courses = find_course_conflicts(students_set, course_set)
 
-    loader.load_activities(classrooms_list, students_set, ordered_courses)
+    loader.load_activities(classrooms_list, students_set, course_set)
 
     # Create schedule for every classroom
     schedule_dict = {}

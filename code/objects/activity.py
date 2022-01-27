@@ -1,12 +1,13 @@
 class Activity:
 
-    def __init__(self, act_type, name, room):
+    def __init__(self, act_type, name, room, max_capacity):
 
         self.room_list = []
 
         self._type = act_type
         self._room = room # OPTIMISATION: GET ALL ROOMS IN A LIST
         self._students_list = []
+        self._max_capacity = max_capacity
         self._name = name
         self._timeslot = None
 
@@ -37,6 +38,6 @@ class Activity:
         # return f'\n{self._name} ({self._type}) - {self._room.name} / {self._timeslot} --- {self.room_list}'
 
     def __repr__(self):
-        return self._name
-        # return f'\n{self._name} - {self._students_list}'
+        # return self._name
+        return f'\n{self._name} - {self._students_list}'
         # return f'\n{self._name} ({self._type}) - {self._room.name}/ {self._timeslot} --- {self.room_list}'
