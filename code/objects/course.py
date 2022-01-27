@@ -95,7 +95,7 @@ class Course:
 
         # Create as many lecture activity objects as to be planned
         for x in range(self._lectures_number):
-            lecture = Activity('Lecture', f'{self.name} Lecture {x + 1}', classroom)
+            lecture = Activity('Lecture', f'{self.name} Lecture {x + 1}', classroom, self.students_number)
             lecture._students_list = list(self._students_set)
             self._lectures.append(lecture)
         self._timeslots += self._lectures_number # Count timeslots accordingly
@@ -108,7 +108,7 @@ class Course:
             # Same procedure as Lecture; look for ideal classroom
             classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
             for x in range(tutorials_num):
-                self._tutorials.append(Activity('Tutorial', f'{self.name} Tutorial {x + 1}', classroom))
+                self._tutorials.append(Activity('Tutorial', f'{self.name} Tutorial {x + 1}', classroom, self._tutorials_max))
             self._timeslots += tutorials_num
 
         # Same procedure for Labs
@@ -118,7 +118,7 @@ class Course:
             # List of all classrooms greater than amount students enrolled
             classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
             for x in range(lab_number):
-                self._labs.append(Activity('Lab', f'{self.name} Lab {x + 1}', classroom))
+                self._labs.append(Activity('Lab', f'{self.name} Lab {x + 1}', classroom, self._lab_max))
             self._timeslots += lab_number
 
     # def register(self, student):
