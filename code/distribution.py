@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from main import main
 
 points = []
-N = 200
+N = 500
 for x in range(N):
     course_set, student_dict = main()
     print(x)
@@ -20,10 +20,10 @@ for x in range(N):
     points.append(checker.checker(course_set, student_dict))
 
 print("\n Average: " + str(mean(points)))
-plt.hist(points, range=(1300, 2000), color='midnightblue', edgecolor='mediumblue', density=True, bins=28)
-plt.xlim(1300, 2000)
+plt.hist(points, range=(1000, 1800), color='midnightblue', edgecolor='mediumblue', density=True, bins=28)
+plt.xlim(1000, 1800)
 plt.title(f"Probability distribution of maluspoints across {N} runs")
 plt.xlabel("Maluspoints")
 plt.ylabel("Probability")
 plt.tight_layout()
-plt.savefig('data/results/distribution.png', dpi=1000)
+plt.savefig('data/distribution.png', dpi=1000)

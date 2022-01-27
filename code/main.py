@@ -10,6 +10,7 @@
 
 import pandas as pd
 from algorithms.planner import Planner
+from algorithms.randommethod import random_method
 from conflicts import find_course_conflicts
 from algorithms.semirandom import semirandom
 from store import store
@@ -20,7 +21,7 @@ import checker
 
 def main():
     days = ['ma', 'di', 'wo', 'do', 'vr']
-    timeslots = ['9-11', '11-13', '13-15', '15-17']
+    timeslots = ['9-11', '11-13', '13-15', '15-17', '17-19']
 
     pd.set_option("display.max_rows", None, "display.max_columns", None)
 
@@ -42,21 +43,22 @@ def main():
     #print(find_activity_conflicts(course_set, students_set))
 
     #planner = Planner(classrooms_list)
-  
-    calls = 1; min_points = 100000
+
+    calls = 50; min_points = 8000
     while calls > 0:
         planner = Planner(classrooms_list)
         semirandom(course_set, classrooms_list, planner, days, timeslots)
+        #random_method(course_set, classrooms_list, planner, days, timeslots)
         student_dict = planner.create_student_dict(students_set)
         points = checker.checker(course_set, student_dict)
-        for slot in planner.slots:
-            print(slot)
-
-        if points < min_points:
+        if points < min_points and points != False:
             min_points = points
             print(min_points)
             store(students_set, planner)
         calls -= 1
+
+    #planner = Planner(classrooms_list)
+    #random_method(course_set, planner, classrooms_list, days, timeslots)
 
     #store(students_set, planner)
 
