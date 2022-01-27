@@ -53,20 +53,12 @@ class Student:
 
     def __str__(self) -> str:
         '''Represents the class as a string'''
-        return str([
-            self._last_name,
-            # self._first_name,
-            # self._student_number,
-            # type(self.courses[0])
-            # self.activities
-        ])
+        return str(
+            f'\n{self._last_name} ({len(self.courses)})' 
+        )
 
     def __repr__(self) -> str:
         '''Represents the class as a string'''
-        return str([
-            self._last_name,
-            # self._first_name,
-            # self._student_number,
-            # type(self.courses[0])
-            # self.activities
-        ])
+        return str(
+            f'\n{self._last_name} ({len(self.courses)})' 
+        )

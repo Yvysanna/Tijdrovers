@@ -11,6 +11,7 @@
 import pandas as pd
 from algorithms.planner import Planner
 from algorithms.randommethod import random_method
+from algorithms.time_climber import TimeClimber
 from conflicts import find_course_conflicts
 from algorithms.semirandom import semirandom
 from store import store
@@ -30,7 +31,6 @@ def main():
     (students_set, course_students) = loader.load_students()
     course_set = loader.load_courses(classrooms_list, course_students)
     loader.connect_courses(students_set, course_set)
-
     course_dict, ordered_courses = find_course_conflicts(students_set, course_set)
 
     loader.load_activities(classrooms_list, students_set, ordered_courses)
@@ -44,9 +44,9 @@ def main():
 
     #planner = Planner(classrooms_list)
 
-    calls = 50; min_points = 8000
+    calls = 50; min_points = 100000
     while calls > 0:
-        planner = Planner(classrooms_list)
+        planner = TimeClimber(classrooms_list)
         semirandom(course_set, classrooms_list, planner, days, timeslots)
         #random_method(course_set, classrooms_list, planner, days, timeslots)
         student_dict = planner.create_student_dict(students_set)
@@ -55,6 +55,7 @@ def main():
             min_points = points
             print(min_points)
             store(students_set, planner)
+            print(planner.malus_statistic())
         calls -= 1
 
     #planner = Planner(classrooms_list)

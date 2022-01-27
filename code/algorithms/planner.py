@@ -1,4 +1,5 @@
 from math import floor
+#from code.objects.classroom import Classroom
 #from copy import copy
 
 class Planner:
@@ -17,10 +18,11 @@ class Planner:
         """
         if activity in self.slots:
             index = self.slots.index(activity)
-
-            day = self.days[((index % (len(self.rooms) * len(self.days))) % len(self.days))]
-            room = self.rooms[index % len(self.rooms) * len(self.days) // len(self.days)]
-            time = self.times[index // (len(self.rooms) * len(self.days))]
+            return self.get_slot(index)
+            
+            #day = self.days[((index % (len(self.rooms) * len(self.days))) % len(self.days))]
+            #room = self.rooms[index % len(self.rooms) * len(self.days) // len(self.days)]
+            #time = self.times[index // (len(self.rooms) * len(self.days))]
             #print(day, room.name, time)
 
             # Calculations without timeslot 17-19
@@ -28,8 +30,8 @@ class Planner:
             #idx = index % (len(self.times) * len(self.rooms) + 1)
             #room = self.rooms[floor(idx / len(self.times))]
             #time = self.times[idx % len(self.times)]
+            #return room, day, time
 
-            return room, day, time
         return None, None, None
 
     def insert_activity(self, activity, room, day, time):
@@ -89,13 +91,14 @@ class Planner:
     def get_slot(self, index):
         '''
         Tries to find available slots
+        RETURNS: room, day, time
         '''
         # Calculation to avoid looping but still finding indexes for what we want
 
         # idx = index % (len(self.times) * len(self.rooms))
-        day = self.days[(index % len(self.rooms) * len(self.days)) % len(self.days)]
+        day = self.days[((index % (len(self.rooms) * len(self.days))) % len(self.days))]
         room = self.rooms[index % len(self.rooms) * len(self.days) // len(self.days)]
-        time = self.times[index // (len(self.rooms) * len(self.days))]        
+        time = self.times[index // (len(self.rooms) * len(self.days))]
         
         # room = self.rooms[floor(idx / len(self.times))]
         # day = self.days[floor(index / (len(self.times) * len(self.rooms)))]
@@ -157,9 +160,18 @@ class Planner:
 
 
 if __name__ == '__main__':
-    plan = Planner(['A','B','C','D','E','F','G'])
+    pass
+    # plan = Planner([
+    #     Classroom('A',20),
+    #     Classroom('B',20),
+    #     Classroom('C',20),
+    #     Classroom('D',20),
+    #     Classroom('E',20),
+    #     Classroom('F',20),
+    #     Classroom('G',20)
+    # ])
 
-    activity = 'Hallo ich bin eine Activity'
-    index = plan.insert_activity(activity, 'F', 'vr', '13-15')
-    print(index, plan.get_info(activity))
-    print(plan.get_activities('vr', '13-15'))
+    # activity = 'Hallo ich bin eine Activity'
+    # index = plan.insert_activity(activity, 'F', 'vr', '13-15')
+    # print(index, plan.get_info(activity))
+    # print(plan.get_activities('vr', '13-15'))

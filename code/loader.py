@@ -18,7 +18,7 @@ from algorithms.register import Register
 
 # Loads all classrooms and returns a list of Classroom objects sorted by capacity
 def load_classrooms():
-    classrooms_dict = {}
+    # classrooms_dict = {}
     classrooms_list = []
 
     # Open csv
@@ -28,15 +28,16 @@ def load_classrooms():
 
         # Populate dictionary with name as its key and capacity as its value
         for row in reader:
-            classrooms_dict[row[0]] = int(row[1])
+            # classrooms_dict[row[0]] = int(row[1])
+            classrooms_list.append(Classroom(row[0], row[1]))
 
     # Creates Classrooms objects and inserts them sorted into classrooms_list
     # min() function format from https://stackoverflow.com/questions/3282823/get-the-key-corresponding-to-the-minimum-value-within-a-dictionary
-    while len(classrooms_dict) > 0:
-        classroom = min(classrooms_dict, key=classrooms_dict.get)
-        classrooms_list.append(
-            Classroom(classroom, classrooms_dict.pop(classroom)))
-    return classrooms_list
+    # while len(classrooms_dict) > 0:
+    #     classroom = min(classrooms_dict, key=classrooms_dict.get)
+    #     classrooms_list.append(
+    #         Classroom(classroom, classrooms_dict.pop(classroom)))
+    return sorted(classrooms_list, key=lambda c: c.capacity, reverse=False)
 
 
 # Loads all students and returns a list of Student object and a dictionary with a Course object
@@ -92,6 +93,7 @@ def load_courses(classroom_list, course_students):
                 if classroom.capacity >= course.students_number:
                     classroom.possible_courses.append(course)
                     #course.possible_classrooms.append(classroom)
+            course.create_activities(classroom_list)
             course_set.add(course)
 
     return course_set
@@ -99,7 +101,7 @@ def load_courses(classroom_list, course_students):
 def load_activities(classrooms_list, students_set, ordered_courses):
 
     for course in ordered_courses:
-        course.create_activities(classrooms_list)
+        # course.create_activities(classrooms_list)
 
         register_course = Register(course)
 
@@ -124,6 +126,7 @@ def connect_courses(students_set, course_set):
                 classmates_list.extend(course_object._students_set)
 
         # Counts how often this student is in the same lecture per classmate
+        #print(classmates_list)
         student.classmates.update(classmates_list)
 
 def load_results():

@@ -19,6 +19,8 @@ class Activity:
     def malus_points(self):
         #student_points = sum(student.malus_points() for student in self._students_list)
         return len(self._students_list) - self._room.capacity if len(self._students_list) > self._room.capacity else 0 #+ student_points
+    
+    
     # def add_students(self, student):
     #     '''
     #     Connect student objects to according activity
