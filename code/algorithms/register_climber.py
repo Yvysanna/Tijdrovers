@@ -47,34 +47,37 @@ class Register_climber:
         else:
             raise Exception("Group typing incorrect or could not copy activities")
 
-        # Remove group 1 from possible groups to switch with and pick group 2
+        # Remove group 1 from possible groups to switch with
         possible_activities.remove(random_group_1)
+
+        # Pick group 2 and a student from group 1 and move the student to group 2
         random_group_2 = choice(possible_activities)
+        random_student_1 = choice(random_group_1._students_list)
+        random_student_2 = None
 
-        if random_group_2._max_capacity > len(random_group_2._students_list):
-            # Pick a random student from the first group and move them to the second group
-            random_student_1 = choice(random_group_1._students_list)
-            random_student_2 = None
+        self.reassign(random_student_1, random_group_1, random_group_2)
 
-            self.reassign(random_student_1, random_group_1, random_group_2)
-        else:
-            # Pick a random student from each group and switch them
-            random_student_1 = choice(random_group_1._students_list)
+        # If group 2 was already full, move a random student from group 2 to group 1
+        if random_group_2._max_capacity <= len(random_group_2._students_list):
             random_student_2 = choice(random_group_2._students_list)
 
             self.reassign(random_student_1, random_group_1, random_group_2)
             self.reassign(random_student_2, random_group_2, random_group_1)
+
+        assert len(random_group_1) < random_group_1._max_capacity, f"Too many students in {random_group_1}"
+        assert len(random_group_2) < random_group_2._max_capacity, f"Too many students in {random_group_2}"
 
         return random_group_1, random_group_2, random_student_1, random_student_2
 
 
     def undo_change(self, random_group_1, random_group_2, random_student_1, random_student_2):
         # Undo reassignment
-        if random_student_2 == None:
-            self.reassign(random_student_1, random_group_2, random_group_1)
-        else:
-            self.reassign(random_student_1, random_group_2, random_group_1)
+        self.reassign(random_student_1, random_group_2, random_group_1)
+        if random_student_2 != None:
             self.reassign(random_student_2, random_group_1, random_group_2)
+
+        assert len(random_group_1) < random_group_1._max_capacity, f"Too many students in {random_group_1}"
+        assert len(random_group_2) < random_group_2._max_capacity, f"Too many students in {random_group_2}"
 
 
     def reassign(self, student, current_group, new_group):
