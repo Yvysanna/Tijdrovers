@@ -32,8 +32,9 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
             # Just try to insert activity with random data there and see if it works
             planner.insert_activity(activity, room, day, time)
         #print(activity, "planning succeeded")
-        activity._room = room # Connect room when broken out of while loop
         room, day, time = planner.get_info(activity) # Final checkup
+        activity._room = room # Connect room when broken out of while loop
+        activity._timeslot = (day, time)
 
         if planner.get_info(activity) == (None, None, None):
             print("NOT FIXED")

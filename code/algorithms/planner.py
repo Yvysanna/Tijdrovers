@@ -75,7 +75,7 @@ class Planner:
         '''        
         for room in rooms:
             for day in self.days:
-                for time in self.times:
+                for time in self.times[:-1]:
                     activities = self.get_activities(day, time)
                     students_list = Planner.flatten([activity._students_list for activity in activities if activity])
 
@@ -115,6 +115,15 @@ class Planner:
                 busy_slots.append(self.get_slot(idx))
         return {f"free slots: ({len(free_slots)})" :free_slots, "busy slots": len(busy_slots)}
 
+
+    def unplan(self):
+
+        malus_activities = [activity for activity in self.slots if activity and activity.malus_points()]
+        for activity in self.slots:
+            if activity:
+                pass
+                #berechnen wieviel maluspoints
+        pass
 
     def create_student_dict(self, students_set):
         """

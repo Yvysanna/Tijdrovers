@@ -21,7 +21,7 @@ import checker
 
 def main():
     days = ['ma', 'di', 'wo', 'do', 'vr']
-    timeslots = ['9-11', '11-13', '13-15', '15-17']
+    timeslots = ['9-11', '11-13', '13-15', '15-17', '17-19']
 
     pd.set_option("display.max_rows", None, "display.max_columns", None)
 
@@ -44,7 +44,7 @@ def main():
 
     #planner = Planner(classrooms_list)
 
-    calls = 50; min_points = 100000
+    calls = 50; min_points = 8000
     while calls > 0:
         planner = Planner(classrooms_list)
         semirandom(course_set, classrooms_list, planner, days, timeslots)

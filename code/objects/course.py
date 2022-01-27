@@ -37,7 +37,8 @@ class Course:
         Represents the class as a string
     '''
 
-    def __init__(self, name, lectures_number, tutorials_number, tutorial_max, labs_number, lab_max, students_number, students_set):
+    def __init__(self, name, lectures_number, tutorials_number, tutorial_max, \
+                       labs_number, lab_max, students_number, students_set):
         '''
         PARAMETERS:
         name : str
@@ -61,12 +62,13 @@ class Course:
         '''
 
         self.name = name
+        self.students_number = int(students_number)
+
         self._lectures_number = int(lectures_number)
         self._tutorials_number = int(tutorials_number)
         self._tutorials_max = int(tutorial_max) if tutorial_max != 'nvt' else 0
         self._labs_number = int(labs_number)
         self._lab_max = int(lab_max) if lab_max != 'nvt' else 0
-        self.students_number = int(students_number)
         self._students_set = students_set
 
         # Lists with activity objects, gets filled in create activites
@@ -101,10 +103,10 @@ class Course:
         # Tutorials, calculate number tutorials through amount student/ max amount accepted per tutorial
         tutorials_num = math.ceil(self.students_number/self._tutorials_max) if self._tutorials_number > 0 else 0
         if tutorials_num > 0:
-            # student_number = math.ceil(self.students_number/tutorials_num) # Total amount students after course is divided
+            student_number = math.ceil(self.students_number/tutorials_num) # Total amount students after course is divided
 
             # Same procedure as Lecture; look for ideal classroom
-            classroom = min([c for c in classrooms if c.capacity >= self.students_number], key=lambda c: c.capacity)
+            classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
             for x in range(tutorials_num):
                 self._tutorials.append(Activity('Tutorial', f'{self.name} Tutorial {x + 1}', classroom))
             self._timeslots += tutorials_num
@@ -112,9 +114,9 @@ class Course:
         # Same procedure for Labs
         lab_number = math.ceil(self.students_number/self._lab_max) if self._labs_number > 0 else 0
         if lab_number > 0:
-            # student_number = math.ceil(self.students_number/lab_number)
+            student_number = math.ceil(self.students_number/lab_number)
             # List of all classrooms greater than amount students enrolled
-            classroom = min([c for c in classrooms if c.capacity >= self.students_number], key=lambda c: c.capacity)
+            classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
             for x in range(lab_number):
                 self._labs.append(Activity('Lab', f'{self.name} Lab {x + 1}', classroom))
             self._timeslots += lab_number
