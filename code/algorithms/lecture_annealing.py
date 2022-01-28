@@ -100,6 +100,8 @@ class Annealing:
     def plot(self):
         plt.plot(self.plotx, self.ploty)
         plt.grid()
+        plt.xlabel("Iterations")
+        plt.ylabel("Conflicts")
         plt.savefig('code/algorithms/plots/annealing.png', dpi=1000)
 
     def __str__(self):

@@ -22,8 +22,7 @@ def random_method(course_set, planner, classrooms_list, days, timeslots):
             day = random.choice(days)
             time = random.choice (timeslots)
             planner.insert_activity(activity, room, day, time)
-            #planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+            planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
             activity._room = room
         print(activity._name)
-
         planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)

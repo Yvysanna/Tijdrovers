@@ -98,6 +98,8 @@ class HillClimber:
     def plot(self):
         plt.plot(self.plotx, self.ploty)
         plt.grid()
+        plt.xlabel("Iterations")
+        plt.ylabel("Conflicts")
         plt.savefig('code/algorithms/plots/climber.png', dpi=1000)
 
     def __str__(self):
@@ -109,9 +111,9 @@ class HillClimber:
         return string
 
 
-# hill = HillClimber(course_set)
-# print(hill)
-# print()
-# hill.run()
-# print(hill)
-# hill.plot()
+hill = HillClimber(course_set)
+print(hill)
+print()
+hill.run()
+print(hill)
+hill.plot()
