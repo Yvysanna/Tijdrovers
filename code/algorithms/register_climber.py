@@ -39,6 +39,7 @@ class Register_climber:
                 possible_labs = random_course._labs
                 possible_activities.extend(random_course._labs)
 
+        # Pick a random group and determine which type of activity the next group needs to be
         random_group_1 = choice(possible_activities)
         if random_group_1._type == 'Tutorial':
             possible_activities = possible_tutorials
