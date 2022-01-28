@@ -17,7 +17,15 @@ Clone the project
 Install dependencies
 
 ```bash
-  ?
+  # with PyPI
+  pip install pandas
+  python -m pip install -U matplotlib
+
+  # with Anaconda
+  conda install pandas 
+  conda install matplotlib
+
+
 ```
 
 Run the program

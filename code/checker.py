@@ -31,11 +31,18 @@ def checker(course_set, student_dict):
                     # mal_dict['lack_capacity'] +=1
 
 
-    points = [0,1,3] # Maluspoint values
+    points = [0,1,3,10000] # Maluspoint values
     # Check for timeslots in each day for each student
     for student in student_dict.values():
         for day in student:
             for timeslots in day.values():
+                
+                # Min points for late timeslot
+                for t in timeslots:
+                    if t == '17-19':
+                        malus += 5
+
+                # For conflict comparison        
                 if len(timeslots) > 1:
 
                     # Add maluspoint for every conflict
@@ -62,7 +69,7 @@ def checker(course_set, student_dict):
                         # Iterate over both lists to find difference between times
                         for l1, l2 in zlip:
                             idx = int(((l2 - l1) / 2) - 1) # Idx just because one break gives -1 and two give -3 (not 2)
-                            if idx > 2:
+                            if idx > 3:
                                 return False # If more than 2 breaks, invalid result, thus return early and stop
 
                             #mal_dict[f'free_period{idx}'] += 1

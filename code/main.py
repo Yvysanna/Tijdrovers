@@ -10,9 +10,11 @@
 
 import pandas as pd
 from algorithms.planner import Planner
+from algorithms.randommethod import random_method
 from conflicts import find_course_conflicts
 from algorithms.semirandom import semirandom
 from algorithms.randommethod import random_method
+from algorithms.hill_climber import HillClimber
 from store import store
 import loader
 import checker
@@ -21,7 +23,7 @@ import checker
 
 def main():
     days = ['ma', 'di', 'wo', 'do', 'vr']
-    timeslots = ['9-11', '11-13', '13-15', '15-17']
+    timeslots = ['9-11', '11-13', '13-15', '15-17', '17-19']
 
     pd.set_option("display.max_rows", None, "display.max_columns", None)
 
@@ -30,10 +32,9 @@ def main():
     (students_set, course_students) = loader.load_students()
     course_set = loader.load_courses(classrooms_list, course_students)
     loader.connect_courses(students_set, course_set)
-
     course_dict, ordered_courses = find_course_conflicts(students_set, course_set)
 
-    loader.load_activities(classrooms_list, students_set, ordered_courses)
+    loader.load_activities(classrooms_list, students_set, course_set)
 
     # Create schedule for every classroom
     schedule_dict = {}
@@ -44,22 +45,31 @@ def main():
 
     #planner = Planner(classrooms_list)
 
-    # calls = 50; min_points = 100000
-    # while calls > 0:
-    #     planner = Planner(classrooms_list)
-    #     semirandom(course_set, classrooms_list, planner, days, timeslots)
-    #     student_dict = planner.create_student_dict(students_set)
-    #     points = checker.checker(course_set, student_dict)
-    #     if points < min_points:
-    #         min_points = points
-    #         print(min_points)
-    #         store(students_set, planner)
-    #     calls -= 1
-    planner = Planner(classrooms_list)
-    semirandom(course_set, classrooms_list, planner, days, timeslots)
-    student_dict = planner.create_student_dict(students_set)
-    # points = checker.checker(course_set, student_dict)
-    # print(points)
+    calls = 1; min_points = 10000000000000
+    while calls > 0:
+        planner = Planner(classrooms_list)
+        random_method(course_set, classrooms_list, planner, days, timeslots)
+        print(planner.slots)
+        student_dict = planner.create_student_dict(students_set)
+        print(checker.checker(course_set, student_dict))
+
+        hill = HillClimber(planner, course_set, students_set)
+        hill.run()
+        hill.plot()
+        print(planner.slots)
+        student_dict = planner.create_student_dict(students_set)
+        points = checker.checker(course_set, student_dict)
+        print(points)
+        if points < min_points and points != False:
+            min_points = points
+            print(min_points)
+            store(students_set, planner)
+        calls -= 1
+
+
+    #store(students_set, planner)
+
+    #print(checker.checker(course_set))
 
 
     return course_set, student_dict

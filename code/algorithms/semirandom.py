@@ -8,6 +8,8 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
     result = find_conflict_free_activities(course_set)
     for activities in result:
         for activity in activities:
+
+            # Give planner all classrooms from the smallest possible to the biggest available
             planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
 
             # Check if activity can be scheduled
@@ -30,8 +32,9 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
             # Just try to insert activity with random data there and see if it works
             planner.insert_activity(activity, room, day, time)
         #print(activity, "planning succeeded")
-        activity._room = room # Connect room when broken out of while loop
         room, day, time = planner.get_info(activity) # Final checkup
+        activity._room = room # Connect room when broken out of while loop
+        activity._timeslot = (day, time)
 
         if planner.get_info(activity) == (None, None, None):
             print("NOT FIXED")

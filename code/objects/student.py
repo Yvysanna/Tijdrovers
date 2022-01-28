@@ -35,6 +35,7 @@ class Student:
         self._last_name = last_name
         self._first_name = first_name
         self._student_number = student_number
+
         self.courses = []
         self.activities = set()
         self.classmates = Counter()
@@ -48,22 +49,16 @@ class Student:
         for course in self.courses:
             print([activity for activity in course._activities if activity.confirm_registration(self)])
 
+
+
     def __str__(self) -> str:
         '''Represents the class as a string'''
-        return str([
-            self._last_name,
-            # self._first_name,
-            # self._student_number,
-            # type(self.courses[0])
-            # self.activities
-        ])
+        return str(
+            f'\n{self._last_name} ({len(self.courses)})' 
+        )
 
     def __repr__(self) -> str:
         '''Represents the class as a string'''
-        return str([
-            self._last_name,
-            # self._first_name,
-            # self._student_number,
-            # type(self.courses[0])
-            # self.activities
-        ])
+        return str(
+            f'\n{self._last_name} ({len(self.courses)})' 
+        )
