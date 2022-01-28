@@ -138,7 +138,9 @@ class HillClimber:
                     streak = 0
                 old_points = new_points
 
-            self.add_value(i, new_points)
+            i += 1
+            self.plotx.append(i)
+            self.ploty.append(new_points)
 
             random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
             student_dict = self.planner.create_student_dict(self._students)
@@ -152,7 +154,9 @@ class HillClimber:
                     streak = 0
                 old_points = new_points
 
-            self.add_value(i, new_points)
+            i += 1
+            self.plotx.append(i)
+            self.ploty.append(new_points)
 
 
     def plot(self):
