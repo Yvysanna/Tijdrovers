@@ -18,8 +18,8 @@ class HillClimber:
 
     def __init__(self, planner, course_set, students_set):
         self.planner = planner
-        self._courses = course_set
-        self._students = students_set
+        self._courses = tuple(course_set)
+        self._students = tuple(students_set)
         self.plotx = []
         self.ploty = []
 
@@ -59,11 +59,11 @@ class HillClimber:
             random_course = choice(self._courses)
             # Only take activities with multiple groups
             if len(random_course._tutorials) > 1:
-                possible_tutorials = random_course._tutorials
+                possible_tutorials.extend(random_course._tutorials)
                 possible_activities.extend(random_course._tutorials)
 
             if len(random_course._labs) > 1:
-                possible_labs = random_course._labs
+                possible_labs.extend(random_course._labs)
                 possible_activities.extend(random_course._labs)
 
         # Pick a random group and determine which type of activity the next group needs to be
@@ -89,11 +89,10 @@ class HillClimber:
         if random_group_2._max_capacity <= len(random_group_2._students_list):
             random_student_2 = choice(random_group_2._students_list)
 
-            self.student_switch(random_student_1, random_group_1, random_group_2)
             self.student_switch(random_student_2, random_group_2, random_group_1)
 
-        assert len(random_group_1) < random_group_1._max_capacity, f"Too many students in {random_group_1}"
-        assert len(random_group_2) < random_group_2._max_capacity, f"Too many students in {random_group_2}"
+        assert len(random_group_1._students_list) <= random_group_1._max_capacity, f"Too many students in {random_group_1}: {len(random_group_1._students_list)}"
+        assert len(random_group_2._students_list) <= random_group_2._max_capacity, f"Too many students in {random_group_2}: {len(random_group_2._students_list)}"
 
         return random_group_1, random_group_2, random_student_1, random_student_2
 
@@ -104,8 +103,8 @@ class HillClimber:
         if random_student_2 != None:
             self.student_switch(random_student_2, random_group_1, random_group_2)
 
-        assert len(random_group_1) < random_group_1._max_capacity, f"Too many students in {random_group_1}"
-        assert len(random_group_2) < random_group_2._max_capacity, f"Too many students in {random_group_2}"
+        assert len(random_group_1._students_list) <= random_group_1._max_capacity, f"Too many students in {random_group_1}: {len(random_group_1._students_list)}"
+        assert len(random_group_2._students_list) <= random_group_2._max_capacity, f"Too many students in {random_group_2}: {len(random_group_2._students_list)}"
 
 
     def student_switch(self, student, current_group, new_group):
@@ -125,7 +124,7 @@ class HillClimber:
         old_points = checker(self._courses, student_dict)
 
         while streak < 5000:
-            print(streak, old_points)
+            print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)
@@ -139,7 +138,7 @@ class HillClimber:
                     streak = 0
                 old_points = new_points
 
-            self.add_value(self, i, new_points)
+            self.add_value(i, new_points)
 
             random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
             student_dict = self.planner.create_student_dict(self._students)
@@ -153,7 +152,7 @@ class HillClimber:
                     streak = 0
                 old_points = new_points
 
-            self.add_value(self, i, new_points)
+            self.add_value(i, new_points)
 
 
     def plot(self):
@@ -161,8 +160,8 @@ class HillClimber:
         plt.grid()
         plt.savefig('code/algorithms/plots/climber2.png', dpi=1000)
 
-    def add_value(self, i, new_points):
 
+    def add_value(self, i, new_points):
         i += 1
         self.plotx.append(i)
         self.ploty.append(new_points)
