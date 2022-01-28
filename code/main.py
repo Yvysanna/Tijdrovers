@@ -13,6 +13,7 @@ from algorithms.planner import Planner
 from algorithms.randommethod import random_method
 from conflicts import find_course_conflicts
 from algorithms.semirandom import semirandom
+from algorithms.randommethod import random_method
 from algorithms.hill_climber import HillClimber
 from store import store
 import loader

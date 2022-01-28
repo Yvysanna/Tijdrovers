@@ -31,7 +31,7 @@ def checker(course_set, student_dict):
                     # mal_dict['lack_capacity'] +=1
 
 
-    points = [0,1,3,10000] # Maluspoint values
+    points = [0,1,3,100] # Maluspoint values
     # Check for timeslots in each day for each student
     for student in student_dict.values():
         for day in student:
