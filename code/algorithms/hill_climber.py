@@ -3,12 +3,13 @@ import os
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
-from conflicts import find_activity_conflicts
-import loader
 from random import randrange, choice, random
 from itertools import combinations, chain
 from copy import deepcopy
 import matplotlib.pyplot as plt
+
+from conflicts import find_activity_conflicts
+from checker import checker
 
 sys.setrecursionlimit(10000)
 
@@ -82,14 +83,14 @@ class HillClimber:
         random_student_1 = choice(random_group_1._students_list)
         random_student_2 = None
 
-        self.reassign(random_student_1, random_group_1, random_group_2)
+        self.student_switch(random_student_1, random_group_1, random_group_2)
 
         # If group 2 was already full, move a random student from group 2 to group 1
         if random_group_2._max_capacity <= len(random_group_2._students_list):
             random_student_2 = choice(random_group_2._students_list)
 
-            self.reassign(random_student_1, random_group_1, random_group_2)
-            self.reassign(random_student_2, random_group_2, random_group_1)
+            self.student_switch(random_student_1, random_group_1, random_group_2)
+            self.student_switch(random_student_2, random_group_2, random_group_1)
 
         assert len(random_group_1) < random_group_1._max_capacity, f"Too many students in {random_group_1}"
         assert len(random_group_2) < random_group_2._max_capacity, f"Too many students in {random_group_2}"
@@ -116,4 +117,52 @@ class HillClimber:
         student.activities.add(new_group)
 
 
-    
+    def run(self):
+        streak = 0
+        i = 0
+        # Count current maluspoints
+        student_dict = self.planner.create_student_dict(self._students)
+        old_points = checker(self._courses, student_dict)
+
+        while streak < 5000:
+            print(streak, old_points)
+
+            index_activity_1, index_activity_2 = self.activity_switch()
+            student_dict = self.planner.create_student_dict(self._students)
+            new_points = checker(self._courses, student_dict)
+
+            if new_points > old_points:
+                self.undo_activity_switch(index_activity_1, index_activity_2)
+                streak += 1
+            else:
+                if new_points < old_points:
+                    streak = 0
+                old_points = new_points
+
+            self.add_value(self, i, new_points)
+
+            random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
+            student_dict = self.planner.create_student_dict(self._students)
+            new_points = checker(self._courses, student_dict)
+
+            if new_points > old_points:
+                self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
+                streak += 1
+            else:
+                if new_points < old_points:
+                    streak = 0
+                old_points = new_points
+
+            self.add_value(self, i, new_points)
+
+
+    def plot(self):
+        plt.plot(self.plotx, self.ploty)
+        plt.grid()
+        plt.savefig('code/algorithms/plots/climber2.png', dpi=1000)
+
+    def add_value(self, i, new_points):
+
+        i += 1
+        self.plotx.append(i)
+        self.ploty.append(new_points)
