@@ -10,6 +10,13 @@ class Planner:
         self.rooms = sorted(rooms, key=lambda c : c.capacity, reverse = True)
 
         # All available slots
+        #   C0.110               C1.112         A1.10          B0.201         A1.04          A1.06          A1.08         
+        #   ma , di, wo, do, vr, ma,di,wo,do,vr,ma,di,wo,do,vr,ma,di,wo,do,vr,ma,di,wo,do,vr,ma,di,wo,do,vr,ma,di,wo,do,vr
+        # 9  0,  1,  2,  3,  4,  5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34
+        #11 35, ...
+        #13 70, ...
+        #15 105,...
+        #17 140,141,142,143,144
         self.slots = [None] * ((len(self.days) * (len(self.times) - 1) * len(self.rooms)) + len(self.days))# For alt times create Bool Table
 
     def get_info(self, activity):
@@ -96,13 +103,14 @@ class Planner:
         # Calculation to avoid looping but still finding indexes for what we want
 
         # idx = index % (len(self.times) * len(self.rooms))
-        day = self.days[((index % (len(self.rooms) * len(self.days))) % len(self.days))]
-        room = self.rooms[index % len(self.rooms) * len(self.days) // len(self.days)]
+        day = self.days[(index % (len(self.rooms) * len(self.days))) % len(self.days)]
+        room = self.rooms[index % (len(self.rooms) * len(self.days)) // len(self.days)]
         time = self.times[index // (len(self.rooms) * len(self.days))]
         
         # room = self.rooms[floor(idx / len(self.times))]
         # day = self.days[floor(index / (len(self.times) * len(self.rooms)))]
         # time = self.times[idx % len(self.times)]
+        #print(room, day, time)
         return room, day, time
 
     def get_capacity_info(self):
