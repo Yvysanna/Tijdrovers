@@ -1,6 +1,6 @@
 # Lectures & Lesroosters
 
-This project aims to optimally create a class schedule for the Science Park Campus at UvA.
+This project aims to optimally create a class schedule for the Science Park Campus at UvA. This project has been made in the scope of the course 'Programmeertheorie / Heuristiek' from the Minor Programming at the University of Amsterdam.
 
 ## Summary
 
@@ -15,17 +15,10 @@ Clone the project
 ```
 
 Install dependencies
+*This code is written in Python 3.8.10 and 3.10.1. To run this code, the required packages are noted down in requirements.txt and can be installed easily via pip with this command:*
 
 ```bash
-  # with PyPI
-  pip install pandas
-  python -m pip install -U matplotlib
-
-  # with Anaconda
-  conda install pandas 
-  conda install matplotlib
-
-
+  pip install -r requirements.txt
 ```
 
 Run the program
@@ -36,10 +29,11 @@ Run the program
 
 ## Acknowledgements
 
-UvA
+* StackOverflow
+* Minor Programmeren, Programming Lab, Faculty of Science, University of Amsterdam
 
 ## Authors
 
-- [Karel Nijhuis](https://github.com/5inu)
-- [Yvette Schröder](https://github.com/Yvysanna)
-- [Julia Liem](https://github.com)
+* [Karel Nijhuis](https://github.com/5inu)
+* [Yvette Schröder](https://github.com/Yvysanna)
+* [Julia Liem](https://github.com/julialfk)
