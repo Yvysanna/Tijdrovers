@@ -1,7 +1,7 @@
 class Activity:
 
-    def __init__(self, act_type, name, room, max_capacity):
-
+    def __init__(self, act_type, name, room, max_capacity, day = None, timeslot = None):
+        
         self.room_list = []
 
         self._type = act_type
@@ -9,7 +9,8 @@ class Activity:
         self._students_list = []
         self._max_capacity = max_capacity
         self._name = name
-        self._timeslot = None
+        self._day = day
+        self._timeslot = timeslot
 
     def confirm_registration(self, student):
         # Correction

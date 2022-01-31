@@ -117,16 +117,16 @@ class HillClimber:
         i = 0
         # Count current maluspoints
         student_dict = self.planner.create_student_dict(self._students)
-        old_points = checker(self._courses, student_dict)
+        old_points = checker(self.planner.slots, student_dict)
 
         while streak < 5000:
             # print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)
-            new_points = checker(self._courses, student_dict)
+            new_points = checker(self.planner.slots, student_dict)
 
-            if new_points > old_points:
+            if new_points == False or new_points > old_points:
                 self.undo_activity_switch(index_activity_1, index_activity_2)
                 streak += 1
             else:
@@ -140,9 +140,9 @@ class HillClimber:
 
             random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
             student_dict = self.planner.create_student_dict(self._students)
-            new_points = checker(self._courses, student_dict)
+            new_points = checker(self.planner.slots, student_dict)
 
-            if new_points > old_points:
+            if new_points == False or new_points > old_points:
                 self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
                 streak += 1
             else:

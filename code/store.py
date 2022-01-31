@@ -1,6 +1,6 @@
 import pandas as pd
 
-def store(students_set, planner):
+def store(students_set, planner, min_points):
     """
     Function to write everything after correct format in csv file
     RETURNS: None
@@ -22,6 +22,6 @@ def store(students_set, planner):
 
 
     results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
-    with open('data/semirandom.csv', 'w+'):
+    with open(f'data/climber{min_points}.csv', 'w+'):
         pass
-    results_df.to_csv('data/semirandom.csv', sep = ';', index=False)
+    results_df.to_csv(f'data/climber{min_points}.csv', sep = ';', index=False)
