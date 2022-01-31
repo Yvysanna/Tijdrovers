@@ -16,7 +16,7 @@ def store(students_set, planner):
                 df_dict['student'].append(student._last_name + ' ' + student._first_name)
                 df_dict['vak'].append(activity._name)
                 df_dict['activiteit'].append(activity._type)
-                df_dict['zaal'].append(activity._room.name)
+                df_dict['zaal'].append(room.name)
                 df_dict['dag'].append(day or 'tba')
                 df_dict['tijdslot'].append(time or 'tba') 
 

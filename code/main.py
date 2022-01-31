@@ -10,7 +10,6 @@
 
 import pandas as pd
 from algorithms.planner import Planner
-from algorithms.randommethod import random_method
 from conflicts import find_course_conflicts
 from algorithms.semirandom import semirandom
 from algorithms.randommethod import random_method
@@ -48,21 +47,19 @@ def main():
     calls = 1; min_points = 10000000000000
     while calls > 0:
         planner = Planner(classrooms_list)
-        semirandom(course_set, classrooms_list, planner, days, timeslots)
-        print(planner.slots)
+        random_method(course_set, classrooms_list, planner, days, timeslots)
         student_dict = planner.create_student_dict(students_set)
-        print(checker.checker(course_set, student_dict))
 
         hill = HillClimber(planner, course_set, students_set)
         hill.run()
         hill.plot()
-        print(planner.slots)
+        # print(planner.slots)
         student_dict = planner.create_student_dict(students_set)
         points = checker.checker(course_set, student_dict)
-        print(points)
+        # print(points)
         if points < min_points and points != False:
             min_points = points
-            print(min_points)
+            # print(min_points)
             store(students_set, planner)
         calls -= 1
 
