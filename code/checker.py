@@ -32,7 +32,7 @@ def checker(activities, student_dict):
                 if activity._timeslot == '17-19':
                     malus += 5
 
-    points = [0,1,3,100] # Maluspoint values
+    points = [0,1,3,1000] # Maluspoint values
     # Check for timeslots in each day for each student
     for student in student_dict.values():
         for day in student:
@@ -65,7 +65,7 @@ def checker(activities, student_dict):
                         # Iterate over both lists to find difference between times
                         for l1, l2 in zlip:
                             idx = int(((l2 - l1) / 2) - 1) # Idx just because one break gives -1 and two give -3 (not 2)
-                            if idx > 2:
+                            if idx > 3:
                                 return False # If more than 2 breaks, invalid result, thus return early and stop
 
                             #mal_dict[f'free_period{idx}'] += 1
