@@ -5,6 +5,8 @@
 #
 # - Loads in data from csv files
 # - Initializes objects
+# 
+# Functions: load_classrooms, 
 # ==================================================================================
 
 import csv
@@ -16,94 +18,99 @@ from objects.student import Student
 from algorithms.register import Register
 
 
-# Loads all classrooms and returns a list of Classroom objects sorted by capacity
 def load_classrooms():
-    # classrooms_dict = {}
-    classrooms_list = []
+    """
+    ARGS:
+        None
+    USAGE:
+        Loads all classrooms from csv file
+    RETURNS:
+        List of all classroom objects sorted by classroom capacity ascending
+    """
 
-    # Open csv
+    # Open and read through classrooms csv
     with open('data/classrooms.csv', 'r') as f:
         reader = csv.reader(f, delimiter=';')
         next(reader, None)
 
-        # Populate dictionary with name as its key and capacity as its value
-        for row in reader:
-            # classrooms_dict[row[0]] = int(row[1])
-            classrooms_list.append(Classroom(row[0], row[1]))
+        # Create list of Classroom objects with name and capacity for each row in the file
+        classrooms_list = [Classroom(row[0], row[1]) for row in reader]
 
-    # Creates Classrooms objects and inserts them sorted into classrooms_list
-    # min() function format from https://stackoverflow.com/questions/3282823/get-the-key-corresponding-to-the-minimum-value-within-a-dictionary
-    # while len(classrooms_dict) > 0:
-    #     classroom = min(classrooms_dict, key=classrooms_dict.get)
-    #     classrooms_list.append(
-    #         Classroom(classroom, classrooms_dict.pop(classroom)))
+    # Return list of objects sorted by capacity ascending
     return sorted(classrooms_list, key=lambda c: c.capacity, reverse=False)
 
+ 
+def load_courses():
+    """
+    ARGS:
+        None
+    USAGE:
+        Loads all courses from csv file
+    RETURNS:
+        course_set: Set of all course objects
+    """
+    course_set = set()
 
-# Loads all students and returns a list of Student object and a dictionary with a Course object
-# as its key and number of enrolled students as its value
-def load_students():
+    with open('data/courses.csv', 'r') as f:
+        reader = csv.reader(f, delimiter=';')
+        next(reader, None)
+
+        # Create course object from course data and add it to the set of all objects
+        for row in reader:
+            course = Course(row[0], row[1], row[2], row[3], row[4], row[5])              
+            course_set.add(course)
+
+    return course_set
+
+
+def load_students(course_set):
+    """
+    ARGS:
+        course_set: set of all course objects
+    USAGE:
+        Loads all students from csv file
+        Creates student objects and connects them with the according course objects
+    RETURNS:
+        students_set: set of student objects
+    """
     students_set = set()
-    course_students = {}
 
     # Open csv
     with open('data/students.csv', 'r', encoding="ISO-8859-1") as f:
         reader = csv.reader(f, delimiter=';')
         next(reader, None)
 
+        # Creates new student object and adds it to students_set
         for row in reader:
-            # Creates new student object and adds it to students_set
             student = Student(row[0], row[1], row[2])
             students_set.add(student)
 
-            # Creates list of courses per student and counts the students per course
+            # Iterate over all courses student is registered to
             for course in row[3:]:
-                # Stops loop if end of student's course list is reached, otherwise adds course to student's courses
-                if course == '':
-                    break
-                else:
-                    student.courses.append(course)
+                if course:
+                    
+                    # Find course object through equivalent string, connect student object with course object
+                    course_object = [c for c in course_set if c.name == course][0]
+                    student.add_course(course_object)
+                    course_object.add_student(student)
 
-                    # Add course with student counter and set if not yet in course_students
-                    if course not in course_students:
-                        course_students[course] = {'count': 1, 'students': set()}
-                    else:
-                        course_students[course]['count'] += 1
-
-                    # Add student object to set
-                    course_students[course]['students'].add(student)
-
-    return students_set, course_students
+    return students_set  
 
 
-# Loads all courses and returns a list of Course objects
-def load_courses(classroom_list, course_students):
-    course_set = set()
-
-    # Open csv
-    with open('data/courses.csv', 'r') as f:
-        reader = csv.reader(f, delimiter=';')
-        next(reader, None)
-
-        # Create course object from course data
-        for row in reader:
-            course = Course(row[0], row[1], row[2], row[3],
-                            row[4], row[5], course_students[row[0]]['count'], course_students[row[0]]['students'])
-            for classroom in classroom_list:
-                if classroom.capacity >= course.students_number:
-                    classroom.possible_courses.append(course)
-                    #course.possible_classrooms.append(classroom)
-            course.create_activities(classroom_list)
-            course_set.add(course)
-
-    return course_set
-
-def load_activities(classrooms_list, students_set, ordered_courses):
-
-    for course in ordered_courses:
-        # course.create_activities(classrooms_list)
-
+def load_activities(students_set, course_set, classrooms_list):
+    """
+    ARGS:
+        students_set, course_set, classrooms_list
+    USAGE:
+        Loads all students from csv file
+        Creates student objects and connects them with the according course objects
+    RETURNS:
+        students_set: set of student objects
+    """
+    for course in course_set:
+        course.create_activities(classrooms_list)
         register_course = Register(course)
+        
 
         for student in students_set:
             if course in student.courses:
@@ -117,8 +124,7 @@ def connect_courses(students_set, course_set):
         classmates_list = []
 
         for i, course in enumerate(student.courses):
-            course_object = list(
-                filter(lambda subj: subj.name == course, course_set))[0]
+            course_object = list(filter(lambda subj: subj.name == course, course_set))[0]
             student.courses[i] = course_object
 
             # Add all students in the same courses to a list and repeat as many times as there are lectures
@@ -134,7 +140,7 @@ def load_results(classrooms_list = None):
     Loads results from results.csv for maluspoint calculation
     RETURNS: List of activities & Dictionary in format according to maluspoint calculation
     """
-    file = 'data/climber116.csv'
+    file = 'data/semirandom.csv'
 
     if not classrooms_list:
         classrooms_list = load_classrooms()
@@ -184,5 +190,35 @@ def load_results(classrooms_list = None):
 
         return list(activity_dict.values()), student_dict
 
+def loadall():
+    """
+    ARGS: 
+        None 
+    USAGE:
+        Loads all necessary objects and creates all necessary class objects
+    RETURNS: 
+        classrooms_list : List of all classroom objects sorted after capacity ascending
+        students_set : Set of all student objects
+        course_set : Set of all course objects
+    """
+    classrooms_list = load_classrooms()
+    course_set = load_courses()
+    students_set = load_students(course_set)
+    
+    load_activities(students_set, course_set, classrooms_list)
+    return classrooms_list, students_set, course_set
+
 if __name__ == '__main__':
-    print(load_activities())
+    #import time
+    # classrooms_list, students_set, course_set= loadall()
+    # for course in course_set:
+    #     print(course._labs)
+    from checker import checker
+    print(checker(*load_results()))
+
+    # t0 = time.time()
+    # for i in range(1000000):
+    #     load_classrooms()
+    # t1 = time.time()
+    # total = t1-t0
+    # print(t0, t1, total)
