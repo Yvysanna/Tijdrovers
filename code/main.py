@@ -51,8 +51,8 @@ def main():
         calls -= 1
 
     hill = HillClimber(min_planner, course_set, students_set)
-    hill.run_annealing()
-    hill.plot()
+    hill.run()
+    # hill.plot()
     student_dict = min_planner.create_student_dict(students_set)
     points = checker.checker(min_planner.slots, student_dict)
     print(points)
