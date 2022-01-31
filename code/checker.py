@@ -9,10 +9,10 @@
 from itertools import chain
 from collections import Counter
 
-def checker(course_set, student_dict):
+def checker(activities, student_dict):
     """
     ARGS:
-        Course set: set of course objects,
+        Activities: Array of activity objects either from planner.timeslots or read and created out of csv
         Student dict: format {Student : [{Day : [Timeslot]}]}
     USAGE:
         Checker function calculating maluspoints for schedule for each student
@@ -22,13 +22,15 @@ def checker(course_set, student_dict):
     """
     malus = 0
 
-    # Compare classroom capacity and students per activity
-    for course in course_set:
-        for activity in chain(course._lectures, course._tutorials, course._labs):
-            # Add maluspoint if number of students exceed capacity
+    for activity in activities:
+            if activity:
+                # Add maluspoint if number of students exceed capacity
                 if len(activity._students_list) > activity._room.capacity:
                     malus += len(activity._students_list) - activity._room.capacity
-                    # mal_dict['lack_capacity'] +=1
+
+                # Only calculate late timeslots maluspoints once and not for every student
+                if activity._timeslot == '17-19':
+                    malus += 5
 
 
     points = [0,1,3,100] # Maluspoint values
@@ -36,11 +38,6 @@ def checker(course_set, student_dict):
     for student in student_dict.values():
         for day in student:
             for timeslots in day.values():
-                
-                # Min points for late timeslot
-                for t in timeslots:
-                    if t == '17-19':
-                        malus += 5
 
                 # For conflict comparison        
                 if len(timeslots) > 1:
