@@ -17,6 +17,9 @@ class Planner:
         #13 70, ...
         #15 105,...
         #17 140,141,142,143,144
+        self.create_slots()
+
+    def create_slots(self):
         self.slots = [None] * ((len(self.days) * (len(self.times) - 1) * len(self.rooms)) + len(self.days))# For alt times create Bool Table
 
     def get_info(self, activity):
@@ -149,11 +152,17 @@ class Planner:
             student_dict[name] = []
             for activity in student.activities:
                 room, day, time = self.get_info(activity)
+                activity._room = room
+                activity._day = day
+                activity._timeslot = time
+
+                # Write information into dictionary
                 if day not in slots:
                     slots[day] = []
                 slots[day].append(time)
+            #student_dict[name].append((slots, student.activities))
             student_dict[name].append(slots)
-        return student_dict    
+        return student_dict   
 
     def flatten(lst):
         '''
