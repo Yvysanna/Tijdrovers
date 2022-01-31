@@ -9,7 +9,7 @@
 from itertools import chain
 from collections import Counter
 
-def checker(course_set, student_dict):
+def checker(activities, student_dict):
     """
     ARGS:
         Course set: set of course objects,
@@ -23,12 +23,12 @@ def checker(course_set, student_dict):
     malus = 0
 
     # Compare classroom capacity and students per activity
-    for course in course_set:
-        for activity in chain(course._lectures, course._tutorials, course._labs):
-            # Add maluspoint if number of students exceed capacity
-                if len(activity._students_list) > activity._room.capacity:
-                    malus += len(activity._students_list) - activity._room.capacity
-                    # mal_dict['lack_capacity'] +=1
+    for activity in activities:
+        # Add maluspoint if number of students exceed capacity
+        if activity != None:
+            if len(activity._students_list) > activity._room.capacity:
+                malus += len(activity._students_list) - activity._room.capacity
+                # mal_dict['lack_capacity'] +=1
 
 
     points = [0,1,3,100] # Maluspoint values
