@@ -13,8 +13,16 @@ class Activity:
         self._timeslot = timeslot
 
     def confirm_registration(self, student):
-        # Correction
         if student in self._students_list:
+            return True
+        return False
+
+    def has_space(self):
+        return len(self._students_list) < self._max_capacity
+
+    def register(self, student):
+        if self.has_space():
+            self._students_list.append(student)
             return True
         return False
 

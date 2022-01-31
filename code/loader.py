@@ -10,12 +10,10 @@
 # ==================================================================================
 
 import csv
-import itertools
 
 from objects.course import Course
 from objects.classroom import Classroom
 from objects.student import Student
-from algorithms.register import Register
 
 
 def load_classrooms():
@@ -97,50 +95,26 @@ def load_students(course_set):
     return students_set  
 
 
-def load_activities(students_set, course_set, classrooms_list):
+def load_activities(course_set, classrooms_list):
     """
     ARGS:
-        students_set, course_set, classrooms_list
+        course_set, classrooms_list
     USAGE:
-        Loads all students from csv file
-        Creates student objects and connects them with the according course objects
+        Creates activity objects through courses and randomly registers students into it
     RETURNS:
-        students_set: set of student objects
+        None
     """
     for course in course_set:
         course.create_activities(classrooms_list)
-        register_course = Register(course)
-        
+        course.random_register()
 
-        for student in students_set:
-            if course in student.courses:
-                # Add students to courses
-                register_course.random_register(student)
-
-
-def connect_courses(students_set, course_set):
-    # Connect student objects with according course objects
-    for student in students_set:
-        classmates_list = []
-
-        for i, course in enumerate(student.courses):
-            course_object = list(filter(lambda subj: subj.name == course, course_set))[0]
-            student.courses[i] = course_object
-
-            # Add all students in the same courses to a list and repeat as many times as there are lectures
-            for _ in itertools.repeat(None, course_object._lectures_number):
-                classmates_list.extend(course_object._students_set)
-
-        # Counts how often this student is in the same lecture per classmate
-        #print(classmates_list)
-        student.classmates.update(classmates_list)
 
 def load_results(classrooms_list = None):
     """
     Loads results from results.csv for maluspoint calculation
     RETURNS: List of activities & Dictionary in format according to maluspoint calculation
     """
-    file = 'data/semirandom.csv'
+    file = 'data/results/climber31984.csv'
 
     if not classrooms_list:
         classrooms_list = load_classrooms()
@@ -205,7 +179,7 @@ def loadall():
     course_set = load_courses()
     students_set = load_students(course_set)
     
-    load_activities(students_set, course_set, classrooms_list)
+    load_activities(course_set, classrooms_list)
     return classrooms_list, students_set, course_set
 
 if __name__ == '__main__':
