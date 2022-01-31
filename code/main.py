@@ -44,27 +44,38 @@ def main():
     #print(find_activity_conflicts(course_set, students_set))
 
     #planner = Planner(classrooms_list)
+    min_planner = None
+
 
     calls = 1; min_points = 10000000000000
-    while calls > 0:
+    while calls > 0 or min_planner == None:
+        
+        #random_method(course_set, classrooms_list, planner, days, timeslots)
         planner = Planner(classrooms_list)
-        random_method(course_set, classrooms_list, planner, days, timeslots)
-        print(planner.slots)
-        student_dict = planner.create_student_dict(students_set)
-        print(checker.checker(course_set, student_dict))
+        semirandom(course_set, classrooms_list, planner, days, timeslots)
+        #print(planner.slots)
+        #student_dict = planner.create_student_dict(students_set)
+        #print(checker.checker(course_set, student_dict))
 
-        hill = HillClimber(planner, course_set, students_set)
-        hill.run()
-        hill.plot()
-        print(planner.slots)
+        # hill = HillClimber(planner, course_set, students_set)
+        # hill.run()
+        #hill.plot()
+        #print(planner.slots)
         student_dict = planner.create_student_dict(students_set)
-        points = checker.checker(course_set, student_dict)
-        print(points)
+        points = checker.checker(planner.slots, student_dict)
+        #print(points)
         if points < min_points and points != False:
             min_points = points
             print(min_points)
-            store(students_set, planner)
+            min_planner = planner
+            # store(students_set, planner, min_points)
         calls -= 1
+
+    hill = HillClimber(min_planner, course_set, students_set)
+    hill.run()
+    student_dict = min_planner.create_student_dict(students_set)
+    points = checker.checker(min_planner.slots, student_dict)
+    store(students_set, planner, points)
 
 
     #store(students_set, planner)
