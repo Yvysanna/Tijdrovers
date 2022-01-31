@@ -40,6 +40,8 @@ class Student:
         self.activities = set()
         self.classmates = Counter()
 
+    def add_course(self, course):
+        self.courses.append(course)
 
     def print_schedule(self):
         '''

@@ -6,7 +6,6 @@
 # - Checks the amount of maluspoints for a schedule
 # ==================================================================================
 
-from itertools import chain
 from collections import Counter
 
 def checker(activities, student_dict):
@@ -23,14 +22,9 @@ def checker(activities, student_dict):
     malus = 0
 
     for activity in activities:
-            if activity:
-                # Add maluspoint if number of students exceed capacity
-                if len(activity._students_list) > activity._room.capacity:
-                    malus += len(activity._students_list) - activity._room.capacity
-
-                # Only calculate late timeslots maluspoints once and not for every student
-                if activity._timeslot == '17-19':
-                    malus += 5
+        if activity:
+            # Calculate maluspoints for room capacity and late timeslot
+            malus += activity.malus_points()
 
     points = [0,1,3,1000] # Maluspoint values
     # Check for timeslots in each day for each student

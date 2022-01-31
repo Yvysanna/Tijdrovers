@@ -38,7 +38,7 @@ class Course:
     '''
 
     def __init__(self, name, lectures_number, tutorials_number, tutorial_max, \
-                       labs_number, lab_max, students_number, students_set):
+                       labs_number, lab_max):
         '''
         PARAMETERS:
         name : str
@@ -62,14 +62,14 @@ class Course:
         '''
 
         self.name = name
-        self.students_number = int(students_number)
 
         self._lectures_number = int(lectures_number)
         self._tutorials_number = int(tutorials_number)
         self._tutorials_max = int(tutorial_max) if tutorial_max != 'nvt' else 0
         self._labs_number = int(labs_number)
         self._lab_max = int(lab_max) if lab_max != 'nvt' else 0
-        self._students_set = students_set
+        self._students_set = set()
+        self.students_number = 0
 
         # Lists with activity objects, gets filled in create activites
         self._lectures = []
@@ -78,6 +78,11 @@ class Course:
 
         # No more min_timeslots, now calculated, accurate timeslots for courses
         self._timeslots = 0
+
+    def add_student(self, student):
+        self._students_set.add(student)
+        self.students_number += 1
+
 
     def create_activities(self, classrooms):
         '''
@@ -121,23 +126,7 @@ class Course:
                 self._labs.append(Activity('Lab', f'{self.name} Lab {x + 1}', classroom, self._lab_max))
             self._timeslots += lab_number
 
-    # def register(self, student):
-    #     """
-    #     Register student for all necessary activities
-    #     Break out of loops if student registered to avoid duplicate addings
-    #     DISCLAIMER: Only works if tutorial and lab no more than 1 per course!!!!
-    #     RETURNS NONE
-    #     """
-    #     [activity.add_students(student) for activity in self._activities if activity._type == 'Lecture']
-
-    #     # Add student to first possible tutorial and lab
-    #     for activity in self._activities:    
-    #         if activity._type == 'Tutorial' and activity.add_students(student):
-    #             break
-
-    #     for activity in self._activities:
-    #         if activity._type == 'Lab' and activity.add_students(student):
-    #             break
+   
 
     def __str__(self) -> str:
         '''Represents class as a string'''
