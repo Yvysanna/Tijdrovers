@@ -35,18 +35,17 @@ class Student:
         self._last_name = last_name
         self._first_name = first_name
         self._student_number = student_number
-
         self.courses = []
         self.activities = set()
-        self.classmates = Counter()
 
     def add_course(self, course):
         self.courses.append(course)
 
+    def add_activity(self, activity):
+        self.activities.add(activity)
+
     def print_schedule(self):
-        '''
-        Hold schedule for each student
-        '''
+        '''Hold schedule for each student'''
         print('\n',self._last_name)
         for course in self.courses:
             print([activity for activity in course._activities if activity.confirm_registration(self)])
