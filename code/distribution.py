@@ -28,7 +28,7 @@ while time.time() - start < 3600:
 print("\n Average: " + str(mean(points)))
 plt.hist(points, range=(50, 150), color='midnightblue', edgecolor='mediumblue', density=True, bins=10)
 plt.xlim(50, 150)
-plt.title(f"Probability distribution of maluspoints across {N} runs")
+plt.title(f"Probability distribution of maluspoints across {n_runs} runs")
 plt.xlabel("Maluspoints")
 plt.ylabel("Probability")
 plt.tight_layout()
