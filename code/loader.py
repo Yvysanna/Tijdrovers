@@ -14,6 +14,7 @@ import csv
 from objects.course import Course
 from objects.classroom import Classroom
 from objects.student import Student
+from objects.activity import Activity
 
 
 def load_classrooms():
@@ -111,50 +112,53 @@ def load_activities(course_set, classrooms_list):
 
 def load_results(classrooms_list = None):
     """
-    Loads results from results.csv for maluspoint calculation
-    RETURNS: List of activities & Dictionary in format according to maluspoint calculation
+    ARGS:
+        optional: classrooms_list
+    USAGE:
+        Loads results from results.csv for maluspoint calculation
+    RETURNS: 
+        List of activities, students dictionary {Student : [{Day : [Timeslot]}]}
     """
-    file = 'data/results/climber31984.csv'
+    file = 'data/climber64.csv'
 
+    # Create list with classroom objects if not given as argument
     if not classrooms_list:
         classrooms_list = load_classrooms()
 
     # Open schedule
-    # with open('data/results/results.csv', 'r', encoding="ISO-8859-1") as f:
     with open(file, 'r', encoding="ISO-8859-1") as f:
         reader = csv.reader(f, delimiter=';')
         next(reader, None)
 
-        # Desired datatype: {Student : [{Day : [Timeslot]}]}
         student_dict = {}
         activity_dict = {}
-        for row in reader:
 
-            # Add entry if student not in dictionary
-            name = row[0] #student name
+        # Read through csv to collect information for student and activity
+        for row in reader:
+            name = row[0]
             day = row[4]
             time = row[5]
 
             act_name = row[1]
             act_type = row[2]
             act_room = row[3]
+
+            # Create activity object and add to activity dict {'activity name': Activity object}
             if act_name not in activity_dict.keys():
                 room = [r for r in classrooms_list if r.name == act_room][0]
-                from objects.activity import Activity
                 activity_dict[act_name] = Activity(act_type, act_name, room, room.capacity, day, time)
             
             activity = activity_dict[act_name]
             if name not in activity._students_list:
                 activity._students_list.append(name) 
                 
-
             if name not in student_dict:
                 student_dict[name] = [{day: [time]}]
             else:
                 # Add entry if day not in dictionary for this student
                 if not any(day in d for d in student_dict[name]):
-                    #print (student_dict)
                     student_dict[name].append({day: [time]})
+
                 # Add entry if student and day are both in dictionary
                 else:
                     for x in student_dict[name]:
