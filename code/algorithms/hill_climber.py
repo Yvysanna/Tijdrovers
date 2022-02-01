@@ -119,7 +119,7 @@ class HillClimber:
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        while streak < 3000:
+        while streak < 100000:
             # print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
@@ -165,7 +165,7 @@ class HillClimber:
         old_points = checker(self.planner.slots, student_dict)
 
         while old_points > 150:
-            # print(i, streak, old_points)
+            print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)
@@ -188,8 +188,7 @@ class HillClimber:
             new_points = checker(self.planner.slots, student_dict)
 
             if new_points == False or new_points > old_points:
-                self.undo_reassign(random_group_1, random_group_2,
-                                   random_student_1, random_student_2)
+                self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
                 streak += 1
             else:
                 if new_points < old_points:
@@ -200,17 +199,18 @@ class HillClimber:
             # self.plotx.append(i)
             # self.ploty.append(old_points)
 
-        x = 0
+        x = 1
         Tstart = old_points
 
-        while streak < 3000 or x < 20000:
-            # print(i, streak, old_points)
+        while streak < 100 or x < 20000:
+            print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)
             new_points = checker(self.planner.slots, student_dict)
 
             T = Tstart * (0.9997**x)
+            print(T, Tstart, x)
             chance = 2**((old_points - new_points)/(0.02*T))
             r = random()
 
@@ -231,13 +231,16 @@ class HillClimber:
             student_dict = self.planner.create_student_dict(self._students)
             new_points = checker(self.planner.slots, student_dict)
 
+            T = Tstart * (0.9997**x)
+            print(T, Tstart, x)
+            chance = 2**((old_points - new_points)/(0.02*T))
+            r = random()
+
             if r > chance:
-                self.undo_reassign(random_group_1, random_group_2, 
-                                   random_student_1, random_student_2)
+                self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
                 streak += 1
             else:
-                if new_points < old_points:
-                    streak = 0
+                streak = 0
                 old_points = new_points
 
             x += 1
@@ -245,8 +248,8 @@ class HillClimber:
             # self.plotx.append(i)
             # self.ploty.append(new_points)
 
-        while streak < 3000:
-            # print(i, streak, old_points)
+        while streak < 100:
+            print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)

@@ -44,16 +44,21 @@ def main():
     classrooms_list, students_set, course_set = loadall()
 
     # Create planner object
-    planner = Planner(classrooms_list)
+    points = 0
 
     # Fill planner with semirandom method
-    semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
+    while points == False or points == 0:
+        planner = Planner(classrooms_list)
+        semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
+        student_dict = planner.create_student_dict(students_set)
+        points = checker(planner.slots, student_dict)
+
 
     # Create object of class hill climber
     hill = HillClimber(planner, course_set, students_set)
 
     # Run hill climber method and evaluate its results
-    hill.run()
+    i = hill.run()
     student_dict = planner.create_student_dict(students_set)
     points = checker(planner.slots, student_dict)
 
@@ -61,7 +66,7 @@ def main():
     hill.plot()
     store(students_set, planner, points)
 
-    return planner.slots, student_dict
+    return points, i
 
 if __name__ == '__main__':
     main()
