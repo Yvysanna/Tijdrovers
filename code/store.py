@@ -23,4 +23,7 @@ def store(students_set, planner, min_points):
 
 
     results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
+    # with open(f'data/climber{min_points}.csv', 'w+'):
+    #     pass
+    # results_df.to_csv(f'data/climber{min_points}.csv', sep = ';', index=False)
     results_df.to_csv(f'data/results/climber{min_points}_{datetime.now().strftime("%Y%m%d%H%M")}.csv', mode = 'w+', sep = ';', index=False)
