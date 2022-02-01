@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import pandas as pd
 
 def store(students_set, planner, min_points):
