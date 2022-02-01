@@ -5,7 +5,7 @@ class Activity:
         self.room_list = []
 
         self._type = act_type
-        self._room = room # OPTIMISATION: GET ALL ROOMS IN A LIST
+        self._room = room
         self._students_list = []
         self._max_capacity = max_capacity
         self._name = name
@@ -19,8 +19,13 @@ class Activity:
         return False
 
     def malus_points(self):
-        #student_points = sum(student.malus_points() for student in self._students_list)
-        return len(self._students_list) - self._room.capacity if len(self._students_list) > self._room.capacity else 0 #+ student_points
+        """Calculate and return maluspoints for late timeslot and room capacity issues"""
+        malus = 0
+        if self._timeslot == '17-19':
+            malus += 5
+        if len(self._students_list) > self._room.capacity:
+            malus += (len(self._students_list) - self._room.capacity)
+        return malus
     
     
     # def add_students(self, student):

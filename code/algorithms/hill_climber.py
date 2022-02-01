@@ -119,7 +119,7 @@ class HillClimber:
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        for x in range(100):
+        for x in range(20000):
             print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
