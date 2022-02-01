@@ -4,9 +4,9 @@
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #
 # - Loads in data from csv files
-# - Initializes objects
+# - Initializes and connects objects
 # 
-# Functions: load_classrooms, 
+# Functions: load_classrooms, load_courses, load_students, load_activities, load_results, load_all 
 # ==================================================================================
 
 import csv
@@ -24,7 +24,7 @@ def load_classrooms():
     USAGE:
         Loads all classrooms from csv file
     RETURNS:
-        List of all classroom objects sorted by classroom capacity ascending
+        Sorted list of all classroom objects sorted by classroom capacity ascending
     """
 
     # Open and read through classrooms csv
@@ -168,7 +168,8 @@ def load_results(classrooms_list = None):
 
         return list(activity_dict.values()), student_dict
 
-def loadall():
+
+def load_all():
     """
     ARGS: 
         None 

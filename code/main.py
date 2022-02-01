@@ -17,7 +17,7 @@ from algorithms.randommethod import random_method
 from algorithms.hill_climber import HillClimber
 
 # Loader function to load all necessary information from dataset
-from loader import loadall
+from loader import load_all
 
 # Function to store results in csv
 from store import store
@@ -41,7 +41,7 @@ def main():
     """
 
     # Load classrooms, students and courses
-    classrooms_list, students_set, course_set = loadall()
+    classrooms_list, students_set, course_set = load_all()
 
     # Create planner object
     points = 0
