@@ -4,13 +4,13 @@ import pandas as pd
 
 def store(students_set, planner, points):
     """
-    ARGS: 
+    ARGS:
         students_set: Set of all student objects
         planner: Planner object
         points: Int total malus points
     USAGE:
         Writes results after correct format into csv file
-    RETURNS: 
+    RETURNS:
         None
     """
 
@@ -27,4 +27,4 @@ def store(students_set, planner, points):
 
     # Create dataframe and write into csv
     results_df = pd.DataFrame.from_dict(df_dict, orient='columns', dtype=None, columns=None)
-    results_df.to_csv(f'data/results/climber{points}_{datetime.now().strftime("%Y%m%d%H%M")}.csv', mode = 'w+', sep = ';', index=False)
+    results_df.to_csv(f'code/results/schedule{points}_{datetime.now().strftime("%Y%m%d%H%M")}.csv', mode = 'w+', sep = ';', index=False)

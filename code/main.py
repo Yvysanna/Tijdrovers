@@ -56,7 +56,6 @@ def main():
 
     # Create object of class hill climber
     hill = HillClimber(planner, course_set, students_set)
-
     # Run hill climber method and evaluate its results
     i = hill.run()
     student_dict = planner.create_student_dict(students_set)
