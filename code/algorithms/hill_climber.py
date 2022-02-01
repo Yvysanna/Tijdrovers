@@ -3,8 +3,10 @@ import os
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
-from random import randrange, choice, random
+
+from random import randrange, choice, random, sample
 import matplotlib.pyplot as plt
+
 from checker import checker
 
 sys.setrecursionlimit(10000)
@@ -21,30 +23,36 @@ class HillClimber:
 
 
     def activity_switch(self):
-        # Pick two random activities, making sure they are not the same activity
-        index_activity_1 = randrange(0, len(self.planner.slots))
-        random_activity_1 = self.planner.slots[index_activity_1]
-        while True:
-            index_activity_2 = randrange(0, len(self.planner.slots))
-            random_activity_2 = self.planner.slots[index_activity_2]
-            if random_activity_1 != random_activity_2:
-                break
+        """
+        ARGS: 
+            self 
+        USAGE:
+            Switching the timeslots for two activities with each other
+        RETURNS: 
+            index_activity_1, index_activity_2: the two switched activity objects
+        """
+        # Pick two random activities, making sure they are not the same activity        
+        index_activity_1, index_activity_2 = sample(range(0, len(self.planner.slots)),2)
         
         # Switch the position of the activities in the schedule
-        self.planner.slots[index_activity_1] = random_activity_2
-        self.planner.slots[index_activity_2] = random_activity_1
+        self.planner.swap_activities(index_activity_1, index_activity_2)
 
         return(index_activity_1, index_activity_2)
 
 
     def undo_activity_switch(self, index_activity_1, index_activity_2):
+        """
+        ARGS: 
+            self
+            index_activity_1
+            index_activity_2  
+        USAGE:
+            Switching the timeslots for two activities with each other
+        RETURNS: 
+            index_activity_1, index_activity_2: the two switched activity objects
+        """
         # Switch activities back to previous state
-        previous_activity_2 = self.planner.slots[index_activity_1]
-        previous_activity_1 = self.planner.slots[index_activity_2]
-
-        self.planner.slots[index_activity_1] = previous_activity_1
-        self.planner.slots[index_activity_2] = previous_activity_2
-
+        self.planner.swap_activities(index_activity_1, index_activity_2)
 
     def reassign(self):
         # Pick a random tutorial or lab
@@ -119,7 +127,7 @@ class HillClimber:
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        while streak < 1:
+        while streak < 20000:
             # print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
