@@ -130,12 +130,11 @@ def load_results(classrooms_list = None):
         reader = csv.reader(f, delimiter=';')
         next(reader, None)
 
-        # Desired datatype: {Student : [{Day : [Timeslot]}]}
         student_dict = {}
         activity_dict = {}
-        for row in reader:
 
-            # Add entry if student not in dictionary
+        # Read through csv to collect information for student and activity
+        for row in reader:
             name = row[0]
             day = row[4]
             time = row[5]
@@ -143,6 +142,8 @@ def load_results(classrooms_list = None):
             act_name = row[1]
             act_type = row[2]
             act_room = row[3]
+
+            # Create activity object and add to activity dict {'activity name': Activity object}
             if act_name not in activity_dict.keys():
                 room = [r for r in classrooms_list if r.name == act_room][0]
                 activity_dict[act_name] = Activity(act_type, act_name, room, room.capacity, day, time)
@@ -156,8 +157,8 @@ def load_results(classrooms_list = None):
             else:
                 # Add entry if day not in dictionary for this student
                 if not any(day in d for d in student_dict[name]):
-                    #print (student_dict)
                     student_dict[name].append({day: [time]})
+
                 # Add entry if student and day are both in dictionary
                 else:
                     for x in student_dict[name]:

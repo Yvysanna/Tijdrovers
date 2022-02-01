@@ -37,6 +37,10 @@ class Activity:
         self._day = day
         self._timeslot = timeslot
 
+    def change_day_time(self, day, timeslot):
+        self._day = day
+        self._timeslot = timeslot
+
     def confirm_registration(self, student):
         """Returns whether or not a student is registered to this activity"""
         if student in self._students_list:
