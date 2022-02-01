@@ -1,4 +1,6 @@
 from math import floor
+
+import random
 #from code.objects.classroom import Classroom
 #from copy import copy
 
@@ -29,20 +31,10 @@ class Planner:
         if activity in self.slots:
             index = self.slots.index(activity)
             return self.get_slot(index)
-            
-            #day = self.days[((index % (len(self.rooms) * len(self.days))) % len(self.days))]
-            #room = self.rooms[index % len(self.rooms) * len(self.days) // len(self.days)]
-            #time = self.times[index // (len(self.rooms) * len(self.days))]
-            #print(day, room.name, time)
-
-            # Calculations without timeslot 17-19
-            #day = self.days[floor(index / (len(self.times) * len(self.rooms)))]
-            #idx = index % (len(self.times) * len(self.rooms) + 1)
-            #room = self.rooms[floor(idx / len(self.times))]
-            #time = self.times[idx % len(self.times)]
-            #return room, day, time
-
         return None, None, None
+
+    def swap_activities(self, i1, i2):
+        self.slots[i1], self.slots[i2] = self.slots[i2], self.slots[i1]
 
     def insert_activity(self, activity, room, day, time):
         """
@@ -51,10 +43,7 @@ class Planner:
         rindex = self.rooms.index(room)
         dindex = self.days.index(day)
         tindex = self.times.index(time)
-        #index = dindex * (len(self.times) * len(self.rooms)) + (rindex * len(self.times)) + tindex
         index = dindex + (rindex * len(self.days)) + (tindex * len(self.days) * len(self.rooms))
-        #print(index)
-        #print(index, rindex, dindex, tindex)
         if index >= len(self.slots) or self.slots[index] != None:
             return -1
         self.slots[index] = activity
@@ -68,9 +57,6 @@ class Planner:
         tindex = self.times.index(time)
         index = tindex * (len(self.times) * len(self.rooms)) + dindex
         return self.slots[index : index + ((len(self.rooms) - 1) * len(self.days)) : len(self.days)]
-
-        #index = dindex * (len(self.times) * len(self.rooms)) + tindex
-        #return self.slots[index : index + (len(self.rooms) * len(self.times)) - tindex : len(self.times)]
 
     def plan_parallel(self, activities):
         for day in self.days:
@@ -104,16 +90,9 @@ class Planner:
         RETURNS: room, day, time
         '''
         # Calculation to avoid looping but still finding indexes for what we want
-
-        # idx = index % (len(self.times) * len(self.rooms))
         day = self.days[(index % (len(self.rooms) * len(self.days))) % len(self.days)]
         room = self.rooms[index % (len(self.rooms) * len(self.days)) // len(self.days)]
         time = self.times[index // (len(self.rooms) * len(self.days))]
-        
-        # room = self.rooms[floor(idx / len(self.times))]
-        # day = self.days[floor(index / (len(self.times) * len(self.rooms)))]
-        # time = self.times[idx % len(self.times)]
-        #print(room, day, time)
         return room, day, time
 
     def get_capacity_info(self):

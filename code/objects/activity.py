@@ -1,20 +1,60 @@
 class Activity:
+    '''
+    Activity object for each activity (lecture, tutorial or lab) for a certain course
+
+    ATTRIBUTES:
+        str: type
+        object: room
+        list: room_list
+        list: students_list
+        int: max_capacity
+        str: name
+        str or None: day
+        str or None: timeslot
+
+    METHODS:
+    confirm_registration(student):
+        Returns whether a student is in the list for this activity
+    has_space():
+        Checks if the activity has not reached the max of allowed enrollments yet
+    register(student):
+        Adds a student to its student list
+    malus_points():
+        Calculates the malus points it causes with a late timeslot and more students enrolled than room capacity
+    __str__():
+        Represents the class as a string
+    __repr__():
+        Defines the class representation
+    '''
 
     def __init__(self, act_type, name, room, max_capacity, day = None, timeslot = None):
-        
-        self.room_list = []
-
         self._type = act_type
         self._room = room
+        self.room_list = []
         self._students_list = []
         self._max_capacity = max_capacity
         self._name = name
         self._day = day
         self._timeslot = timeslot
 
+    def change_day_time(self, day, timeslot):
+        self._day = day
+        self._timeslot = timeslot
+
     def confirm_registration(self, student):
-        # Correction
+        """Returns whether or not a student is registered to this activity"""
         if student in self._students_list:
+            return True
+        return False
+
+    def has_space(self):
+        """Return True if max enrollment has not been exceeded yet, else False"""
+        return len(self._students_list) < self._max_capacity
+
+    def register(self, student):
+        """Returns True if student registration successfull, else False"""
+        if self.has_space():
+            self._students_list.append(student)
             return True
         return False
 
@@ -28,16 +68,6 @@ class Activity:
         return malus
     
     
-    # def add_students(self, student):
-    #     '''
-    #     Connect student objects to according activity
-    #     RETURNS: True if added, False if student could not be added
-    #     '''
-    #     if len(self._students_list) < self._student_count:
-    #         self._students_list.append(student)
-    #         return True
-    #     return False
-
     def __str__(self):
         # return self._name
         return f'\n{self._name}'

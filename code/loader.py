@@ -4,18 +4,17 @@
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #
 # - Loads in data from csv files
-# - Initializes objects
+# - Initializes and connects objects
 # 
-# Functions: load_classrooms, 
+# Functions: load_classrooms, load_courses, load_students, load_activities, load_results, load_all 
 # ==================================================================================
 
 import csv
-import itertools
 
 from objects.course import Course
 from objects.classroom import Classroom
 from objects.student import Student
-from algorithms.register import Register
+from objects.activity import Activity
 
 
 def load_classrooms():
@@ -25,7 +24,7 @@ def load_classrooms():
     USAGE:
         Loads all classrooms from csv file
     RETURNS:
-        List of all classroom objects sorted by classroom capacity ascending
+        Sorted list of all classroom objects sorted by classroom capacity ascending
     """
 
     # Open and read through classrooms csv
@@ -97,90 +96,69 @@ def load_students(course_set):
     return students_set  
 
 
-def load_activities(students_set, course_set, classrooms_list):
+def load_activities(course_set, classrooms_list):
     """
     ARGS:
-        students_set, course_set, classrooms_list
+        course_set, classrooms_list
     USAGE:
-        Loads all students from csv file
-        Creates student objects and connects them with the according course objects
+        Creates activity objects through courses and randomly registers students into it
     RETURNS:
-        students_set: set of student objects
+        None
     """
     for course in course_set:
         course.create_activities(classrooms_list)
-        register_course = Register(course)
-        
+        course.random_register()
 
-        for student in students_set:
-            if course in student.courses:
-                # Add students to courses
-                register_course.random_register(student)
-
-
-def connect_courses(students_set, course_set):
-    # Connect student objects with according course objects
-    for student in students_set:
-        classmates_list = []
-
-        for i, course in enumerate(student.courses):
-            course_object = list(filter(lambda subj: subj.name == course, course_set))[0]
-            student.courses[i] = course_object
-
-            # Add all students in the same courses to a list and repeat as many times as there are lectures
-            for _ in itertools.repeat(None, course_object._lectures_number):
-                classmates_list.extend(course_object._students_set)
-
-        # Counts how often this student is in the same lecture per classmate
-        #print(classmates_list)
-        student.classmates.update(classmates_list)
 
 def load_results(classrooms_list = None):
     """
-    Loads results from results.csv for maluspoint calculation
-    RETURNS: List of activities & Dictionary in format according to maluspoint calculation
+    ARGS:
+        optional: classrooms_list
+    USAGE:
+        Loads results from results.csv for maluspoint calculation
+    RETURNS: 
+        List of activities, students dictionary {Student : [{Day : [Timeslot]}]}
     """
-    file = 'data/semirandom.csv'
+    file = 'data/climber64.csv'
 
+    # Create list with classroom objects if not given as argument
     if not classrooms_list:
         classrooms_list = load_classrooms()
 
     # Open schedule
-    # with open('data/results/results.csv', 'r', encoding="ISO-8859-1") as f:
     with open(file, 'r', encoding="ISO-8859-1") as f:
         reader = csv.reader(f, delimiter=';')
         next(reader, None)
 
-        # Desired datatype: {Student : [{Day : [Timeslot]}]}
         student_dict = {}
         activity_dict = {}
-        for row in reader:
 
-            # Add entry if student not in dictionary
-            name = row[0] #student name
+        # Read through csv to collect information for student and activity
+        for row in reader:
+            name = row[0]
             day = row[4]
             time = row[5]
 
             act_name = row[1]
             act_type = row[2]
             act_room = row[3]
+
+            # Create activity object and add to activity dict {'activity name': Activity object}
             if act_name not in activity_dict.keys():
                 room = [r for r in classrooms_list if r.name == act_room][0]
-                from objects.activity import Activity
                 activity_dict[act_name] = Activity(act_type, act_name, room, room.capacity, day, time)
             
             activity = activity_dict[act_name]
             if name not in activity._students_list:
                 activity._students_list.append(name) 
                 
-
             if name not in student_dict:
                 student_dict[name] = [{day: [time]}]
             else:
                 # Add entry if day not in dictionary for this student
                 if not any(day in d for d in student_dict[name]):
-                    #print (student_dict)
                     student_dict[name].append({day: [time]})
+
                 # Add entry if student and day are both in dictionary
                 else:
                     for x in student_dict[name]:
@@ -190,7 +168,8 @@ def load_results(classrooms_list = None):
 
         return list(activity_dict.values()), student_dict
 
-def loadall():
+
+def load_all():
     """
     ARGS: 
         None 
@@ -205,7 +184,7 @@ def loadall():
     course_set = load_courses()
     students_set = load_students(course_set)
     
-    load_activities(students_set, course_set, classrooms_list)
+    load_activities(course_set, classrooms_list)
     return classrooms_list, students_set, course_set
 
 if __name__ == '__main__':

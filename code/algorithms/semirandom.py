@@ -15,27 +15,24 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
             # Check if activity can be scheduled
             room, day, time = planner.get_info(activity)
 
-    #---- SEMI RANDOM METHOD FIX FROM HERE ----- #
+            # Add all not scheduled to a list for random procedure
             if not room:
                 not_scheduled.add(activity)
 
-    #print("NOT SCHEDULED", len(not_scheduled))
+    # Proceed random from here
     for activity in not_scheduled:
 
         # Loop until activity could be planned for each activity
         while planner.get_info(activity) == (None, None, None):
             room = random.choice(classrooms_list)
             day = random.choice(days)
-            time = random.choice (timeslots)
-            #print(room, day, time)
+            time = random.choice(timeslots)
 
             # Just try to insert activity with random data there and see if it works
             planner.insert_activity(activity, room, day, time)
-        #print(activity, "planning succeeded")
-        room, day, time = planner.get_info(activity) # Final checkup
-        activity._room = room # Connect room when broken out of while loop
-        activity._timeslot = (day, time)
 
-        if planner.get_info(activity) == (None, None, None):
-            print("NOT FIXED")
-    # ----- SEMI RANDOM METHOD END ----- #
+        # Check if successfull and if so, add room and timeslot
+        room, day, time = planner.get_info(activity) 
+        activity.change_day_time(day, time)
+
+        

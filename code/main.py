@@ -17,7 +17,7 @@ from algorithms.randommethod import random_method
 from algorithms.hill_climber import HillClimber
 
 # Loader function to load all necessary information from dataset
-from loader import loadall
+from loader import load_all
 
 # Function to store results in csv
 from store import store
@@ -41,26 +41,32 @@ def main():
     """
 
     # Load classrooms, students and courses
-    classrooms_list, students_set, course_set = loadall()
+    classrooms_list, students_set, course_set = load_all()
 
     # Create planner object
-    planner = Planner(classrooms_list)
+    points = 0
 
     # Fill planner with semirandom method
-    semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
+    while points == False or points == 0:
+        planner = Planner(classrooms_list)
+        semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
+        student_dict = planner.create_student_dict(students_set)
+        points = checker(planner.slots, student_dict)
+
 
     # Create object of class hill climber
     hill = HillClimber(planner, course_set, students_set)
 
     # Run hill climber method and evaluate its results
-    hill.run()
+    i = hill.run()
     student_dict = planner.create_student_dict(students_set)
     points = checker(planner.slots, student_dict)
 
     # Create visualtization and csv dataset from results
     store(students_set, planner, points)
 
-    return points
+    return points, i
 
 if __name__ == '__main__':
     main()
+    #print(main())

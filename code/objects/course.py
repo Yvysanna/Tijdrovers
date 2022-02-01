@@ -1,5 +1,6 @@
 import math
 import copy
+from random import choice
 
 from objects.activity import Activity
 
@@ -65,7 +66,7 @@ class Course:
 
         self._lectures_number = int(lectures_number)
         self._tutorials_number = int(tutorials_number)
-        self._tutorials_max = int(tutorial_max) if tutorial_max != 'nvt' else 0
+        self._tutorial_max = int(tutorial_max) if tutorial_max != 'nvt' else 0
         self._labs_number = int(labs_number)
         self._lab_max = int(lab_max) if lab_max != 'nvt' else 0
         self._students_set = set()
@@ -105,60 +106,54 @@ class Course:
             self._lectures.append(lecture)
         self._timeslots += self._lectures_number # Count timeslots accordingly
 
-        # Tutorials, calculate number tutorials through amount student/ max amount accepted per tutorial
-        tutorials_num = math.ceil(self.students_number/self._tutorials_max) if self._tutorials_number > 0 else 0
-        if tutorials_num > 0:
-            student_number = math.ceil(self.students_number/tutorials_num) # Total amount students after course is divided
+        self._tutorials = Course.create_activity_list(
+            'Tutorial', self.name, self._tutorials_number, self._tutorial_max, self.students_number, classrooms)
 
-            # Same procedure as Lecture; look for ideal classroom
-            classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
-            for x in range(tutorials_num):
-                self._tutorials.append(Activity('Tutorial', f'{self.name} Tutorial {x + 1}', classroom, self._tutorials_max))
-            self._timeslots += tutorials_num
+        self._labs = Course.create_activity_list(
+            'Lab', self.name, self._labs_number, self._lab_max, self.students_number, classrooms)
+      
+    def random_register(self):
+        """Register students into activities"""
+        for student in self._students_set:
+            # Add student to every lecture and add every lecture to student activity list
+            for lecture in self._lectures:
+                student.add_activity(lecture)
 
-        # Same procedure for Labs
-        lab_number = math.ceil(self.students_number/self._lab_max) if self._labs_number > 0 else 0
-        if lab_number > 0:
-            student_number = math.ceil(self.students_number/lab_number)
+            Course.assign_activity(self._tutorials, student)
+            Course.assign_activity(self._labs, student)
+    
+    def assign_activity(activities, student):
+        possible_activities = []
+
+        if activities:
+            for activity in activities:
+                if activity.has_space():
+                    possible_activities.append(activity)
+
+            assigned_activity = choice(possible_activities)
+
+            if assigned_activity.register(student):
+                student.add_activity(assigned_activity)
+
+    def create_activity_list(type, name, number, max, students_number, classrooms):
+    
+        activities = []
+        activity_number = math.ceil(students_number/max) if number > 0 else 0
+        if activity_number > 0:
+            student_number = math.ceil(students_number/activity_number)
             # List of all classrooms greater than amount students enrolled
             classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
-            for x in range(lab_number):
-                self._labs.append(Activity('Lab', f'{self.name} Lab {x + 1}', classroom, self._lab_max))
-            self._timeslots += lab_number
+            for x in range(activity_number):
+                activities.append(Activity(type, f'{name} {type} {x + 1}', classroom, max))
+            #self._timeslots += activity_number
 
-   
+        return activities
+
 
     def __str__(self) -> str:
         '''Represents class as a string'''
-        return str([
-            self.name,
-            #self._lectures_number,
-            #self._tutorials_number,
-            #self._tutorials_max,
-            #self._labs_number,
-            #self._lab_max,
-            # self.students_number,
-            # self._activities
-            #self._timeslots,
-            # self.possible_classrooms
-            # self._students_set
-            # len(self._students_set)
-
-        ])
+        return str(self.name)
 
     def __repr__(self) -> str:
         '''Represents class as a string'''
-        return str([
-            self.name,
-            #self._lectures_number,
-            #self._tutorials_number,
-            #self._tutorials_max,
-            #self._labs_number,
-            #self._lab_max,
-            # self.students_number,
-            # self._activities
-            #self._timeslots,
-            # self.possible_classrooms
-            # self._students_set
-            # len(self._students_set)
-        ])
+        return str(self.name)
