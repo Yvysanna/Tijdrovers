@@ -7,75 +7,6 @@
 # - other course in order to prevent conflicting courses in the schedule
 # ==================================================================================
 
-from itertools import combinations, chain
-
-def find_course_conflicts(students_set, course_set):
-    # Creates the desired data structure {Course : {Course : list[Student]}}
-    course_dict = {}
-    conflicting_pairs = {}
-    for course in course_set:
-        course_dict[course] = {}
-    for element in course_dict.values():
-        for course in course_set:
-            element[course] = []
-
-    # If a student follows more than one course, get every combination of those courses
-    for student in students_set:
-        if len(student.courses) > 1:
-            combs = list(combinations(student.courses, 2))
-
-            # Add students to the list for the conflicting pair
-            for conflict in combs:
-                course_dict[conflict[0]][conflict[1]].append(student)
-                course_dict[conflict[1]][conflict[0]].append(student)
-
-                conflicting_pairs[conflict] = len(course_dict[conflict[0]][conflict[1]])
-
-    # Sort dictionary (taken from https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value)
-    conflicting_pairs = {k: v for k, v in sorted(conflicting_pairs.items(), reverse=True, key=lambda item: item[1])}
-
-    # Create a list of courses, ordered by highest conflict count with another course
-    ordered_courses = []
-
-    for combination in conflicting_pairs.keys():
-        if combination[0] not in ordered_courses:
-            ordered_courses.append(combination[0])
-        if combination[1] not in ordered_courses:
-            ordered_courses.append(combination[1])
-
-    return course_dict, ordered_courses
-
-
-def find_activity_conflicts(course_set, students_set):
-    # Creates the desired data structure {Activity : {Activity : list[Student]}}
-    activity_dict = {}
-    for course in course_set:
-        for activity in chain(course._lectures,course._tutorials, course._labs):
-            activity_dict[activity] = {}
-    for element in activity_dict.values():
-        for course in course_set:
-            for activity in chain(course._lectures,course._tutorials, course._labs):
-                element[activity] = []
-
-    # If a student follows more than one course, get every combination of activities
-    for student in students_set:
-        if len(student.courses) > 1:
-            activity_list = []
-            for course in student.courses:
-                for activity in chain(course._lectures,course._labs, course._tutorials):
-                    if student in activity.student_list:
-                        activity_list.append(activity)
-            combs = list(combinations(activity_list, 2))
-
-            # For every conflicting pair of courses, add to dictionary
-            for conflict in combs:
-                if conflict[0] in activity_dict:
-                    activity_dict[conflict[0]][conflict[1]].append(student)
-                    activity_dict[conflict[1]][conflict[0]].append(student)
-
-    return activity_dict
-
-
 def find_conflict_free_activities(course_set):
     """
     ARGS: course_set, set of course objects
@@ -87,7 +18,7 @@ def find_conflict_free_activities(course_set):
     counter = 0
 
     # Create list of activities through looping through each course; may be updated with chain method?!
-    activities = [activity for course in course_set for activity in course._lectures + course._tutorials + course._labs]
+    activities = [activity for course in course_set for activity in course.lectures + course.tutorials + course.labs]
     queue = [activity for activity in activities] # just to avoid duplicates, can't be type(set) bc of indexing
 
     # Sort list so that Lecture activities are on top
@@ -114,40 +45,3 @@ def find_conflict_free_activities(course_set):
     result.sort(key=lambda acts: len(acts), reverse=True)
 
     return result
-
-def book_rooms_for_parallel_activities(result, classroom_list, counter=0):
-    taken_activities = []
-    for activities in result:
-        counter += 1
-        activities.sort(key=lambda act: len(act.student_list), reverse=True)
-
-        leftover_activities = []
-        activity_dict = {}
-        for activity in activities:
-            activity._counter = counter # Only for printing and checking necessary
-
-            # Only add activity if room not taken yet
-            if not activity.room in activity_dict.keys():
-                activity_dict[activity.room] = activity
-            else:
-                # Check for next possible greater rooms (since classroom list is sortest from smallest to tallest)
-                next_rooms = classroom_list[classroom_list.index(activity.room) + 1:]
-
-                for room in next_rooms:
-                    if not room in activity_dict.keys():
-                        activity.room = room
-                        activity_dict[activity.room] = activity
-                        break # Sorry... will fix this later
-                
-                if activity.room in activity_dict.keys():
-                    if activity != activity_dict[activity.room]:
-                        leftover_activities.append(activity) # Activity cannot be scheduled parallel with others
-
-        taken_activities.append(list(activity_dict.values()))
-        if leftover_activities:
-
-            # Recursive loop to call this function again to schedule activities with eachother
-            for activities in book_rooms_for_parallel_activities([leftover_activities], classroom_list, counter+1):
-                taken_activities.append(activities)
-
-    return taken_activities

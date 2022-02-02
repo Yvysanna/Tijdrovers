@@ -76,13 +76,13 @@ class HillClimber:
         while len(possible_activities) == 0:
             random_course = choice(self._courses)
             # Only take activities with multiple groups
-            if len(random_course._tutorials) > 1:
-                possible_tutorials.extend(random_course._tutorials)
-                possible_activities.extend(random_course._tutorials)
+            if len(random_course.tutorials) > 1:
+                possible_tutorials.extend(random_course.tutorials)
+                possible_activities.extend(random_course.tutorials)
 
-            if len(random_course._labs) > 1:
-                possible_labs.extend(random_course._labs)
-                possible_activities.extend(random_course._labs)
+            if len(random_course.labs) > 1:
+                possible_labs.extend(random_course.labs)
+                possible_activities.extend(random_course.labs)
 
         # Pick a random group and determine which type of activity the next group needs to be
         random_group_1 = choice(possible_activities)

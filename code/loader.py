@@ -90,7 +90,6 @@ def load_students(course_set):
                     
                     # Find course object through equivalent string, connect student object with course object
                     course_object = [c for c in course_set if c.name == course][0]
-                    student.add_course(course_object)
                     course_object.add_student(student)
 
     return students_set  
@@ -191,7 +190,6 @@ if __name__ == '__main__':
     #import time
     # classrooms_list, students_set, course_set= loadall()
     # for course in course_set:
-    #     print(course._labs)
     from checker import checker
     print(checker(*load_results()))
 

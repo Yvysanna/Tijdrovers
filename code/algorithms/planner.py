@@ -110,12 +110,12 @@ class Planner:
                 busy_slots.append(self.get_slot(idx))
         return {f"free slots: ({len(free_slots)})" :free_slots, "busy slots": len(busy_slots)}
 
-    def malus_points(self):
-        return sum(a.malus_points() for a in self.slots if a)
+    def maluspoints(self):
+        return sum(a.maluspoints() for a in self.slots if a)
 
     def unplan(self):
 
-        malus_activities = [activity for activity in self.slots if activity and activity.malus_points()]
+        malus_activities = [activity for activity in self.slots if activity and activity.maluspoints()]
         for activity in self.slots:
             if activity:
                 pass
@@ -131,7 +131,7 @@ class Planner:
         student_dict = {}  
         for student in students_set:
             slots = {}
-            name = f'{student._last_name} {student._first_name}'
+            name = f'{student.last_name} {student.first_name}'
             student_dict[name] = []
             for activity in student.activities:
                 room, day, time = self.get_info(activity)

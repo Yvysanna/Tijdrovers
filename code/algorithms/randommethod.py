@@ -8,7 +8,7 @@ def random_method(course_set, classrooms_list, planner, days, timeslots):
     """
     all_activities_global = []
     for course in course_set:
-        all_activities = course._lectures + course._tutorials + course._labs
+        all_activities = course.lectures + course.tutorials + course.labs
 
         for activity in all_activities:
             all_activities_global.append(activity)
