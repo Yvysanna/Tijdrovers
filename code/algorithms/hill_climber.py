@@ -1,13 +1,13 @@
 import sys
 import os
 
-from checker import checker
-from random import choice, random, sample
-
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 sys.setrecursionlimit(10000)
+
+from checker import checker
+from random import choice, random, sample
 
 
 class HillClimber:
@@ -382,7 +382,7 @@ class HillClimber:
         tstart = old_points
 
         if algorithm == 'annealing' or algorithm == 'climber-annealing':
-            for x in range(self.iteration_limit):
+            for x in range(self.iteration_limit // 2):
                 if iteration % 1000 == 0:
                     print(f"Iteration: {iteration}, Streak: {current_streak}, Points: {old_points}")
                 current_streak, old_points = self.activity_climber(

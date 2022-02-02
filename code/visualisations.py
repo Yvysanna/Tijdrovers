@@ -60,7 +60,7 @@ def distribution(points, n):
 
     minimum = min(points) // 10 * 10 - 50
     maximum = max(points) // 10 * 10 + 50
-    plt.hist(points, range=(minimum, maximum), color='midnightblue', edgecolor='mediumblue', density=True, bins=(maximum - minimum) // 10 + 1)
+    plt.hist(points, range=(minimum, maximum), color='midnightblue', edgecolor='mediumblue', density=True, bins=12)
     plt.xlim(minimum, maximum)
     plt.title(f"Probability distribution of maluspoints across {n} runs")
     plt.xlabel("Maluspoints")
@@ -86,4 +86,4 @@ def plot(plotx, ploty, streak, algorithm):
     plt.ylabel("Maluspoints")
     plt.title(f"Points during hill climber after {len(ploty)} iterations")
     plt.grid()
-    plt.savefig(f'code/algorithms/plots/{algorithm}{streak}.png', dpi=1000)
+    plt.savefig(f'code/algorithms/plots/{algorithm}{len(ploty)}.png', dpi=1000)
