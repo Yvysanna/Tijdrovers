@@ -50,16 +50,18 @@ Install dependencies<br>
 Run the program
 
 ```bash
-  python3 main.py [-s STREAK_LIMIT] [-p POINT_LIMIT] [-i ITERATION_LIMIT] [-t TEMPERATURE_MULTIPLIER] [-d DISTRIBUTION] [-g GRAPH] [-n RUNS] [-a ALGORITHM]
+  python3 main.py [-s STREAK_LIMIT] [-p POINT_LIMIT] [-i ITERATION_LIMIT] [-t TEMPERATURE_MULTIPLIER] [-c CONSTRAINT] [-d DISTRIBUTION] [-g GRAPH] [-n RUNS] [-a ALGORITHM]
 ```
 
-The streak limit is an integer that determines for the hill climber after how many non-improvements the program should stop.
-The poit limit is an integer that determines for the climber-annealing program after how many iterations it should switch from climbing to annealing
-The iteration limit is an integer that determines for the annealing program after how many interations the program should stop
-The distribution is a boolean value that determines whether or not a histogram should be plotted of the points across N runs
-The graph is a boolean value that determines whether or not a line graph should be made of the maluspoints plotted against the iterations for one run
-The number of runs is an integer that determines how often the main program should run
-The algorithm is a string that determines whether the hill climber ('climber'), simulated annealing ('annealing'), or a combination ('annealing_climber') should run.
+* The streak limit is an integer that determines for the hill climber after how many non-improvements the program should stop.
+* The point limit is an integer that determines for the climber-annealing program after how many iterations it should switch from climbing to annealing
+* The iteration limit is an integer that determines for the annealing program after how many interations the program should stop
+* The temperature multiplier is a float that determines the effect of the current temperature on the chance to accept a state
+* The constraint is a boolean value that determines whether a hard or a soft constraint will be used for the third break term
+* The distribution is a boolean value that determines whether or not a histogram should be plotted of the points across N runs
+* The graph is a boolean value that determines whether or not a line graph should be made of the maluspoints plotted against the iterations for one run
+* The number of runs is an integer that determines how often the main program should run
+* The algorithm is a string that determines whether the hill climber ('climber'), simulated annealing ('annealing'), or a combination ('annealing_climber') should run.
 
 ## Acknowledgements
 
