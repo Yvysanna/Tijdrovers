@@ -39,10 +39,9 @@ class HillClimber:
         # Pick two random activities, making sure they are not the same activity        
         # https://stackoverflow.com/questions/22842289/generate-n-unique-random-numbers-within-a-range
         index_activity_1, index_activity_2 = sample(range(0, len(self.planner.slots)),2)
-        #print(f'old activity: {self.planner.slots[index_activity_1]}')
+
         # Switch the position of the activities in the planner
         self.planner.swap_activities(index_activity_1, index_activity_2)
-        #print(f'new activity: {self.planner.slots[index_activity_1]}')
         return(index_activity_1, index_activity_2)
 
 
@@ -58,9 +57,7 @@ class HillClimber:
             index_activity_1, index_activity_2: the indices of the switched activities
         """
         # Switch activities back to previous state
-        #print(f'switched indexe 1:{index_activity_1}')
         self.planner.swap_activities(index_activity_1, index_activity_2)
-        #print(f'back to old:{self.planner.slots[index_activity_1]}')
 
     def reassign(self):
         """
