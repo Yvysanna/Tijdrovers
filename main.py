@@ -3,8 +3,8 @@
 #
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #
-# - Usage: python3 main.py -s streak_limit (int) -p point_limit (int) 
-#          -i iteration_limit (int) -t temperature_multiplier (float) 
+# - Usage: python3 main.py -s streak_limit (int) -p point_limit (int)
+#          -i iteration_limit (int) -t temperature_multiplier (float)
 #          -d distribution (bool) -g graph (bool) -n runs (int) -a algorithm (str)
 #
 # - Creates class schedule using the provided data using a hill climber
@@ -23,7 +23,6 @@
 #   may cause bugs
 # ==================================================================================
 
-import time
 from statistics import mean
 import argparse
 

@@ -16,16 +16,20 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
     """
     Creates a schedule after certain constrains
     random schedules everything that cannot be planned under constrains
-    ARGS:
-        course_set: set containing all course objects
-        classrooms_list: list with all classroom objects 
-        planner: planner object holding the whole schedule
-        days: list with all possible days to schedule
-        timeslots: list with all possible timeslots to schedule
-    RETURNS:
-        None
-    """
     
+    ARGS:
+    course_set: set(Course objects)
+        set containing all course objects
+    classrooms_list: [Classroom objects]
+        list with all classroom objects
+    planner: Planner object
+        planner object holding the whole schedule
+    days: [str]
+        list with all possible days to schedule
+    timeslots: [str]
+        list with all possible timeslots to schedule
+    """
+
     # Find every pair of activities that can be taught in the same timeslot
     result = find_conflict_free_activities(course_set)
     not_scheduled = set()
@@ -63,7 +67,7 @@ def find_conflict_free_activities(course_set):
     Checks which activities can be held parallel without students facing overlap
 
     ARGS:
-        course_set : set(Course objects) 
+        course_set : set(Course objects)
         All the courses which contain activities
     RETURNS:
         List of lists of all activities that can be held parallel to eachother, only having each activity appear once
