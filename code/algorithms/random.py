@@ -1,5 +1,5 @@
 # ==================================================================================
-# randommethod.py
+# random.py
 #
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #

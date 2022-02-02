@@ -13,7 +13,7 @@ from algorithms.planner import Planner
 
 # Algorithm functions
 from algorithms.semirandom import semirandom
-from algorithms.randommethod import random_method
+from algorithms.random import random
 from algorithms.hill_climber import HillClimber
 
 # Loader function to load all necessary information from dataset
