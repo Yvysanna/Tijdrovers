@@ -30,7 +30,15 @@ With these soft constraints also come a few hard constraints:<br>
 
 ## Solution summary
 
-Explanation of summary here
+For this problem we have experimented with hill climbers, simulated annealing and a combination of the two algorithms. All of these algorithms alternate between two functions that randomly switch activities between time slots and randomly switch students between activity groups.
+
+For the begin position, we create a begin position with either random_method or semirandom. Random_method creates a completely random schedule, while semirandomtries to create a schedule with the least amount of conflicts.
+
+The hill climber keeps track of how many non-improvements are made after each state change. The algorithm keeps changing the state randomly and only keeps the state if an improvement is made. After the maximum number of non-improvements or 'streak' has been reached, the algorithm stops and a schedule is created from the last state.
+
+Simulated annealing keeps changing the state randomly and decides based on a calculated chance if a state with a worse score will be accepted. States with a better score will always be accepted. The algorithm will stop after a determined number of iterations.
+
+The climber_annealing is a combination of the aforementioned algorithms. This algorithm starts like a hill climber until a certain number of points is reached. After that the algorithm changes into a simulated annealing until the iteration limit has been reached. Finally, the algorithm runs like a climber again until the streak limit has been reached.
 
 ## Run Locally
 
