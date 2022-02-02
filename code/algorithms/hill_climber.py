@@ -199,11 +199,6 @@ class HillClimber:
             self.student_switch(
                 random_student_2, random_group_1, random_group_2)
 
-        assert len(
-            random_group_1.student_list) <= random_group_1.max_students, f"Too many students in {random_group_1}: {len(random_group_1.student_list)}"
-        assert len(
-            random_group_2.student_list) <= random_group_2.max_students, f"Too many students in {random_group_2}: {len(random_group_2.student_list)}"
-
     def student_switch(self, student, current_group, new_group):
         """
         Assigns a new activity group to student
@@ -251,7 +246,7 @@ class HillClimber:
         new_points = checker(self.planner.slots, student_dict, self.constraint)
 
         # Determine if climber or annealer comparison is needed
-        if Tstart == None:
+        if Tstart is None:
             comparison_value = new_points
             comparison_base = old_points
         else:
@@ -264,7 +259,7 @@ class HillClimber:
             comparison_base = chance
 
         # Check if improvement was made, allows hard constraints
-        if new_points == False or comparison_value > comparison_base:
+        if new_points is False or comparison_value > comparison_base:
             self.undo_activity_switch(index_activity_1, index_activity_2)
             current_streak += 1
         else:
@@ -302,7 +297,7 @@ class HillClimber:
         new_points = checker(self.planner.slots, student_dict, self.constraint)
 
         # Determine if climber or annealer comparison is needed
-        if Tstart == None:
+        if Tstart is None:
             comparison_value = new_points
             comparison_base = old_points
         else:
@@ -315,9 +310,8 @@ class HillClimber:
             comparison_base = chance
 
         # Check if improvement was made, allows hard constraints
-        if new_points == False or comparison_value > comparison_base:
-            self.undo_reassign(random_group_1, random_group_2,
-                               random_student_1, random_student_2)
+        if new_points is False or comparison_value > comparison_base:
+            self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
             current_streak += 1
         else:
             if new_points < old_points:
@@ -381,8 +375,7 @@ class HillClimber:
                 iteration += 1
                 self.add_data_points(iteration, old_points)
 
-                current_streak, old_points = self.student_climber(
-                    current_streak, old_points)
+                current_streak, old_points = self.student_climber(current_streak, old_points)
                 iteration += 1
                 self.add_data_point(iteration, old_points)
 
@@ -411,8 +404,7 @@ class HillClimber:
                 iteration += 1
                 self.add_data_point(iteration, old_points)
 
-                current_streak, old_points = self.student_climber(
-                    current_streak, old_points)
+                current_streak, old_points = self.student_climber(current_streak, old_points)
                 iteration += 1
                 self.add_data_point(iteration, old_points)
 

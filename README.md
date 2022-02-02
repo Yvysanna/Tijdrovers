@@ -34,7 +34,7 @@ For this problem we have experimented with hill climbers, simulated annealing an
 
 For the begin position, we create a begin position with either random_method or semirandom. Random_method creates a completely random schedule, while semirandomtries to create a schedule with the least amount of conflicts.
 
-The hill climber keeps track of how many non-improvements are made after each state change. The algorithm keeps changing the state randomly and only keeps the state if an improvement is made. After the maximum number of non-improvements or 'streak' has been reached, the algorithm stops and a schedule is created from the last state.
+The hill climber keeps track of how many non-improvements are made after each state change. The algorithm keeps changing the state randomly with the aforementioned switch functions and only keeps the state if an improvement is made. After the maximum number of non-improvements or 'streak' has been reached, the algorithm stops and a schedule is created from the last state. The schedule will be saved as a csv in the code/results folder.
 
 Simulated annealing keeps changing the state randomly and decides based on a calculated chance if a state with a worse score will be accepted. States with a better score will always be accepted. The algorithm will stop after a determined number of iterations.
 
@@ -52,13 +52,13 @@ Install dependencies<br>
 *This code is written in Python 3.8.10 and 3.10.1. To run this code, the required packages are noted down in requirements.txt and can be installed easily via pip with this command:*
 
 ```bash
-  pip install -r requirements.txt
+  pip3 install -r requirements.txt
 ```
 
 Run the program
 
 ```bash
-  python3 main.py [-s STREAK_LIMIT] [-p POINT_LIMIT] [-i ITERATION_LIMIT] [-t TEMPERATURE_MULTIPLIER] [-c CONSTRAINT] [-d DISTRIBUTION] [-g GRAPH] [-n RUNS] [-a ALGORITHM]
+  python3 main.py [-s STREAK_LIMIT] [-p POINT_LIMIT] [-i ITERATION_LIMIT] [-t TEMPERATURE_MULTIPLIER] [-c CONSTRAINT] [-r SEMIRANDOM_BEGIN] [-d DISTRIBUTION] [-g GRAPH] [-n RUNS] [-a ALGORITHM]
 ```
 
 * The streak limit is an integer that determines for the hill climber after how many non-improvements the program should stop.
@@ -66,6 +66,7 @@ Run the program
 * The iteration limit is an integer that determines for the annealing program after how many interations the program should stop
 * The temperature multiplier is a float that determines the effect of the current temperature on the chance to accept a state
 * The constraint is a boolean value that determines whether a hard or a soft constraint will be used for the third break term
+* Semirandom begin is a boolean value that determines whether the semirandom or random algorithm is used for the first state of the climber/annealing algorithm
 * The distribution is a boolean value that determines whether or not a histogram should be plotted of the points across N runs
 * The graph is a boolean value that determines whether or not a line graph should be made of the maluspoints plotted against the iterations for one run
 * The number of runs is an integer that determines how often the main program should run

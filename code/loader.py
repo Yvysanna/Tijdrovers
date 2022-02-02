@@ -108,7 +108,7 @@ def load_activities(course_set, classrooms_list):
         course.random_register()
 
 
-def load_results(file, classrooms_list = None):
+def load_results(file, classrooms_list=None):
     """
     Loads results from results.csv for maluspoint calculation
 
@@ -121,7 +121,6 @@ def load_results(file, classrooms_list = None):
     RETURNS:
         List of activities, students dictionary with format {Student : [{Day : [Timeslot]}]}
     """
-
 
     # Create list with classroom objects if not given as argument
     if not classrooms_list:
