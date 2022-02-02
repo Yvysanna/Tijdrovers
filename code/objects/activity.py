@@ -88,11 +88,10 @@ class Activity:
         '''Calculates the maluspoints it causes using the late timeslot and exceeding of room capacity'''
         capacity = self.room.get_capacity()
 
-        students_count = len(self.student_list)
-        malus = students_count - capacity if students_count > capacity else 0
-        malus += 5 if self.timeslot == '17-19' else 0
-        malus += sum(student.maluspoints() for student in self.student_list)
-
+        student_count = len(self.student_list)
+        malus1 = student_count - capacity if student_count > capacity else 0
+        malus2 = 5 if self.timeslot == '17-19' else 0
+        malus = malus1 + malus2
         return malus
 
     def __str__(self):
