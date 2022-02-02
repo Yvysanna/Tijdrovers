@@ -3,16 +3,17 @@
 #
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #
-# - Usage: python3 main.py -i iterations (int) -d distribution (bool)
-#          -g graph (bool) -a algorithm (str) -n runs (int)
+# - Usage: python3 main.py -s streak_limit (int) -p point_limit (int) 
+#          -i iteration_limit (int) -t temperature_multiplier (float) 
+#          -d distribution (bool) -g graph (bool) -n runs (int) -a algorithm (str)
 #
 # - Creates class schedule using the provided data using a hill climber
 # - Reduces the number of maluspoints as much as possible, which are given for
 #   schedule gaps, activity conflicts, exceeding classroom capacity and using
 #   late timeslots
 # - The specific hill climber can be chosen using the algorithm argument,
-#   and the number of iterations in the argument can be provided with the
-#   iterations argument
+#   and the streak limit, point limit, the number of iterations, and the temperature
+#   multiplier in the argument can be provided with their respective arguments
 # - A line graph may be created with the graph argument which plots the number of
 #   maluspoints against the iterations
 # - A distribution graph may be created with the distribution argument which makes
@@ -40,7 +41,7 @@ class InvalidAlgorithm(Exception):
     pass
 
 
-def main(iterations, graph, algorithm):
+def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperature_multiplier):
     """
     Main function for this programm
         * Loads and uses source information in hill climber
@@ -71,28 +72,20 @@ def main(iterations, graph, algorithm):
         points = checker(planner.slots, student_dict)
 
     # Create object of class hill climber
-    hill = HillClimber(planner, course_set, students_set)
+    hill = HillClimber(planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier)
 
     # Run hill climber method and evaluate its results
-    if not algorithm or algorithm == 'climber':
-        algorithm = 'climber'
-        i = hill.run(iterations)
-    elif algorithm == 'annealing':
-        i = hill.run_annealing(iterations)
-    elif algorithm == 'annealing_climber':
-        i = hill.run_annealing_climber(iterations)
-    else:
-        raise InvalidAlgorithm("This algorithm is invalid")
+    iterations = hill.run(algorithm)
     student_dict = planner.create_student_dict(students_set)
     points = checker(planner.slots, student_dict)
 
     # Create visualisation and csv dataset from results
     if graph:
-        plot(hill.plotx, hill.ploty, hill.streak)
+        plot(hill.plotx, hill.ploty, hill.streak_limit)
 
     # Save to csv
     store(students_set, planner, points)
-    return points, i
+    return points, iterations
 
 
 if __name__ == '__main__':
@@ -100,11 +93,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='create a class schedule')
 
     # Adding arguments
-    parser.add_argument('-i', '--iterations', type=int, default=10000,help='hill climber iterations (default: 10000)')
+    parser.add_argument('-s', '--streak_limit', type=int, default=1000,help='hill climber non-improvements (default: 1000)')
+    parser.add_argument('-p', '--point_limit', type=int, default=200,help='switching point from climber to annealing (default: 200)')
+    parser.add_argument('-i', '--iteration_limit', type=int, default=10000,help='annealing iterations (default: 10000)')
+    parser.add_argument('-t', '--temperature_multiplier', type=float, default=1,help='annealing temperature multiplier (default: 1)')
     parser.add_argument('-d', '--distribution', type=bool,default=False, help='create distribution histogram (default: False)')
     parser.add_argument('-g', '--graph',   type=bool,default=False,
                         help='create lines graph for single run, do not use together with distribution! (default: False)')
-    parser.add_argument('-n', '--runs', type=int, default=1, help='number of runs (default: 5)')
+    parser.add_argument('-n', '--runs', type=int, default=1, help='number of runs (default: 1)')
     parser.add_argument('-a', '--algorithm', type=str, default='climber', help='select algorithm: climber, annealing or annealing_climber (default: climber)')
 
     # Read arguments from command line
@@ -113,7 +109,7 @@ if __name__ == '__main__':
     # Run main with provided arguments
     points, iterations = [], []
     for _ in range(args.runs):
-        new_points, i = main(args.iterations, args.graph, args.algorithm)
+        new_points, i = main(args.graph, args.algorithm, args.streak_limit, args.iteration_limit, args.point_limit, args.temperature_multiplier)
         points.append(new_points)
         iterations.append(i)
 
