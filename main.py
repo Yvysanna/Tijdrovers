@@ -103,7 +103,7 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--distribution', type=bool,default=False, help='create distribution histogram (default: False)')
     parser.add_argument('-g', '--graph',   type=bool,default=False,
                         help='create lines graph for single run, do not use together with distribution! (default: False)')
-    parser.add_argument('-n', '--runs', type=int, default=1, help='number of runs (default: 5)')
+    parser.add_argument('-n', '--runs', type=int, default=1, help='number of runs (default: 1)')
     parser.add_argument('-a', '--algorithm', type=str, default='climber', help='select algorithm: climber, annealing or annealing_climber (default: climber)')
 
     # Read arguments from command line
