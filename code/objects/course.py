@@ -109,7 +109,7 @@ class Course:
         # Create as many lecture activity objects as to be planned
         for x in range(self._lectures_number):
             lecture = Activity('Hoorcollege', f'{self.name} Hoorcollege {x + 1}', classroom, self.students_number)
-            lecture._students_list = list(self._students_set)
+            lecture.student_list = list(self._students_set)
             self._lectures.append(lecture)
         self._timeslots += self._lectures_number # Count timeslots accordingly
 

@@ -63,7 +63,7 @@ def find_activity_conflicts(course_set, students_set):
             activity_list = []
             for course in student.courses:
                 for activity in chain(course._lectures,course._labs, course._tutorials):
-                    if student in activity._students_list:
+                    if student in activity.student_list:
                         activity_list.append(activity)
             combs = list(combinations(activity_list, 2))
 
@@ -91,7 +91,7 @@ def find_conflict_free_activities(course_set):
     queue = [activity for activity in activities] # just to avoid duplicates, can't be type(set) bc of indexing
 
     # Sort list so that Lecture activities are on top
-    activities.sort(key=lambda act: act._type == 'Lecture', reverse = True)
+    activities.sort(key=lambda act: act.type == 'Lecture', reverse = True)
 
     for activity_a in activities:
         if activity_a in queue:
@@ -100,10 +100,10 @@ def find_conflict_free_activities(course_set):
             queue.pop(queue.index(activity_a)) # To only find unique matching pairs and not the same course connected to several courses
 
             for activity_b in queue:
-                students_list = set([student for activity in array for student in activity._students_list])
+                students_list = set([student for activity in array for student in activity.student_list])
                 
                 # Check for overlap in registered students
-                if students_list.isdisjoint(activity_b._students_list):
+                if students_list.isdisjoint(activity_b.student_list):
                     queue.pop(queue.index(activity_b))
                     activity_b._counter = counter # just for counting total of groups
                     array.append(activity_b)
@@ -119,7 +119,7 @@ def book_rooms_for_parallel_activities(result, classroom_list, counter=0):
     taken_activities = []
     for activities in result:
         counter += 1
-        activities.sort(key=lambda act: len(act._students_list), reverse=True)
+        activities.sort(key=lambda act: len(act.student_list), reverse=True)
 
         leftover_activities = []
         activity_dict = {}
@@ -127,20 +127,20 @@ def book_rooms_for_parallel_activities(result, classroom_list, counter=0):
             activity._counter = counter # Only for printing and checking necessary
 
             # Only add activity if room not taken yet
-            if not activity._room in activity_dict.keys():
-                activity_dict[activity._room] = activity
+            if not activity.room in activity_dict.keys():
+                activity_dict[activity.room] = activity
             else:
                 # Check for next possible greater rooms (since classroom list is sortest from smallest to tallest)
                 next_rooms = classroom_list[classroom_list.index(activity.room) + 1:]
 
                 for room in next_rooms:
                     if not room in activity_dict.keys():
-                        activity._room = room
-                        activity_dict[activity._room] = activity
+                        activity.room = room
+                        activity_dict[activity.room] = activity
                         break # Sorry... will fix this later
                 
-                if activity._room in activity_dict.keys():
-                    if activity != activity_dict[activity._room]:
+                if activity.room in activity_dict.keys():
+                    if activity != activity_dict[activity.room]:
                         leftover_activities.append(activity) # Activity cannot be scheduled parallel with others
 
         taken_activities.append(list(activity_dict.values()))

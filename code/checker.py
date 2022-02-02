@@ -24,7 +24,7 @@ def checker(activities, student_dict):
     for activity in activities:
         if activity:
             # Calculate maluspoints for room capacity and late timeslot
-            malus += activity.malus_points()
+            malus += activity.maluspoints()
 
     points = [0,1,3,1000] # Maluspoint values
     # Check for timeslots in each day for each student

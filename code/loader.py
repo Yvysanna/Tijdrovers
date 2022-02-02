@@ -149,8 +149,8 @@ def load_results(classrooms_list = None):
                 activity_dict[act_name] = Activity(act_type, act_name, room, room.capacity, day, time)
             
             activity = activity_dict[act_name]
-            if name not in activity._students_list:
-                activity._students_list.append(name) 
+            if name not in activity.student_list:
+                activity.student_list.append(name) 
                 
             if name not in student_dict:
                 student_dict[name] = [{day: [time]}]
