@@ -49,7 +49,7 @@ def main():
     # Fill planner with semirandom method
     while points == False or points == 0:
         planner = Planner(classrooms_list)
-        semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
+        random_method(course_set, classrooms_list, planner, planner.days, planner.times)
         student_dict = planner.create_student_dict(students_set)
         points = checker(planner.slots, student_dict)
 
@@ -63,8 +63,8 @@ def main():
     points = checker(planner.slots, student_dict)
 
     # Create visualtization and csv dataset from results
-    hill.plot()
-    store(students_set, planner, points)
+    # hill.plot()
+    # store(students_set, planner, points)
 
     return points, i
 

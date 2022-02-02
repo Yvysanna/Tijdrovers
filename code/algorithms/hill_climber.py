@@ -6,6 +6,7 @@ sys.path.append(parent)
 from random import randrange, choice, random
 import matplotlib.pyplot as plt
 from checker import checker
+import time
 
 sys.setrecursionlimit(10000)
 
@@ -113,14 +114,16 @@ class HillClimber:
 
 
     def run(self):
+        # start = time.time()
         streak = 0
         i = 0
         # Count current maluspoints
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        while streak < 100000:
-            # print(i, streak, old_points)
+        while streak < 3000:
+            # if i % 100000 == 0:
+            #     print(time.time() - start, i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)
@@ -450,9 +453,9 @@ class HillClimber:
         plt.ylim(0)
         plt.xlabel("Iterations")
         plt.ylabel("Maluspoints")
-        plt.title("Points during hill climber which stops after 5000 non-improvements")
+        plt.title("Points during hill climber which stops after 1000 non-improvements")
         plt.grid()
-        plt.savefig('code/algorithms/plots/climber.png', dpi=1000)
+        plt.savefig('code/algorithms/plots/climber1000.png', dpi=1000)
 
 
     def add_value(self, i, new_points):
