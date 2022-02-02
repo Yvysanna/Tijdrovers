@@ -17,7 +17,7 @@ class HillClimber:
         self.planner = planner
         self._courses = tuple(course_set)
         self._students = tuple(students_set)
-        self._algorithms = ['climber', 'annealing', 'climber-annealing']
+        self._algorithms = ['climber', 'annealing', 'climber_annealing']
         self.streak_limit = streak_limit
         self.iteration_limit = iteration_limit
         self.point_limit = point_limit

@@ -25,7 +25,7 @@ def store(students_set, planner, points):
         Contains the schedule of every student
     points : int
         The total number of maluspoints
-        
+
     RETURNS:
     None
     """
@@ -93,6 +93,6 @@ def plot(plotx, ploty, streak):
     plt.ylim(0)
     plt.xlabel("Iterations")
     plt.ylabel("Maluspoints")
-    plt.title(f"Points during hill climber which stops after {streak} non-improvements")
+    plt.title(f"Points during hill climber after {len(ploty)} iterations")
     plt.grid()
     plt.savefig(f'code/algorithms/plots/climber{streak}.png', dpi=1000)
