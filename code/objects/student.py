@@ -21,8 +21,6 @@ class Student:
         Adds activity to set of activities
     remove_activity(activity):
         Removes activity from set of activities
-    maluspoints():
-        Returns the number of maluspoints caused by conflicts
     '''
 
     def __init__(self, last_name, first_name):
@@ -50,10 +48,6 @@ class Student:
     def remove_activity(self, activity):
         '''Removes activity from set of activities'''
         self.activities.remove(activity)
-
-    def maluspoints(self):
-        '''Returns the number of maluspoints caused by conflicts'''
-        return sum(c - 1 for c in Counter([f'{activity.get_day_time()}' for activity in self.activities]).values())
 
     def __str__(self) -> str:
         return str(f'\n{self.last_name}' )

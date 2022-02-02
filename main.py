@@ -4,8 +4,9 @@
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #
 # - Usage: python3 main.py -s streak_limit (int) -p point_limit (int)
-#          -i iteration_limit (int) -t temperature_multiplier (float)
-#          -d distribution (bool) -g graph (bool) -n runs (int) -a algorithm (str)
+#          -i iteration_limit (int) -t temperature_multiplier (float) 
+#          -c constraint (bool) -d distribution (bool) -g graph (bool) -n runs (int)
+#          -a algorithm (str)
 #
 # - Creates class schedule using the provided data using a hill climber
 # - Reduces the number of maluspoints as much as possible, which are given for
@@ -16,6 +17,8 @@
 #   multiplier in the argument can be provided with their respective arguments
 # - It is recommended to use a number of 10000 or lower for number of iterations to
 #   prevent out of range errors
+# - A hard constraint for the third break term can be set by setting constraint 
+#   to True
 # - A line graph may be created with the graph argument which plots the number of
 #   maluspoints against the iterations
 # - A distribution graph may be created with the distribution argument which makes

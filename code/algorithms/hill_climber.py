@@ -1,7 +1,6 @@
 import sys
 import os
 
-from sqlalchemy import Constraint
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
@@ -296,6 +295,7 @@ class HillClimber:
 
         if algorithm == 'annealing' or algorithm == 'climber-annealing':
             for x in range(self.iteration_limit):
+                print(iteration, x, old_points)
                 current_streak, old_points = self.activity_climber(current_streak, old_points, X=x, Tstart=tstart)
                 iteration += 1
                 self.add_value(iteration, old_points)
