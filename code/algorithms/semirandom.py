@@ -13,9 +13,26 @@ import random
 
 
 def semirandom(course_set, classrooms_list, planner, days, timeslots):
+    """
+    Creates a schedule after certain constrains
+    random schedules everything that cannot be planned under constrains
+
+    ARGS:
+    course_set: set(Course objects)
+        set containing all course objects
+    classrooms_list: [Classroom objects]
+        list with all classroom objects
+    planner: Planner object
+        planner object holding the whole schedule
+    days: [str]
+        list with all possible days to schedule
+    timeslots: [str]
+        list with all possible timeslots to schedule
+    """
+
     # Find every pair of activities that can be taught in the same timeslot
-    not_scheduled = set()
     result = find_conflict_free_activities(course_set)
+    not_scheduled = set()
 
     for activities in result:
         for activity in activities:
@@ -50,14 +67,13 @@ def find_conflict_free_activities(course_set):
     Checks which activities can be held parallel without students facing overlap
 
     ARGS:
-    course_set : set(Course objects)
+        course_set : set(Course objects)
         All the courses which contain activities
-
     RETURNS:
-    List of lists of all activities that can be held parallel to eachother, only having each activity appear once
+        List of lists of all activities that can be held parallel to eachother, only having each activity appear once
     """
 
-    confclit_free = []
+    conflict_free = []
 
     # Create list of activities through looping through each course
     activities = [activity for course in course_set for activity in course.lectures +
@@ -66,12 +82,12 @@ def find_conflict_free_activities(course_set):
     queue = [activity for activity in activities]
 
     # Sort list so that lecture activities are on top
-    activities.sort(key=lambda act: act.type == 'Lecture', reverse=True)
+    activities.sort(key=lambda act: act.type == 'Hoorcollege', reverse=True)
 
     for activity_a in activities:
         if activity_a in queue:
             activity_group = [activity_a]
-            confclit_free.append(activity_group)
+            conflict_free.append(activity_group)
 
             # Only find unique matching pairs
             queue.pop(queue.index(activity_a))
@@ -85,5 +101,5 @@ def find_conflict_free_activities(course_set):
                     activity_group.append(activity_b)
 
     # Sort list of lists with activities that can be planned parallel; list of most activities at the same time on top
-    confclit_free.sort(key=lambda acts: len(acts), reverse=True)
-    return confclit_free
+    conflict_free.sort(key=lambda acts: len(acts), reverse=True)
+    return conflict_free

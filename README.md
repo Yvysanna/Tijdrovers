@@ -50,18 +50,16 @@ Install dependencies<br>
 Run the program
 
 ```bash
-  python3 main.py
+  python3 main.py [-s STREAK_LIMIT] [-p POINT_LIMIT] [-i ITERATION_LIMIT] [-t TEMPERATURE_MULTIPLIER] [-d DISTRIBUTION] [-g GRAPH] [-n RUNS] [-a ALGORITHM]
 ```
 
-#### Instructions for experiments
-Run the program multiple times for testing:
-* Determine the time you want to run the program in line 28 of distribution.py by changing `start < {time}`
-* Change the file name in line 51 to save distribution histogram
-* The main algorithm used can be changed in main.py in line 56. Usable algorithm functions can be found in algorithms/hill_climber.py.
-* Algorithm for determining starting position for the main algorithm can be changed to random_method or semirandom in line 50 of main.py
-* In line 62 of checker.py, `idx > 2` can be used for a hard constraint for the third break period, or `idx > 3` can be used to calculate 1000 points for the third break period.
-* Parameters 'streak' for climbers and 'range', formulas for 'T' and 'chance' for annealing can be changed in algorithms/hill_climber.py
-* After making adjustments, run the program multiple times for a determined amount of time with `python3 code/distribution.py`
+The streak limit is an integer that determines for the hill climber after how many non-improvements the program should stop.
+The poit limit is an integer that determines for the climber-annealing program after how many iterations it should switch from climbing to annealing
+The iteration limit is an integer that determines for the annealing program after how many interations the program should stop
+The distribution is a boolean value that determines whether or not a histogram should be plotted of the points across N runs
+The graph is a boolean value that determines whether or not a line graph should be made of the maluspoints plotted against the iterations for one run
+The number of runs is an integer that determines how often the main program should run
+The algorithm is a string that determines whether the hill climber ('climber'), simulated annealing ('annealing'), or a combination ('annealing_climber') should run.
 
 ## Acknowledgements
 

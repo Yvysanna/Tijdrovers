@@ -14,7 +14,7 @@ sys.setrecursionlimit(10000)
 
 class HillClimber:
 
-    def __init__(self, planner, course_set, students_set, streak_limit=None, iteration_limit=None, point_limit=None, temperature_multiplier=1):
+    def __init__(self, planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier):
         self.planner = planner
         self._courses = tuple(course_set)
         self._students = tuple(students_set)
@@ -39,10 +39,9 @@ class HillClimber:
         # Pick two random activities, making sure they are not the same activity        
         # https://stackoverflow.com/questions/22842289/generate-n-unique-random-numbers-within-a-range
         index_activity_1, index_activity_2 = sample(range(0, len(self.planner.slots)),2)
-        #print(f'old activity: {self.planner.slots[index_activity_1]}')
+
         # Switch the position of the activities in the planner
         self.planner.swap_activities(index_activity_1, index_activity_2)
-        #print(f'new activity: {self.planner.slots[index_activity_1]}')
         return(index_activity_1, index_activity_2)
 
 
@@ -58,9 +57,7 @@ class HillClimber:
             index_activity_1, index_activity_2: the indices of the switched activities
         """
         # Switch activities back to previous state
-        #print(f'switched indexe 1:{index_activity_1}')
         self.planner.swap_activities(index_activity_1, index_activity_2)
-        #print(f'back to old:{self.planner.slots[index_activity_1]}')
 
     def reassign(self):
         """
@@ -223,7 +220,7 @@ class HillClimber:
             i: the total count of iterations made
         """
         if algorithm not in self._algorithms:
-            raise Exception("algorithm not found")
+            raise Exception("Algorithm is invalid")
 
         current_streak = 0
         iteration = 0
