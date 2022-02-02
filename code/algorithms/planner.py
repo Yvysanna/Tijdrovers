@@ -169,10 +169,8 @@ class Planner:
             student_dict[name] = []
             for activity in student.activities:
                 room, day, time = self.get_info(activity)
-                activity.room = room
-                activity.day = day
-                activity.timeslot = time
-
+                activity.set_day_time(day, time, room)
+                
                 # Write information into dictionary
                 if day not in slots:
                     slots[day] = []
