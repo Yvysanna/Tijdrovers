@@ -1,52 +1,15 @@
 class Planner:
-    '''
-    The schedule for day, time and room
-    holds all activity objects after an order according to at which day, time and location they take place
 
-    ATTRIBUTES:
-    rooms : list()
-        A list of all rooms
-
-    METHODS:
-    create_slots(self):
-        Creates an empty array holding all slots
-    get_info(self, activity):
-        Gets room, day and time for a given activity if scheduled
-    swap_activities(self, i1, i2):
-        Swaps two activities
-    insert_activity(self, activity, room, day, time):
-        Plans given activity at given room, day, time
-    get_activities(self, day, time):
-        Gets all activities that are scheduled at a given day and time
-    plan_activity(self, rooms, activity):
-        Plans activity without causing conflicts
-    get_slot(self, index):
-        Gets activity planned at certain slot
-    create_student_dict(self, students_set):
-        Creates dictionary in format to be read by checker
-    
-    HELPERS:
-    flatten(lst):
-        Function to flatten a list of lists
-    have_duplicates(students_list):
-        Checks how many duplicates are in a list
-    '''
-
-    def __init__(self, rooms):
-        '''
-        ARGUMENTS:
-        rooms : list()
-            containing all room objects
-        '''
+    def __init__(self, rooms) -> None:
         self.days = ['ma', 'di', 'wo', 'do', 'vr']
-        self.times = ['9-11', '11-13', '13-15', '15-17', '17-19']
+        self.times = ['9-11', '11-13', '13-15', '15-17', '17-19'] # + 17-19
         self.rooms = sorted(rooms, key=lambda c : c.capacity, reverse = True)
         self.create_slots()
 
     def create_slots(self):
         """
         Creates slots that will be used after this logic:
-        #### All available slots
+          All available slots
         *   C0.110               C1.112         A1.10          B0.201         A1.04          A1.06          A1.08         
         *   ma , di, wo, do, vr, ma,di,wo,do,vr,ma,di,wo,do,vr,ma,di,wo,do,vr,ma,di,wo,do,vr,ma,di,wo,do,vr,ma,di,wo,do,vr
         *  9  0,  1,  2,  3,  4,  5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34
@@ -59,7 +22,7 @@ class Planner:
 
     def get_info(self, activity):
         """
-        RETURNS: room, day and time for a certain activity or None, None, None
+        Get info for activity (more efficient than looping)
         """
         if activity in self.slots:
             index = self.slots.index(activity)
@@ -74,8 +37,7 @@ class Planner:
 
     def insert_activity(self, activity, room, day, time):
         """
-        Plan activity at given room day and time
-        RETURNS: index if succeeded, else -1
+        Plan activity at this timeslot
         """
         rindex = self.rooms.index(room)
         dindex = self.days.index(day)
@@ -88,18 +50,25 @@ class Planner:
 
     def get_activities(self, day, time):
         """
-        RETURNS: all activities that are planned for the given day and time
+        Gets all activities that are planned for the given day and time
         """
         dindex = self.days.index(day)
         tindex = self.times.index(time)
         index = tindex * (len(self.times) * len(self.rooms)) + dindex
         return self.slots[index : index + ((len(self.rooms) - 1) * len(self.days)) : len(self.days)]
 
+    def plan_parallel(self, activities):
+        for day in self.days:
+            for time in self.time:
+                for activity in activities:
+                    self.insert_activity(activity, activity.room, day, time)
+                       
+
 
     def plan_activity(self, rooms, activity):
         '''
-        Plan activity into a room (capacity greater or ideal) if no students face conflicts through that
-        RETURNS: True if success, else False
+        THE IMPORTANT ALGORITHM
+        Tries to check for not planned activity, if student follows this activity and if so, which other activities should not be planned for the same timeslot, day based on students enrollment (logic as in conflicts.py used)
         '''        
         for room in rooms:
             for day in self.days:
@@ -116,13 +85,39 @@ class Planner:
 
     def get_slot(self, index):
         '''
-        RETURNS: room, day, time for an activity at a certain index
+        Tries to find available slots
+        RETURNS: room, day, time
         '''
+        # Calculation to avoid looping but still finding indexes for what we want
         day = self.days[(index % (len(self.rooms) * len(self.days))) % len(self.days)]
         room = self.rooms[index % (len(self.rooms) * len(self.days)) // len(self.days)]
         time = self.times[index // (len(self.rooms) * len(self.days))]
         return room, day, time
 
+    def get_capacity_info(self):
+        '''
+        Controll function, checks how many free slots stay with algorithm
+        '''
+        free_slots = []; busy_slots = []
+        for idx, slot in enumerate(self.slots):
+            if not slot:
+                room, day, time = self.get_slot(idx)
+                free_slots.append(f'{room.name}/ ({room.capacity}) / {(day, time)}')
+            else:
+                busy_slots.append(self.get_slot(idx))
+        return {f"free slots: ({len(free_slots)})" :free_slots, "busy slots": len(busy_slots)}
+
+    def maluspoints(self):
+        return sum(a.maluspoints() for a in self.slots if a)
+
+    def unplan(self):
+
+        malus_activities = [activity for activity in self.slots if activity and activity.maluspoints()]
+        for activity in self.slots:
+            if activity:
+                pass
+                #berechnen wieviel maluspoints
+        pass
 
     def create_student_dict(self, students_set):
         """
@@ -131,13 +126,10 @@ class Planner:
             student_dict[name] = [{day: [time]}]
         """
         student_dict = {}  
-        
-        # Get student name as key for dictionary
         for student in students_set:
             slots = {}
             name = f'{student.last_name} {student.first_name}'
             student_dict[name] = []
-
             for activity in student.activities:
                 room, day, time = self.get_info(activity)
                 activity.room = room
@@ -148,21 +140,17 @@ class Planner:
                 if day not in slots:
                     slots[day] = []
                 slots[day].append(time)
+            #student_dict[name].append((slots, student.activities))
             student_dict[name].append(slots)
         return student_dict   
 
     def flatten(lst):
         '''
         Creates one list out of a list of lists / unpacks list of lists to have only one list containing all values
-        https://stackoverflow.com/questions/952914/how-to-make-a-flat-list-out-of-a-list-of-lists
         '''
         return [item for sublist in lst for item in sublist]
 
-    def have_duplicates(students_list):
-        '''
-        Check if duplicates in list
-        https://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-whilst-preserving-order
-        '''
-        students = set()
-        duplicates = [x for x in students_list if x in students or students.add(x)]
-        return len(duplicates) > 0
+    def have_duplicates(lst):
+        seen = set()
+        dups = [x for x in lst if x in seen or seen.add(x)]
+        return len(dups) > 0
