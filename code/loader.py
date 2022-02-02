@@ -81,7 +81,7 @@ def load_students(course_set):
 
         # Creates new student object and adds it to students_set
         for row in reader:
-            student = Student(row[0], row[1], row[2])
+            student = Student(row[0], row[1])
             students_set.add(student)
 
             # Iterate over all courses student is registered to
