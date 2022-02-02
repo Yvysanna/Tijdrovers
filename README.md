@@ -30,7 +30,15 @@ With these soft constraints also come a few hard constraints:<br>
 
 ## Solution summary
 
-Explanation of summary here
+For this problem we have experimented with hill climbers, simulated annealing and a combination of the two algorithms. All of these algorithms alternate between two functions that randomly switch activities between time slots and randomly switch students between activity groups.
+
+For the begin position, we create a begin position with either random_method or semirandom. Random_method creates a completely random schedule, while semirandomtries to create a schedule with the least amount of conflicts.
+
+The hill climber keeps track of how many non-improvements are made after each state change. The algorithm keeps changing the state randomly and only keeps the state if an improvement is made. After the maximum number of non-improvements or 'streak' has been reached, the algorithm stops and a schedule is created from the last state.
+
+Simulated annealing keeps changing the state randomly and decides based on a calculated chance if a state with a worse score will be accepted. States with a better score will always be accepted. The algorithm will stop after a determined number of iterations.
+
+The climber_annealing is a combination of the aforementioned algorithms. This algorithm starts like a hill climber until a certain number of points is reached. After that the algorithm changes into a simulated annealing until the iteration limit has been reached. Finally, the algorithm runs like a climber again until the streak limit has been reached.
 
 ## Run Locally
 
@@ -50,16 +58,18 @@ Install dependencies<br>
 Run the program
 
 ```bash
-  python3 main.py [-s STREAK_LIMIT] [-p POINT_LIMIT] [-i ITERATION_LIMIT] [-t TEMPERATURE_MULTIPLIER] [-d DISTRIBUTION] [-g GRAPH] [-n RUNS] [-a ALGORITHM]
+  python3 main.py [-s STREAK_LIMIT] [-p POINT_LIMIT] [-i ITERATION_LIMIT] [-t TEMPERATURE_MULTIPLIER] [-c CONSTRAINT] [-d DISTRIBUTION] [-g GRAPH] [-n RUNS] [-a ALGORITHM]
 ```
 
-The streak limit is an integer that determines for the hill climber after how many non-improvements the program should stop.
-The poit limit is an integer that determines for the climber-annealing program after how many iterations it should switch from climbing to annealing
-The iteration limit is an integer that determines for the annealing program after how many interations the program should stop
-The distribution is a boolean value that determines whether or not a histogram should be plotted of the points across N runs
-The graph is a boolean value that determines whether or not a line graph should be made of the maluspoints plotted against the iterations for one run
-The number of runs is an integer that determines how often the main program should run
-The algorithm is a string that determines whether the hill climber ('climber'), simulated annealing ('annealing'), or a combination ('annealing_climber') should run.
+* The streak limit is an integer that determines for the hill climber after how many non-improvements the program should stop.
+* The point limit is an integer that determines for the climber-annealing program after how many iterations it should switch from climbing to annealing
+* The iteration limit is an integer that determines for the annealing program after how many interations the program should stop
+* The temperature multiplier is a float that determines the effect of the current temperature on the chance to accept a state
+* The constraint is a boolean value that determines whether a hard or a soft constraint will be used for the third break term
+* The distribution is a boolean value that determines whether or not a histogram should be plotted of the points across N runs
+* The graph is a boolean value that determines whether or not a line graph should be made of the maluspoints plotted against the iterations for one run
+* The number of runs is an integer that determines how often the main program should run
+* The algorithm is a string that determines whether the hill climber ('climber'), simulated annealing ('annealing'), or a combination ('annealing_climber') should run.
 
 ## Acknowledgements
 
