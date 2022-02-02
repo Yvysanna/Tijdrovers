@@ -59,9 +59,10 @@ def checker(activities, student_dict):
                         # Iterate over both lists to find difference between times
                         for l1, l2 in zlip:
                             idx = int(((l2 - l1) / 2) - 1) # Idx just because one break gives -1 and two give -3 (not 2)
-                            if idx > 2:
-                                return False # If more than 2 breaks, invalid result, thus return early and stop
+                            # if idx > 3:
+                            #     print(idx)
 
+                            #     return False
                             #mal_dict[f'free_period{idx}'] += 1
                             malus += points[idx]
 
