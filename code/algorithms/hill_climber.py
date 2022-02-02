@@ -81,9 +81,9 @@ class HillClimber:
 
         # Pick a random group and determine which type of activity the next group needs to be
         random_group_1 = choice(possible_activities)
-        if random_group_1._type == 'Tutorial':
+        if random_group_1._type == 'Werkcollege':
             possible_activities = possible_tutorials
-        elif random_group_1._type == 'Lab':
+        elif random_group_1._type == 'Practica':
             possible_activities = possible_labs
         else:
             raise Exception("Group typing incorrect or could not copy activities")
@@ -160,7 +160,7 @@ class HillClimber:
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        while streak < 200:
+        while streak < 1:
             print(i, streak, old_points)
 
             # Activity climber

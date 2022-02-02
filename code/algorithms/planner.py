@@ -22,7 +22,7 @@ class Planner:
         self.create_slots()
 
     def create_slots(self):
-        self.slots = [None] * ((len(self.days) * (len(self.times) - 1) * len(self.rooms)) + len(self.days))# For alt times create Bool Table
+        self.slots = [None] * ((len(self.days) * (len(self.times) - 1) * len(self.rooms)) + len(self.days))
 
     def get_info(self, activity):
         """
