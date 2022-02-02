@@ -58,15 +58,15 @@ def main():
 
 
     # Create object of class hill climber
-    hill = HillClimber(planner, course_set, students_set)
+    hill = HillClimber(planner, course_set, students_set, streak_limit=100, iteration_limit=500, point_limit=200, temperature_multiplier=0.02)
     # Run hill climber method and evaluate its results
-    i = hill.run()
+    i = hill.run('climber')
     student_dict = planner.create_student_dict(students_set)
     points = checker(planner.slots, student_dict)
 
     # Create visualisation and csv dataset from results
-    # plot(hill.plotx, hill.ploty, hill.streak)
-    # store(students_set, planner, points)
+    plot(hill.plotx, hill.ploty, hill.streak_limit)
+    store(students_set, planner, points)
 
     return points, i
 
@@ -78,17 +78,17 @@ if __name__ == '__main__':
     points = []
     iterations = []
 
-    while time.time() - start < 3600:
-        new_points, i = main()
-        points.append(new_points)
-        iterations.append(i)
-        print(n_runs, i, points[n_runs])
-        n_runs += 1
+    # while time.time() - start < 3600:
+    new_points, i = main()
+    points.append(new_points)
+    iterations.append(i)
+    print(n_runs, i, points[n_runs])
+    n_runs += 1
 
     print("\n Average: " + str(mean(points)))
     print("\n Average iterations: " + str(mean(iterations)))
 
     # Create probability distribution from all runs
-    # distribution(points, n_runs)
+    distribution(points, n_runs)
 
 

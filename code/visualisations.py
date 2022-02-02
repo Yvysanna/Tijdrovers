@@ -26,7 +26,7 @@ def store(students_set, planner, points):
     for student in students_set:
         for activity in student.activities:
             room, day, time = planner.get_info(activity)
-            df_dict['student'].append(f'{student._last_name} {student._first_name}')
+            df_dict['student'].append(f'{student.last_name} {student.first_name}')
             df_dict['vak'].append(activity.name)
             df_dict['activiteit'].append(activity.type)
             df_dict['zaal'].append(room.name)

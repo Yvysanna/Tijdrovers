@@ -15,10 +15,15 @@ sys.setrecursionlimit(10000)
 
 class HillClimber:
 
-    def __init__(self, planner, course_set, students_set):
+    def __init__(self, planner, course_set, students_set, streak_limit=None, iteration_limit=None, point_limit=None, temperature_multiplier=1):
         self.planner = planner
         self._courses = tuple(course_set)
         self._students = tuple(students_set)
+        self._algorithms = ['climber', 'annealing', 'climber-annealing']
+        self.streak_limit = streak_limit
+        self.iteration_limit = iteration_limit
+        self.point_limit = point_limit
+        self.temperature_multiplier = temperature_multiplier
         self.plotx = []
         self.ploty = []
 
@@ -143,8 +148,67 @@ class HillClimber:
         student.remove_activity(current_group)
         student.add_activity(new_group)
 
+    
+    def activity_climber(self, current_streak, old_points, X=None, Tstart=None):
+        # Activity climber
+        index_activity_1, index_activity_2 = self.activity_switch()
+        student_dict = self.planner.create_student_dict(self._students)
+        new_points = checker(self.planner.slots, student_dict)
 
-    def run(self):
+        if Tstart == None:
+            comparison_value = new_points
+            comparison_base = old_points
+        else:
+            T = Tstart * (0.9997**X)
+            chance = 2**((old_points - new_points)/(self.temperature_multiplier*T))
+            r = random()
+
+            comparison_value = r
+            comparison_base = chance
+
+        # Check if improvement was made, allows hard constraints
+        if new_points == False or comparison_value > comparison_base:
+            self.undo_activity_switch(index_activity_1, index_activity_2)
+            current_streak += 1
+        else:
+            # Only reset streak if improvement is made
+            if new_points < old_points:
+                current_streak = 0
+            old_points = new_points
+
+        return current_streak, old_points
+
+
+    def student_climber(self, current_streak, old_points, X=None, Tstart=None):
+        # Student switch climber
+        random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
+        student_dict = self.planner.create_student_dict(self._students)
+        new_points = checker(self.planner.slots, student_dict)
+
+        if Tstart == None:
+            comparison_value = new_points
+            comparison_base = old_points
+        else:
+            T = Tstart * (0.9997**X)
+            chance = 2**((old_points - new_points)/(self.temperature_multiplier*T))
+            r = random()
+
+            comparison_value = r
+            comparison_base = chance
+            
+        # Check if improvement was made, allows hard constraints
+        if new_points == False or comparison_value > comparison_base:
+            self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
+            current_streak += 1
+        else:
+            if new_points < old_points:
+                current_streak = 0
+            old_points = new_points
+
+        return current_streak, old_points
+
+
+    def run(self, algorithm):
         # start = time.time()
         """
         ARGS:
@@ -159,57 +223,57 @@ class HillClimber:
         RETURNS:
             i: the total count of iterations made
         """
-        streak = 0
-        i = 0
+        if algorithm not in self._algorithms:
+            raise Exception("algorithm not found")
+
+        current_streak = 0
+        iteration = 0
 
         # Count current maluspoints
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        while streak < 3000:
-            # if i % 100000 == 0:
-            #     print(time.time() - start, i, streak, old_points)
+        if algorithm == 'climber-annealing':
+            while old_points > self.point_limit:
+                print(iteration, current_streak, old_points)
+                current_streak, old_points = self.activity_climber(current_streak, old_points)
+                iteration += 1
+                self.add_value(iteration, old_points)
+                
+                current_streak, old_points = self.student_climber(current_streak, old_points)
+                iteration += 1
+                self.add_value(iteration, old_points)
 
-            # Activity climber
-            index_activity_1, index_activity_2 = self.activity_switch()
-            student_dict = self.planner.create_student_dict(self._students)
-            new_points = checker(self.planner.slots, student_dict)
+        tstart = old_points
 
-            # Check if improvement was made, allows hard constraints
-            if new_points == False or new_points > old_points:
-                self.undo_activity_switch(index_activity_1, index_activity_2)
-                streak += 1
+        if algorithm == 'annealing' or algorithm == 'climber-annealing':
+            for x in range(self.iteration_limit):
+                print(iteration, current_streak, old_points)
 
-            else:
-                # Only reset streak if improvement is made
-                if new_points < old_points:
-                    streak = 0
-                old_points = new_points
+                current_streak, old_points = self.activity_climber(current_streak, old_points, X=x, Tstart=tstart)
+                iteration += 1
+                self.add_value(iteration, old_points)
 
-            i += 1
-            # self.plotx.append(i)
-            # self.ploty.append(old_points)
+                current_streak, old_points = self.student_climber(current_streak, old_points, X=x, Tstart=tstart)
+                iteration += 1
+                self.add_value(iteration, old_points)
 
-            # Student switch climber
-            random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
-            student_dict = self.planner.create_student_dict(self._students)
-            new_points = checker(self.planner.slots, student_dict)
-            print(i, streak, old_points)
+        if algorithm == 'climber' or algorithm == 'climber-annealing':
+            while current_streak < self.streak_limit:
+                print(iteration, current_streak, old_points)
 
-            # Check if improvement was made, allows hard constraints
-            if new_points == False or new_points > old_points:
-                self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
-                streak += 1
-            else:
-                if new_points < old_points:
-                    streak = 0
-                old_points = new_points
+                # if i % 100000 == 0:
+                #     print(time.time() - start, i, streak, old_points)
 
-            i += 1
-            # self.plotx.append(i)
-            # self.ploty.append(old_points)
+                current_streak, old_points = self.activity_climber(current_streak, old_points)
+                iteration += 1
+                self.add_value(iteration, old_points)
+                
+                current_streak, old_points = self.student_climber(current_streak, old_points)
+                iteration += 1
+                self.add_value(iteration, old_points)
 
-        return i
+        return iteration
 
 
     def run_annealing_climber(self):
@@ -378,128 +442,12 @@ class HillClimber:
                 if new_points < old_points:
                     streak = 0
                 old_points = new_points
-                
 
         return x
 
             # self.plotx.append(x)
             # self.ploty.append(new_points)
 
-    def run_annealing_exp(self):
-        # Count current maluspoints
-        i = 0
-        student_dict = self.planner.create_student_dict(self._students)
-        old_points = checker(self.planner.slots, student_dict)
-        Tstart = old_points
-        for x in range(10):
-
-            index_activity_1, index_activity_2 = self.activity_switch()
-            student_dict = self.planner.create_student_dict(self._students)
-            new_points = checker(self.planner.slots, student_dict)
-
-            T = Tstart * (0.9997**i)
-            if new_points == False:
-                chance = 0
-            else:
-                chance = 2**((old_points - new_points)/T)
-            print(i, old_points, T, new_points, chance)
-            r = random()
-
-            if new_points == False or r > chance:
-                self.undo_activity_switch(index_activity_1, index_activity_2)
-                streak += 1
-            else:
-                if new_points < old_points:
-                    streak = 0
-                old_points = new_points
-
-            i += 1
-            self.plotx.append(i)
-            self.ploty.append(old_points)
-
-            random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
-            student_dict = self.planner.create_student_dict(self._students)
-            new_points = checker(self.planner.slots, student_dict)
-
-            T = Tstart * (0.9997**i)
-            if new_points == False:
-                chance = 0
-            else:
-                chance = 2**((old_points - new_points)/T)
-            print(i, old_points, T, new_points, chance)
-            r = random()
-
-            if new_points == False or r > chance:
-                self.undo_reassign(random_group_1, random_group_2,
-                                   random_student_1, random_student_2)
-                streak += 1
-            else:
-                if new_points < old_points:
-                    streak = 0
-                old_points = new_points
-
-            i += 1
-            self.plotx.append(i)
-            self.ploty.append(old_points)
-
-    def run_annealing_lin(self):
-        # Count current maluspoints
-        i = 0
-        student_dict = self.planner.create_student_dict(self._students)
-        old_points = checker(self.planner.slots, student_dict)
-        Tstart = old_points
-        for x in range(20000):
-
-            index_activity_1, index_activity_2 = self.activity_switch()
-            student_dict = self.planner.create_student_dict(self._students)
-            new_points = checker(self.planner.slots, student_dict)
-
-            T = Tstart - (Tstart/40000) * i
-            if new_points == False:
-                chance = 0
-            else:
-                chance = 2**((old_points - new_points)/T)
-            print(i, old_points, T, new_points, chance)
-            r = random()
-
-            if new_points == False or r > chance:
-                self.undo_activity_switch(index_activity_1, index_activity_2)
-            else:
-                if new_points < old_points:
-                    streak = 0
-                old_points = new_points
-
-            i += 1
-            self.plotx.append(i)
-            self.ploty.append(old_points)
-
-            random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
-            student_dict = self.planner.create_student_dict(self._students)
-            new_points = checker(self.planner.slots, student_dict)
-
-            T = Tstart - (Tstart/40000) * i
-            if new_points == False:
-                chance = 0
-            else:
-                chance = 2**((old_points - new_points)/T)
-            print(i, old_points, T, new_points, chance)
-            r = random()
-
-            if new_points == False or r > chance:
-                self.undo_reassign(random_group_1, random_group_2,
-                                   random_student_1, random_student_2)
-                streak += 1
-            else:
-                if new_points < old_points:
-                    streak = 0
-                old_points = new_points
-
-            i += 1
-            self.plotx.append(i)
-            self.ploty.append(old_points)
-
-
     def add_value(self, i, new_points):
-        i += 1
         self.plotx.append(i)
         self.ploty.append(new_points)
