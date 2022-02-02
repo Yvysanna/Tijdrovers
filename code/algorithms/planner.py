@@ -91,7 +91,7 @@ class Planner:
         dindex = self.days.index(day)
         tindex = self.times.index(time)
         index = dindex + (rindex * len(self.days)) + (tindex * len(self.days) * len(self.rooms))
-        if index >= len(self.slots) or self.slots[index] != None:
+        if index >= len(self.slots) or self.slots[index] is not None:
             return -1
         self.slots[index] = activity
         return index
@@ -101,7 +101,7 @@ class Planner:
         dindex = self.days.index(day)
         tindex = self.times.index(time)
         index = tindex * (len(self.times) * len(self.rooms)) + dindex
-        return self.slots[index : index + ((len(self.rooms) - 1) * len(self.days)) : len(self.days)]
+        return self.slots[index:index + ((len(self.rooms) - 1) * len(self.days)):len(self.days)]
 
     def plan_activity(self, rooms, activity):
         '''
@@ -127,7 +127,6 @@ class Planner:
         room = self.rooms[index % (len(self.rooms) * len(self.days)) // len(self.days)]
         time = self.times[index // (len(self.rooms) * len(self.days))]
         return room, day, time
-
 
     def create_student_dict(self, students_set):
         """

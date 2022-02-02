@@ -27,6 +27,7 @@ def checker(activities, student_dict, constraint):
 
     malus = 0
 
+    # Hard or soft constraint
     if constraint == True:
         terms = 2
     else:
@@ -34,6 +35,7 @@ def checker(activities, student_dict, constraint):
 
     for activity in activities:
         if activity:
+
             # Calculate maluspoints for room capacity and late timeslot
             malus += activity.maluspoints()
 
@@ -70,9 +72,10 @@ def checker(activities, student_dict, constraint):
                         for l1, l2 in zlip:
                             idx = int(((l2 - l1) / 2) - 1)
 
-                            # Stop program is hard constraint is violated
+                            # Depending on hard or soft constraint, return early
                             if idx > terms:
                                 return False
 
                             malus += points[idx]
+
     return malus
