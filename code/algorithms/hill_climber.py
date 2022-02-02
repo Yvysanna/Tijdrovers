@@ -1,5 +1,7 @@
 import sys
 import os
+
+from sqlalchemy import Constraint
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
@@ -13,7 +15,7 @@ sys.setrecursionlimit(10000)
 
 class HillClimber:
 
-    def __init__(self, planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier):
+    def __init__(self, planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint):
         self.planner = planner
         self._courses = tuple(course_set)
         self._students = tuple(students_set)
@@ -22,6 +24,7 @@ class HillClimber:
         self.iteration_limit = iteration_limit
         self.point_limit = point_limit
         self.temperature_multiplier = temperature_multiplier
+        self.constraint = constraint
         self.plotx = []
         self.ploty = []
 
@@ -169,7 +172,7 @@ class HillClimber:
         # Change slot of activity randomly
         index_activity_1, index_activity_2 = self.activity_switch()
         student_dict = self.planner.create_student_dict(self._students)
-        new_points = checker(self.planner.slots, student_dict)
+        new_points = checker(self.planner.slots, student_dict, self.constraint)
 
         # Determine if climber or annealer comparison is needed
         if Tstart == None:
@@ -212,7 +215,7 @@ class HillClimber:
         # Change a random activity group for a random student
         random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
         student_dict = self.planner.create_student_dict(self._students)
-        new_points = checker(self.planner.slots, student_dict)
+        new_points = checker(self.planner.slots, student_dict, self.constraint)
 
         # Determine if climber or annealer comparison is needed
         if Tstart == None:
@@ -276,7 +279,7 @@ class HillClimber:
 
         # Count current maluspoints
         student_dict = self.planner.create_student_dict(self._students)
-        old_points = checker(self.planner.slots, student_dict)
+        old_points = checker(self.planner.slots, student_dict, self.constraint)
 
         # Check which algorithm is used and run appropriate loops
         if algorithm == 'climber_annealing':
