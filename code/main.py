@@ -8,6 +8,9 @@
 # - Creates schedule
 # ==================================================================================
 
+import time
+from statistics import mean
+
 # Main class for course planning, holds all information about schedule
 from algorithms.planner import Planner
 
@@ -19,11 +22,11 @@ from algorithms.hill_climber import HillClimber
 # Loader function to load all necessary information from dataset
 from loader import load_all
 
-# Function to store results in csv
-from store import store
-
 # Evaluation function
 from checker import checker
+
+# Functions to create visualisations and store schedule results in csv
+from visualisations import store, distribution, plot
 
 
 def main():
@@ -49,7 +52,7 @@ def main():
     # Fill planner with semirandom method
     while points == False or points == 0:
         planner = Planner(classrooms_list)
-        semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
+        random_method(course_set, classrooms_list, planner, planner.days, planner.times)
         student_dict = planner.create_student_dict(students_set)
         points = checker(planner.slots, student_dict)
 
@@ -61,11 +64,31 @@ def main():
     student_dict = planner.create_student_dict(students_set)
     points = checker(planner.slots, student_dict)
 
-    # Create visualtization and csv dataset from results
-    store(students_set, planner, points)
+    # Create visualisation and csv dataset from results
+    # plot(hill.plotx, hill.ploty, hill.streak)
+    # store(students_set, planner, points)
 
     return points, i
 
+
 if __name__ == '__main__':
-    #main()
-    print(main())
+    start = time.time()
+    n_runs = 0
+
+    points = []
+    iterations = []
+
+    while time.time() - start < 3600:
+        new_points, i = main()
+        points.append(new_points)
+        iterations.append(i)
+        print(n_runs, i, points[n_runs])
+        n_runs += 1
+
+    print("\n Average: " + str(mean(points)))
+    print("\n Average iterations: " + str(mean(iterations)))
+
+    # Create probability distribution from all runs
+    # distribution(points, n_runs)
+
+

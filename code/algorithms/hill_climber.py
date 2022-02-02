@@ -8,6 +8,7 @@ from random import choice, random, sample
 import matplotlib.pyplot as plt
 
 from checker import checker
+import time
 
 sys.setrecursionlimit(10000)
 
@@ -144,6 +145,7 @@ class HillClimber:
 
 
     def run(self):
+        # start = time.time()
         """
         ARGS:
             self
@@ -165,7 +167,8 @@ class HillClimber:
         old_points = checker(self.planner.slots, student_dict)
 
         while streak < 3000:
-            print(i, streak, old_points)
+            # if i % 100000 == 0:
+            #     print(time.time() - start, i, streak, old_points)
 
             # Activity climber
             index_activity_1, index_activity_2 = self.activity_switch()
@@ -232,8 +235,8 @@ class HillClimber:
                 old_points = new_points
 
             i += 1
-            # self.plotx.append(i)
-            # self.ploty.append(old_points)
+            self.plotx.append(i)
+            self.ploty.append(old_points)
 
             random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
             student_dict = self.planner.create_student_dict(self._students)
@@ -248,8 +251,8 @@ class HillClimber:
                 old_points = new_points
 
             i += 1
-            # self.plotx.append(i)
-            # self.ploty.append(old_points)
+            self.plotx.append(i)
+            self.ploty.append(old_points)
 
         x = 1
         Tstart = old_points
@@ -334,7 +337,6 @@ class HillClimber:
             i += 1
 
         return i
-
 
 
     def run_annealing(self):
@@ -495,16 +497,6 @@ class HillClimber:
             i += 1
             self.plotx.append(i)
             self.ploty.append(old_points)
-
-
-    def plot(self):
-        plt.plot(self.plotx, self.ploty)
-        plt.ylim(0)
-        plt.xlabel("Iterations")
-        plt.ylabel("Maluspoints")
-        plt.title("Points during hill climber which stops after 5000 non-improvements")
-        plt.grid()
-        plt.savefig('code/algorithms/plots/climber.png', dpi=1000)
 
 
     def add_value(self, i, new_points):
