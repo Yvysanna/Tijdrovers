@@ -45,13 +45,10 @@ def checker(activities, student_dict, constraint):
                     for x in conflicts.values():
                         if x > 1:
                             malus += (x - 1)
-                            # mal_dict['conflicts'] += 1
-
 
                     # Calculate maluspoints for free periods
                     check = [int(x.split('-')[0]) for x in conflicts.keys()]
                     check.sort()
-                    #print(student, conflicts, '   ------   ',  check)
 
                     # Check that more than one activity per day
                     if len(check) > 1:
@@ -67,7 +64,6 @@ def checker(activities, student_dict, constraint):
                             if idx > 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  :
                                 return False # If more than 2 breaks, invalid result, thus return early and stop
 
-                            #mal_dict[f'free_period{idx}'] += 1
                             malus += points[idx]
 
     # print('checker', mal_dict)

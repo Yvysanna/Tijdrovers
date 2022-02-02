@@ -39,7 +39,7 @@ class Planner:
             containing all room objects
         '''
         self.days = ['ma', 'di', 'wo', 'do', 'vr']
-        self.times = ['9-11', '11-13', '13-15', '15-17', '17-19'] # + 17-19
+        self.times = ['9-11', '11-13', '13-15', '15-17', '17-19']
         self.rooms = sorted(rooms, key=lambda c : c.capacity, reverse = True)
         self.create_slots()
 
@@ -95,19 +95,12 @@ class Planner:
         index = tindex * (len(self.times) * len(self.rooms)) + dindex
         return self.slots[index : index + ((len(self.rooms) - 1) * len(self.days)) : len(self.days)]
 
-    def plan_parallel(self, activities):
-        for day in self.days:
-            for time in self.time:
-                for activity in activities:
-                    self.insert_activity(activity, activity.room, day, time)
-                       
-
 
     def plan_activity(self, rooms, activity):
         '''
         Plan activity into a room (capacity greater or ideal) if no students face conflicts through that
         RETURNS: True if success, else False
-        '''         
+        '''        
         for room in rooms:
             for day in self.days:
                 for time in self.times[:-1]:
@@ -130,29 +123,6 @@ class Planner:
         time = self.times[index // (len(self.rooms) * len(self.days))]
         return room, day, time
 
-    def get_capacity_info(self):
-        '''
-        Controll function, checks how many free slots stay with algorithm
-        '''
-        free_slots = []; busy_slots = []
-        for idx, slot in enumerate(self.slots):
-            if not slot:
-                room, day, time = self.get_slot(idx)
-                free_slots.append(f'{room.name}/ ({room.capacity}) / {(day, time)}')
-            else:
-                busy_slots.append(self.get_slot(idx))
-        return {f"free slots: ({len(free_slots)})" :free_slots, "busy slots": len(busy_slots)}
-
-    def maluspoints(self):
-        return sum(a.maluspoints() for a in self.slots if a)
-
-    def unplan(self):
-
-        malus_activities = [activity for activity in self.slots if activity and activity.maluspoints()]
-        for activity in self.slots:
-            if activity:
-                pass
-        pass
 
     def create_student_dict(self, students_set):
         """
@@ -161,17 +131,16 @@ class Planner:
             student_dict[name] = [{day: [time]}]
         """
         student_dict = {}  
-         
+        
         # Get student name as key for dictionary
         for student in students_set:
             slots = {}
             name = f'{student.last_name} {student.first_name}'
             student_dict[name] = []
+
             for activity in student.activities:
                 room, day, time = self.get_info(activity)
-                activity.room = room
-                activity.day = day
-                activity.timeslot = time
+                activity.set_day_time(day, time, room)
 
                 # Write information into dictionary
                 if day not in slots:
