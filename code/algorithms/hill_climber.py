@@ -52,7 +52,7 @@ class HillClimber:
         Assigns a new activity group to student
     activity_climber(current_streak, old_points, X=None, Tstart=None):
         Performs the next activity switch and determines if change will be kept or not
-    student_climber(self, current_streak, old_points, i=None, Tstart=None):
+    student_climber(self, current_streak, old_points, X=None, Tstart=None):
         Performs the next student switch and determines if change will be kept or not
     add_data_point(self, iteration, old_points):
         Saves data point for graph
@@ -219,7 +219,7 @@ class HillClimber:
         student.remove_activity(current_group)
         student.add_activity(new_group)
 
-    def activity_climber(self, current_streak, old_points, i=None, Tstart=None):
+    def activity_climber(self, current_streak, old_points, X=None, Tstart=None):
         """
         Performs the next activity switch and determines if change will be kept or not
 
@@ -228,7 +228,7 @@ class HillClimber:
             Current number of consecutive non-improvements
         old_points: int
             Numer of maluspoints
-        i: int
+        X : int
             Current iteration in simulated annealing
         Tstart: float
             start temperature in simulated annealing
@@ -250,7 +250,7 @@ class HillClimber:
             comparison_value = new_points
             comparison_base = old_points
         else:
-            T = Tstart * (0.9997**i)
+            T = Tstart * (0.9997**X)
             chance = 2**((old_points - new_points) /
                          (self.temperature_multiplier*T))
             r = random()
@@ -270,18 +270,18 @@ class HillClimber:
 
         return current_streak, old_points
 
-    def student_climber(self, current_streak, old_points, i=None, Tstart=None):
+    def student_climber(self, current_streak, old_points, X=None, Tstart=None):
         """
         Performs the next student switch and determines if change will be kept or not
 
         ARGS:
-        current_streak: int
+        current_streak : int
             Current number of consecutive non-improvements
-        old_points: int
+        old_points : int
             Numer of maluspoints
-        i: int
+        X : int
             Current iteration in simulated annealing
-        Tstart: float
+        Tstart : float
             start temperature in simulated annealing
 
         RETURNS:
@@ -301,7 +301,7 @@ class HillClimber:
             comparison_value = new_points
             comparison_base = old_points
         else:
-            T = Tstart * (0.9997**i)
+            T = Tstart * (0.9997**X)
             chance = 2**((old_points - new_points) /
                          (self.temperature_multiplier*T))
             r = random()
@@ -325,7 +325,7 @@ class HillClimber:
         Saves data point for graph
 
         ARGS:
-        i: int
+        iteration: int
             Current iteration
         old_points: int
             Number of maluspoints
