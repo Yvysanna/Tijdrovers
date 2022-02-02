@@ -4,7 +4,7 @@ This project aims to optimally create a class schedule for the Science Park Camp
 
 ## Summary
 
-To create the schedule, we used a pandas Dataframe object.
+For this project we have tried to create a class schedule for all activities of all courses given in the dataset that are to be scheduled over a limited amount of periods in a week, over seven different classrooms.  Our goal was to create the best possible schedule that would offer as many students as possible to follow all courses they enrolled to. We tried approaching our goal by experimenting with different algorithms and heuristics to find the most productive way to program algorithms and constraints to solve our the main problem of our project.
 
 ## Run Locally
 
@@ -14,7 +14,7 @@ Clone the project
   git clone https://github.com/Yvysanna/Tijdrovers
 ```
 
-Install dependencies
+Install dependencies<br>
 *This code is written in Python 3.8.10 and 3.10.1. To run this code, the required packages are noted down in requirements.txt and can be installed easily via pip with this command:*
 
 ```bash
