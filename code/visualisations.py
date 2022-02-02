@@ -25,9 +25,6 @@ def store(students_set, planner, points):
         Contains the schedule of every student
     points : int
         The total number of maluspoints
-
-    RETURNS:
-    None
     """
 
     df_dict = {'student': [], 'vak': [], 'activiteit': [],
@@ -59,9 +56,6 @@ def distribution(points, n):
         List of maluspoints on each iteration
     n : int
         Number of iterations
-
-    RETURNS:
-    None
     """
 
     minimum = min(points) // 10 * 10 - 50
@@ -75,7 +69,7 @@ def distribution(points, n):
     plt.savefig('code/algorithms/plots/distribution.png', dpi=1000)
 
 
-def plot(plotx, ploty, streak):
+def plot(plotx, ploty, streak, algorithm):
     """
     Creates a line graph from the amount of points over the iterations within the algorithm
 
@@ -84,9 +78,6 @@ def plot(plotx, ploty, streak):
         List of iteration numbers
     ploty : [int]
         List of points on every iteration
-
-    RETURNS:
-    None
     """
 
     plt.plot(plotx, ploty)
@@ -95,4 +86,4 @@ def plot(plotx, ploty, streak):
     plt.ylabel("Maluspoints")
     plt.title(f"Points during hill climber after {len(ploty)} iterations")
     plt.grid()
-    plt.savefig(f'code/algorithms/plots/climber{streak}.png', dpi=1000)
+    plt.savefig(f'code/algorithms/plots/{algorithm}{streak}.png', dpi=1000)

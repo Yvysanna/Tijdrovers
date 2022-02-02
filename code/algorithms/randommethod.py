@@ -13,7 +13,7 @@ from random import shuffle, choice
 def random_method(course_set, classrooms_list, planner, days, timeslots):
     """
     Creates a random schedule
-    
+
     ARGS:
     course_set: set(Course objects)
         set containing all course objects
