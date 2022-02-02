@@ -73,5 +73,4 @@ def checker(activities, student_dict, constraint):
 
                             malus += points[idx]
 
-    # print('checker', mal_dict)
     return malus
