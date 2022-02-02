@@ -34,7 +34,9 @@ class Planner:
         return None, None, None
 
     def swap_activities(self, i1, i2):
+        #print(f'before switch: {self.slots[i1], self.slots[i2]}')
         self.slots[i1], self.slots[i2] = self.slots[i2], self.slots[i1]
+        #print(f'after switch: {self.slots[i1], self.slots[i2]}')
 
     def insert_activity(self, activity, room, day, time):
         """
