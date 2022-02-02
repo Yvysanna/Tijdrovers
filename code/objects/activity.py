@@ -91,7 +91,7 @@ class Activity:
         students_count = len(self.student_list)
         malus = students_count - capacity if students_count > capacity else 0
         malus += 5 if self.timeslot == '17-19' else 0
-        malus += sum(student.malus_points() for student in self.student_list)
+        malus += sum(student.maluspoints() for student in self.student_list)
 
         return malus
 
