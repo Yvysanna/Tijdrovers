@@ -25,6 +25,9 @@ def store(students_set, planner, points):
         Contains the schedule of every student
     points : int
         The total number of maluspoints
+        
+    RETURNS:
+    None
     """
 
     df_dict = {'student': [], 'vak': [], 'activiteit': [],
@@ -56,6 +59,9 @@ def distribution(points, n):
         List of maluspoints on each iteration
     n : int
         Number of iterations
+
+    RETURNS:
+    None
     """
 
     minimum = min(points) // 10 * 10 - 50
@@ -78,6 +84,9 @@ def plot(plotx, ploty, streak):
         List of iteration numbers
     ploty : [int]
         List of points on every iteration
+
+    RETURNS:
+    None
     """
 
     plt.plot(plotx, ploty)
