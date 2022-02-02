@@ -10,7 +10,7 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
         for activity in activities:
 
             # Give planner all classrooms from the smallest possible to the biggest available
-            planner.plan_activity(classrooms_list[classrooms_list.index(activity._room):], activity)
+            planner.plan_activity(classrooms_list[classrooms_list.index(activity.room):], activity)
 
             # Check if activity can be scheduled
             room, day, time = planner.get_info(activity)
@@ -33,6 +33,6 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
 
         # Check if successfull and if so, add room and timeslot
         room, day, time = planner.get_info(activity) 
-        activity.change_day_time(day, time)
+        activity.set_day_time(day, time)
 
         

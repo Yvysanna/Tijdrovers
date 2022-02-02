@@ -60,7 +60,6 @@ def main():
     i = hill.run()
     student_dict = planner.create_student_dict(students_set)
     points = checker(planner.slots, student_dict)
-    #print(planner.malus_points())
 
     # Create visualtization and csv dataset from results
     # hill.plot()

@@ -22,7 +22,7 @@ class Planner:
         self.create_slots()
 
     def create_slots(self):
-        self.slots = [None] * ((len(self.days) * (len(self.times) - 1) * len(self.rooms)) + len(self.days))# For alt times create Bool Table
+        self.slots = [None] * ((len(self.days) * (len(self.times) - 1) * len(self.rooms)) + len(self.days))
 
     def get_info(self, activity):
         """
@@ -62,7 +62,7 @@ class Planner:
         for day in self.days:
             for time in self.time:
                 for activity in activities:
-                    self.insert_activity(activity, activity._room, day, time)
+                    self.insert_activity(activity, activity.room, day, time)
                        
 
 
@@ -75,10 +75,10 @@ class Planner:
             for day in self.days:
                 for time in self.times[:-1]:
                     activities = self.get_activities(day, time)
-                    students_list = Planner.flatten([activity._students_list for activity in activities if activity])
+                    students_list = Planner.flatten([activity.student_list for activity in activities if activity])
 
                     # Checks for each student if student already has activity at given time and day
-                    students_all = students_list + list(activity._students_list)
+                    students_all = students_list + list(activity.student_list)
                     if not Planner.have_duplicates(students_all):
                         if self.insert_activity(activity, room, day, time) != -1:
                             return True
@@ -133,9 +133,9 @@ class Planner:
             student_dict[name] = []
             for activity in student.activities:
                 room, day, time = self.get_info(activity)
-                activity._room = room
-                activity._day = day
-                activity._timeslot = time
+                activity.room = room
+                activity.day = day
+                activity.timeslot = time
 
                 # Write information into dictionary
                 if day not in slots:
