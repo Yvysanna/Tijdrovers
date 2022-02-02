@@ -58,10 +58,11 @@ class Activity:
         self.day = day
         self.timeslot = timeslot
 
-    def set_day_time(self, day, timeslot):
-        '''Sets the day and time at which the activity takes place'''
+    def set_day_time(self, day, timeslot, room = None):
+        '''Sets the day and time (and room) at which the activity takes place'''
         self.day = day
         self.timeslot = timeslot
+        if room: self.room = room
 
     def get_day_time(self):
         '''Returns the day and time at which the activity takes place'''

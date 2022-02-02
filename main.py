@@ -42,7 +42,7 @@ class InvalidAlgorithm(Exception):
     pass
 
 
-def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperature_multiplier):
+def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint):
     """
     Main function for this programm
         * Loads and uses source information in hill climber
@@ -70,15 +70,15 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
         planner = Planner(classrooms_list)
         semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
         student_dict = planner.create_student_dict(students_set)
-        points = checker(planner.slots, student_dict)
+        points = checker(planner.slots, student_dict, constraint)
 
     # Create object of class hill climber
-    hill = HillClimber(planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier)
+    hill = HillClimber(planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint)
 
     # Run hill climber method and evaluate its results
     iterations = hill.run(algorithm)
     student_dict = planner.create_student_dict(students_set)
-    points = checker(planner.slots, student_dict)
+    points = checker(planner.slots, student_dict, constraint)
 
     # Create visualisation and csv dataset from results
     if graph:
@@ -98,6 +98,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--point_limit', type=int, default=200,help='switching point from climber to annealing (default: 200)')
     parser.add_argument('-i', '--iteration_limit', type=int, default=10000,help='annealing iterations (default: 10000)')
     parser.add_argument('-t', '--temperature_multiplier', type=float, default=1,help='annealing temperature multiplier (default: 1)')
+    parser.add_argument('-c', '--constraint', type=bool,default=False, help='use hard-constraint for third break term (default: False)')
     parser.add_argument('-d', '--distribution', type=bool,default=False, help='create distribution histogram (default: False)')
     parser.add_argument('-g', '--graph',   type=bool,default=False,
                         help='create lines graph for single run, do not use together with distribution! (default: False)')
@@ -110,7 +111,7 @@ if __name__ == '__main__':
     # Run main with provided arguments
     points, iterations = [], []
     for _ in range(args.runs):
-        new_points, i = main(args.graph, args.algorithm, args.streak_limit, args.iteration_limit, args.point_limit, args.temperature_multiplier)
+        new_points, i = main(args.graph, args.algorithm, args.streak_limit, args.iteration_limit, args.point_limit, args.temperature_multiplier, args.constraint)
         points.append(new_points)
         iterations.append(i)
 
