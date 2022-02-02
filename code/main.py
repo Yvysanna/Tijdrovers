@@ -26,7 +26,7 @@ from loader import load_all
 from checker import checker
 
 # Functions to create visualisations and store schedule results in csv
-from distribution import store, distribution, plot
+from visualisations import store, distribution, plot
 
 
 def main():
