@@ -16,7 +16,7 @@ from algorithms.planner import Planner
 
 # Algorithm functions
 from algorithms.semirandom import semirandom
-from algorithms.random import random
+from algorithms.random import random_method
 from algorithms.hill_climber import HillClimber
 
 # Loader function to load all necessary information from dataset
@@ -52,7 +52,7 @@ def main():
     # Fill planner with semirandom method
     while points == False or points == 0:
         planner = Planner(classrooms_list)
-        random_method(course_set, classrooms_list, planner, planner.days, planner.times)
+        semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
         student_dict = planner.create_student_dict(students_set)
         points = checker(planner.slots, student_dict)
 
@@ -66,29 +66,28 @@ def main():
 
     # Create visualisation and csv dataset from results
     # plot(hill.plotx, hill.ploty, hill.streak)
-    # store(students_set, planner, points)
+    store(students_set, planner, points)
 
     return points, i
 
 
 if __name__ == '__main__':
     start = time.time()
-    n_runs = 0
+    n_runs = 3
 
     points = []
     iterations = []
 
-    while time.time() - start < 3600:
+    for _ in range(n_runs):
         new_points, i = main()
         points.append(new_points)
         iterations.append(i)
-        print(n_runs, i, points[n_runs])
         n_runs += 1
 
     print("\n Average: " + str(mean(points)))
     print("\n Average iterations: " + str(mean(iterations)))
 
     # Create probability distribution from all runs
-    # distribution(points, n_runs)
+    distribution(points, n_runs)
 
-
+    # main()

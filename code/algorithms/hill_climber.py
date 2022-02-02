@@ -166,7 +166,7 @@ class HillClimber:
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        while streak < 3000:
+        while streak < 30:
             # if i % 100000 == 0:
             #     print(time.time() - start, i, streak, old_points)
 
