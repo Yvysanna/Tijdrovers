@@ -108,16 +108,16 @@ class Course:
 
         # Create as many lecture activity objects as to be planned
         for x in range(self._lectures_number):
-            lecture = Activity('Lecture', f'{self.name} Lecture {x + 1}', classroom, self.students_number)
+            lecture = Activity('Hoorcollege', f'{self.name} Hoorcollege {x + 1}', classroom, self.students_number)
             lecture._students_list = list(self._students_set)
             self._lectures.append(lecture)
         self._timeslots += self._lectures_number # Count timeslots accordingly
 
         self._tutorials = Course.create_activity_list(
-            'Tutorial', self.name, self._tutorials_number, self._tutorial_max, self.students_number, classrooms)
+            'Werkcollege', self.name, self._tutorials_number, self._tutorial_max, self.students_number, classrooms)
 
         self._labs = Course.create_activity_list(
-            'Lab', self.name, self._labs_number, self._lab_max, self.students_number, classrooms)
+            'Practica', self.name, self._labs_number, self._lab_max, self.students_number, classrooms)
       
     def random_register(self):
         """Register students into activities"""
