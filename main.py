@@ -68,7 +68,7 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
     points = 0
 
     # Fill planner with semirandom method
-    while points is False or points == 0:
+    while not points:
         planner = Planner(classrooms_list)
         if semirandom_begin:
             semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
