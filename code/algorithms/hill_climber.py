@@ -1,13 +1,13 @@
 import sys
 import os
 
+from checker import checker
+from random import choice, random, sample
+
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 sys.setrecursionlimit(10000)
-
-from checker import checker
-from random import choice, random, sample
 
 
 class HillClimber:
@@ -195,7 +195,7 @@ class HillClimber:
 
         # Undo reassignment
         self.student_switch(random_student_1, random_group_2, random_group_1)
-        if random_student_2 != None:
+        if random_student_2:
             self.student_switch(
                 random_student_2, random_group_1, random_group_2)
 
