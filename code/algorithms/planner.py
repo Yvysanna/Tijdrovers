@@ -95,14 +95,6 @@ class Planner:
         index = tindex * (len(self.times) * len(self.rooms)) + dindex
         return self.slots[index : index + ((len(self.rooms) - 1) * len(self.days)) : len(self.days)]
 
-    def plan_parallel(self, activities):
-        for day in self.days:
-            for time in self.time:
-                for activity in activities:
-                    self.insert_activity(activity, activity.room, day, time)
-                       
-
-
     def plan_activity(self, rooms, activity):
         '''
         Plan activity into a room (capacity greater or ideal) if no students face conflicts through that
@@ -130,29 +122,6 @@ class Planner:
         time = self.times[index // (len(self.rooms) * len(self.days))]
         return room, day, time
 
-    def get_capacity_info(self):
-        '''
-        Controll function, checks how many free slots stay with algorithm
-        '''
-        free_slots = []; busy_slots = []
-        for idx, slot in enumerate(self.slots):
-            if not slot:
-                room, day, time = self.get_slot(idx)
-                free_slots.append(f'{room.name}/ ({room.capacity}) / {(day, time)}')
-            else:
-                busy_slots.append(self.get_slot(idx))
-        return {f"free slots: ({len(free_slots)})" :free_slots, "busy slots": len(busy_slots)}
-
-    def maluspoints(self):
-        return sum(a.maluspoints() for a in self.slots if a)
-
-    def unplan(self):
-
-        malus_activities = [activity for activity in self.slots if activity and activity.maluspoints()]
-        for activity in self.slots:
-            if activity:
-                pass
-        pass
 
     def create_student_dict(self, students_set):
         """
