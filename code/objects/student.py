@@ -48,7 +48,7 @@ class Student:
         self.activities.remove(activity)
 
     def __str__(self) -> str:
-        return str(f'\n{self.last_name}' )
+        return str(f'\n{self.last_name}')
 
     def __repr__(self) -> str:
-        return str(f'\n{self.last_name}' )
+        return str(f'\n{self.last_name}')

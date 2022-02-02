@@ -2,6 +2,7 @@ import math
 from random import choice
 from objects.activity import Activity
 
+
 class Course:
     '''
     Represents a single course at the campus to be scheduled
@@ -78,7 +79,6 @@ class Course:
         self._student_set.add(student)
         self._student_number += 1
 
-
     def create_activities(self, classrooms):
         '''Creates Activity objects for the course and assigns it the smallest possible classroom'''
         # Calculate the smallest classroom that still fits all students enrolled to the course
@@ -92,8 +92,8 @@ class Course:
             self.lectures.append(lecture)
 
         # Create tutorials and labs without assigning students
-        self.tutorials = Course.create_groups(self,'Werkcollege', self._tutorial_number, self._tutorial_max, classrooms)
-        self.labs = Course.create_groups(self,'Practica', self._lab_number, self._lab_max, classrooms)
+        self.tutorials = Course.create_groups(self, 'Werkcollege', self._tutorial_number, self._tutorial_max, classrooms)
+        self.labs = Course.create_groups(self, 'Practica', self._lab_number, self._lab_max, classrooms)
 
     def create_groups(self, type, number, max, classrooms):
         '''

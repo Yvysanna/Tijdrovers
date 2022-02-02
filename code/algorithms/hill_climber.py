@@ -134,16 +134,15 @@ class HillClimber:
         assert len(random_group_1.student_list) <= random_group_1.max_students, f"Too many students in {random_group_1}: {len(random_group_1.student_list)}"
         assert len(random_group_2.student_list) <= random_group_2.max_students, f"Too many students in {random_group_2}: {len(random_group_2.student_list)}"
 
-
     def student_switch(self, student, current_group, new_group):
         """
         Switching the activity group for student
 
-        ARGS: 
+        ARGS:
             self
             student: student object
             current_group, new_group: activity objects for the groups from the switched student
-        RETURNS: 
+        RETURNS:
             None
         """
         # Switch student object from old to new group
@@ -153,18 +152,17 @@ class HillClimber:
         student.remove_activity(current_group)
         student.add_activity(new_group)
 
-    
     def activity_climber(self, current_streak, old_points, X=None, Tstart=None):
         """
         Generating the next activity switch and determining if change will be kept
 
-        ARGS: 
+        ARGS:
             self
             current_streak: current number of consecutive non-improvements
             old_points: number of points
             X: current iteration in simulated annealing
             Tstart: start temperature in simulated annealing
-        RETURNS: 
+        RETURNS:
             current_streak, old_points: updated values
         """
         # Change slot of activity randomly
@@ -173,7 +171,7 @@ class HillClimber:
         new_points = checker(self.planner.slots, student_dict, self.constraint)
 
         # Determine if climber or annealer comparison is needed
-        if Tstart == None:
+        if Tstart is None:
             comparison_value = new_points
             comparison_base = old_points
         else:
@@ -185,7 +183,7 @@ class HillClimber:
             comparison_base = chance
 
         # Check if improvement was made, allows hard constraints
-        if new_points == False or comparison_value > comparison_base:
+        if new_points is False or comparison_value > comparison_base:
             self.undo_activity_switch(index_activity_1, index_activity_2)
             current_streak += 1
         else:
@@ -196,18 +194,17 @@ class HillClimber:
 
         return current_streak, old_points
 
-
     def student_climber(self, current_streak, old_points, X=None, Tstart=None):
         """
         Generating the next student switch and determining if change will be kept
 
-        ARGS: 
+        ARGS:
             self
             current_streak: current number of consecutive non-improvements
             old_points: number of points
             X: current iteration in simulated annealing
             Tstart: start temperature in simulated annealing
-        RETURNS: 
+        RETURNS:
             current_streak, old_points: updated values
         """
         # Change a random activity group for a random student
@@ -216,7 +213,7 @@ class HillClimber:
         new_points = checker(self.planner.slots, student_dict, self.constraint)
 
         # Determine if climber or annealer comparison is needed
-        if Tstart == None:
+        if Tstart is None:
             comparison_value = new_points
             comparison_base = old_points
         else:
@@ -226,9 +223,9 @@ class HillClimber:
 
             comparison_value = r
             comparison_base = chance
-            
+
         # Check if improvement was made, allows hard constraints
-        if new_points == False or comparison_value > comparison_base:
+        if new_points is False or comparison_value > comparison_base:
             self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
             current_streak += 1
         else:
@@ -238,21 +235,19 @@ class HillClimber:
 
         return current_streak, old_points
 
-
     def add_value(self, iteration, old_points):
         """
         Saves data point for graph
 
-        ARGS: 
+        ARGS:
             self
             i: current iteration
             old_points: number of points
-        RETURNS: 
+        RETURNS:
             None
         """
         self.plotx.append(iteration)
         self.ploty.append(old_points)
-
 
     def run(self, algorithm):
         """
@@ -285,7 +280,7 @@ class HillClimber:
                 current_streak, old_points = self.activity_climber(current_streak, old_points)
                 iteration += 1
                 self.add_value(iteration, old_points)
-                
+
                 current_streak, old_points = self.student_climber(current_streak, old_points)
                 iteration += 1
                 self.add_value(iteration, old_points)
@@ -307,12 +302,10 @@ class HillClimber:
                 current_streak, old_points = self.activity_climber(current_streak, old_points)
                 iteration += 1
                 self.add_value(iteration, old_points)
-                
+
                 current_streak, old_points = self.student_climber(current_streak, old_points)
                 iteration += 1
                 self.add_value(iteration, old_points)
                 print(old_points)
 
         return iteration
-
-

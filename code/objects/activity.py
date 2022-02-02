@@ -33,7 +33,7 @@ class Activity:
         Calculates the maluspoints it causes using the late timeslot and exceeding of room capacity
     '''
 
-    def __init__(self, act_type, name, room, max_capacity, day = None, timeslot = None):
+    def __init__(self, act_type, name, room, max_capacity, day=None, timeslot=None):
         '''
         PARAMETERS:
         act_type : str
@@ -58,11 +58,12 @@ class Activity:
         self.day = day
         self.timeslot = timeslot
 
-    def set_day_time(self, day, timeslot, room = None):
+    def set_day_time(self, day, timeslot, room=None):
         '''Sets the day and time (and room) at which the activity takes place'''
         self.day = day
         self.timeslot = timeslot
-        if room: self.room = room
+        if room:
+            self.room = room
 
     def get_day_time(self):
         '''Returns the day and time at which the activity takes place'''
