@@ -74,7 +74,6 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
         semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
         student_dict = planner.create_student_dict(students_set)
         points = checker(planner.slots, student_dict, constraint)
-        print(points)
 
     # Create object of class hill climber
     hill = HillClimber(planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint)
