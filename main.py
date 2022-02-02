@@ -41,9 +41,6 @@ from code.loader import load_all
 from code.checker import checker
 from code.visualisations import store, distribution, plot
 
-class InvalidAlgorithm(Exception):
-    pass
-
 
 def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint):
     """
