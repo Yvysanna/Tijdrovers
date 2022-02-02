@@ -4,7 +4,7 @@
 # Julia Liem, Karel Nijhuis, Yvette Schröder
 #
 # - Usage: python3 main.py -s streak_limit (int) -p point_limit (int)
-#          -i iteration_limit (int) -t temperature_multiplier (float) 
+#          -i iteration_limit (int) -t temperature_multiplier (float)
 #          -c constraint (bool) -r semirandom_begin (bool) -d distribution (bool)
 #          -g graph (bool) -n runs (int) -a algorithm (str)
 #
@@ -17,7 +17,7 @@
 #   multiplier in the argument can be provided with their respective arguments
 # - It is recommended to use a number of 10000 or lower for number of iterations to
 #   prevent out of range errors
-# - A hard constraint for the third break term can be set by setting constraint 
+# - A hard constraint for the third break term can be set by setting constraint
 #   to True
 # - The semirandom algorithm can be used instead of random_method for the begin state
 #   by setting semirandom_begin to True
@@ -68,7 +68,7 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
     points = 0
 
     # Fill planner with semirandom method
-    while points == False or points == 0:
+    while not points:
         planner = Planner(classrooms_list)
         if semirandom_begin:
             semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
@@ -78,7 +78,8 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
         points = checker(planner.slots, student_dict, constraint)
 
     # Create object of class hill climber
-    hill = HillClimber(planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint)
+    hill = HillClimber(
+        planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint)
 
     # Run hill climber method and evaluate its results
     iterations = hill.run(algorithm)
@@ -99,17 +100,26 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='create a class schedule')
 
     # Adding arguments
-    parser.add_argument('-s', '--streak_limit', type=int, default=1000,help='hill climber non-improvements (default: 1000)')
-    parser.add_argument('-p', '--point_limit', type=int, default=200,help='switching point from climber to annealing (default: 200)')
-    parser.add_argument('-i', '--iteration_limit', type=int, default=10000,help='annealing iterations (default: 10000)')
-    parser.add_argument('-t', '--temperature_multiplier', type=float, default=1,help='annealing temperature multiplier (default: 1)')
-    parser.add_argument('-c', '--constraint', type=bool,default=False, help='use hard-constraint for third break term (default: False)')
-    parser.add_argument('-r', '--semirandom_begin', type=bool,default=False, help='use semirandom for begin state (default: False)')
-    parser.add_argument('-d', '--distribution', type=bool,default=False, help='create distribution histogram (default: False)')
-    parser.add_argument('-g', '--graph',   type=bool,default=False,
+    parser.add_argument('-s', '--streak_limit', type=int, default=1000,
+                        help='hill climber non-improvements (default: 1000)')
+    parser.add_argument('-p', '--point_limit', type=int, default=200,
+                        help='switching point from climber to annealing (default: 200)')
+    parser.add_argument('-i', '--iteration_limit', type=int, default=10000,
+                        help='annealing iterations (default: 10000)')
+    parser.add_argument('-t', '--temperature_multiplier', type=float, default=1,
+                        help='annealing temperature multiplier (default: 1)')
+    parser.add_argument('-c', '--constraint', type=bool, default=False,
+                        help='use hard-constraint for third break term (default: False)')
+    parser.add_argument('-r', '--semirandom_begin', type=bool, default=False,
+                        help='use semirandom for begin state (default: False)')
+    parser.add_argument('-d', '--distribution', type=bool, default=False,
+                        help='create distribution histogram (default: False)')
+    parser.add_argument('-g', '--graph',   type=bool, default=False,
                         help='create lines graph for single run, do not use together with distribution! (default: False)')
-    parser.add_argument('-n', '--runs', type=int, default=1, help='number of runs (default: 1)')
-    parser.add_argument('-a', '--algorithm', type=str, default='climber', help='select algorithm: climber, annealing or annealing_climber (default: climber)')
+    parser.add_argument('-n', '--runs', type=int, default=1,
+                        help='number of runs (default: 1)')
+    parser.add_argument('-a', '--algorithm', type=str, default='climber', 
+                        help='select algorithm: climber, annealing or annealing_climber (default: climber)')
 
     # Read arguments from command line
     args = parser.parse_args()
