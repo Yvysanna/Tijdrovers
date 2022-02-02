@@ -11,7 +11,7 @@ from collections import Counter
 def checker(activities, student_dict):
     """
     Checker function calculating maluspoints for schedule for each student
-    
+
     ARGS:
         Activities: Array of activity objects either from planner.timeslots or read and created out of csv
         Student dict: format {Student : [{Day : [Timeslot]}]}

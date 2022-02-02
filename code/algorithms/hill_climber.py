@@ -260,7 +260,7 @@ class HillClimber:
         * evaluating improvement and undoing it if unsuccessful
         * switching two students from the same activity but different groups
         * evaluating improvement again and undoing it if unsuccessful
-        
+
         ARGS:
             self
             algorithm: algorithm type to run
@@ -279,7 +279,7 @@ class HillClimber:
         old_points = checker(self.planner.slots, student_dict)
 
         # Check which algorithm is used and run appropriate loops
-        if algorithm == 'climber-annealing':
+        if algorithm == 'climber_annealing':
             while old_points > self.point_limit:
                 current_streak, old_points = self.activity_climber(current_streak, old_points)
                 iteration += 1
@@ -293,7 +293,6 @@ class HillClimber:
 
         if algorithm == 'annealing' or algorithm == 'climber-annealing':
             for x in range(self.iteration_limit):
-
                 current_streak, old_points = self.activity_climber(current_streak, old_points, X=x, Tstart=tstart)
                 iteration += 1
                 self.add_value(iteration, old_points)

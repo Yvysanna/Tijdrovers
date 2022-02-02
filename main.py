@@ -14,6 +14,8 @@
 # - The specific hill climber can be chosen using the algorithm argument,
 #   and the streak limit, point limit, the number of iterations, and the temperature
 #   multiplier in the argument can be provided with their respective arguments
+# - It is recommended to use a number of 10000 or lower for number of iterations to
+#   prevent out of range errors
 # - A line graph may be created with the graph argument which plots the number of
 #   maluspoints against the iterations
 # - A distribution graph may be created with the distribution argument which makes
