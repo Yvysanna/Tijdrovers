@@ -14,6 +14,8 @@
 # - The specific hill climber can be chosen using the algorithm argument,
 #   and the streak limit, point limit, the number of iterations, and the temperature
 #   multiplier in the argument can be provided with their respective arguments
+# - It is recommended to use a number of 10000 or lower for number of iterations to
+#   prevent out of range errors
 # - A line graph may be created with the graph argument which plots the number of
 #   maluspoints against the iterations
 # - A distribution graph may be created with the distribution argument which makes
@@ -69,6 +71,7 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
         semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
         student_dict = planner.create_student_dict(students_set)
         points = checker(planner.slots, student_dict)
+        print(points)
 
     # Create object of class hill climber
     hill = HillClimber(planner, course_set, students_set, streak_limit, iteration_limit, point_limit, temperature_multiplier)
