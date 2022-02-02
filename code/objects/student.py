@@ -13,15 +13,15 @@ class Student:
         A set of all activities in which the student participates
 
     METHODS:
-    add_activity(activity)
+    add_activity(activity):
         Adds activity to set of activities
-    remove_activity(activity)
-        Removes activity from et of activities
-    maluspoints()
+    remove_activity(activity):
+        Removes activity from set of activities
+    maluspoints():
         Returns the number of maluspoints caused by conflicts
     '''
 
-    def __init__(self, last_name, first_name, student_number):
+    def __init__(self, last_name, first_name):
         '''
         ARGUMENTS:
         last_name : str
@@ -39,7 +39,7 @@ class Student:
         self.activities.add(activity)
 
     def remove_activity(self, activity):
-        '''Removes activity from et of activities'''
+        '''Removes activity from set of activities'''
         self.activities.remove(activity)
 
     def maluspoints(self):

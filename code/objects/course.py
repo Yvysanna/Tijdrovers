@@ -29,16 +29,18 @@ class Course:
         List of tutorial groups for the course
     labs :
         List of lab sessions for the course
-    _timeslots : int
-        The minimum number of timeslots that the course will need
 
     METHODS:
-    schedule()
-        Schedules the course at a timeslot on random day and time
-    smallest_classroom()
-        Returns the classroom with the smallest capacity suitable for the course
-    __str__()
-        Represents the class as a string
+    add_student(student):
+        Add Student object to set of students and increase total number of students
+    create_activities(classrooms):
+        Creates Activity objects for the course and assigns it the smallest possible classroom
+    create_groups(type, number, max, classrooms):
+        Creates tutorial and lab groups as Activity object and add to list of activities
+    random_register():
+        Register every student for their activities
+    assign_activity(activities, student):
+        Randomly assign a tutorial or lab group to a student
     '''
 
     def __init__(self, name, lecture_number, tutorial_number, tutorial_max, lab_number, lab_max):
@@ -66,88 +68,87 @@ class Course:
         self._lab_max = int(lab_max) if lab_max != 'nvt' else 0
         self._student_set = set()
         self._student_number = 0
-        self._timeslots = 0
 
         self.lectures = []
         self.tutorials = []
         self.labs = []
 
     def add_student(self, student):
-        """
-        ARGS: 
-            Student, object
-        USAGE:
-            Add student object into course's set of student objects for students enrolled into this course
-        RETURNS:
-            None
-        """
+        '''Add Student object to set of students and increase total number of students'''
         self._student_set.add(student)
         self._student_number += 1
 
 
     def create_activities(self, classrooms):
-        '''
-        Creates activity objects for each course, fills self._activities
-        MUCH ROOM FOR OPTIMIZATION:
-        - LOOKING FOR MIN CLASSROOM COULD BE MOVED TO OTHER FUNCTION
-        - LECTURE, TUTORIAL, LAB WITH F-STRING ALTERNATED TO NOT REPEAT CODE
-        - CALL SCHEDULE FUNCTION HERE OR IN ACTIVITY
-        RETURNS: None
-        '''
-
-        #https://stackoverflow.com/questions/27966757/find-min-value-in-array-0
+        '''Creates Activity objects for the course and assigns it the smallest possible classroom'''
         # Calculate the smallest classroom that still fits all students enrolled to the course
+        # Code from https://stackoverflow.com/questions/27966757/find-min-value-in-array-0
         classroom = min([c for c in classrooms if c.capacity >= self._student_number], key=lambda c: c.capacity)
 
-        # Create as many lecture activity objects as to be planned
-        for x in range(self._lecture_number):
-            lecture = Activity('Hoorcollege', f'{self.name} Hoorcollege {x + 1}', classroom, self._student_number)
+        # Add every lecture which contains every student of the course
+        for i in range(self._lecture_number):
+            lecture = Activity('Hoorcollege', f'{self.name} Hoorcollege {i + 1}', classroom, self._student_number)
             lecture.student_list = list(self._student_set)
             self.lectures.append(lecture)
-        self._timeslots += self._lecture_number # Count timeslots accordingly
 
-        self.tutorials = Course.create_activity_list(
-            'Werkcollege', self.name, self._tutorial_number, self._tutorial_max, self._student_number, classrooms)
+        # Create tutorials and labs without assigning students
+        self.tutorials = Course.create_groups(self,'Werkcollege', self._tutorial_number, self._tutorial_max, classrooms)
+        self.labs = Course.create_groups(self,'Practica', self._lab_number, self._lab_max, classrooms)
 
-        self.labs = Course.create_activity_list(
-            'Practica', self.name, self._lab_number, self._lab_max, self._student_number, classrooms)
-      
+    def create_groups(self, type, number, max, classrooms):
+        '''
+        Creates tutorial and lab groups as Activity object and add to list of activities
+
+        PARAMETERS:
+        type : str
+            The type of activity that should be made (tutorial or lab)
+        number : int
+            The number of activities that should be taught per week
+        max : int
+            The maximum number of students allowed to participate in the activity
+        classrooms : [Classroom objects]
+            A list of all classrooms that the activity may be scheduled in
+
+        RETURNS:
+        activities : [Activity objects]
+            A list of every activity for the course
+        '''
+
+        # Calculate number of groups for tutorials or labs needed to include every student
+        activities = []
+        activity_number = math.ceil(self._student_number/max) if number > 0 else 0
+        if activity_number > 0:
+            # Calculate number of students for each group
+            activity_student_number = math.ceil(self._student_number/activity_number)
+
+            # Get smallest available classroom and add activity to list of activities
+            classroom = min([c for c in classrooms if c.capacity >= activity_student_number], key=lambda c: c.capacity)
+            for x in range(activity_number):
+                activities.append(Activity(type, f'{self.name} {type} {x + 1}', classroom, max))
+
+        return activities
+
     def random_register(self):
-        """Register students into activities"""
+        '''Register every student for their activities'''
+        # Add student to every lecture and add every lecture to student activity list
         for student in self._student_set:
-            # Add student to every lecture and add every lecture to student activity list
             for lecture in self.lectures:
                 student.add_activity(lecture)
 
             Course.assign_activity(self.tutorials, student)
             Course.assign_activity(self.labs, student)
-    
-    def assign_activity(activities, student):
-        possible_activities = []
 
+    def assign_activity(activities, student):
+        '''Randomly assign a tutorial or lab group to a student'''
+        possible_activities = []
         if activities:
             for activity in activities:
                 if activity.has_space():
                     possible_activities.append(activity)
 
             assigned_activity = choice(possible_activities)
-
             if assigned_activity.register(student):
                 student.add_activity(assigned_activity)
-
-    def create_activity_list(type, name, number, max, student_number, classrooms):
-    
-        activities = []
-        activity_number = math.ceil(student_number/max) if number > 0 else 0
-        if activity_number > 0:
-            student_number = math.ceil(student_number/activity_number)
-            # List of all classrooms greater than amount students enrolled
-            classroom = min([c for c in classrooms if c.capacity >= student_number], key=lambda c: c.capacity)
-            for x in range(activity_number):
-                activities.append(Activity(type, f'{name} {type} {x + 1}', classroom, max))
-            #self._timeslots += activity_number
-
-        return activities
 
     def __str__(self) -> str:
         return str(self.name)
