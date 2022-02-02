@@ -8,6 +8,7 @@
 
 from collections import Counter
 
+
 def checker(activities, student_dict, constraint):
     """
     Checker function calculating maluspoints for schedule for each student
@@ -28,7 +29,7 @@ def checker(activities, student_dict, constraint):
     malus = 0
 
     # Hard or soft constraint
-    if constraint == True:
+    if constraint:
         terms = 2
     else:
         terms = 3
@@ -40,7 +41,7 @@ def checker(activities, student_dict, constraint):
             malus += activity.maluspoints()
 
     # 0 maluspoints for 0 consecutive gaps, 1 maluspoint for 1 consecutive gap, etc.
-    points = [0,1,3,1000]
+    points = [0, 1, 3, 1000]
 
     # Check for timeslots in each day for each student
     for student in student_dict.values():
