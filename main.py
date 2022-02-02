@@ -29,7 +29,7 @@ import argparse
 from code.algorithms.planner import Planner
 
 from code.algorithms.semirandom import semirandom
-from code.algorithms.random import random_method
+from code.algorithms.randommethod import random_method
 from code.algorithms.hill_climber import HillClimber
 
 from code.loader import load_all
@@ -74,7 +74,8 @@ def main(iterations, graph, algorithm):
     hill = HillClimber(planner, course_set, students_set)
 
     # Run hill climber method and evaluate its results
-    if algorithm == 'climber':
+    if not algorithm or algorithm == 'climber':
+        algorithm = 'climber'
         i = hill.run(iterations)
     elif algorithm == 'annealing':
         i = hill.run_annealing(iterations)
