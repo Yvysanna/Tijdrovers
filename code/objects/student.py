@@ -11,8 +11,12 @@ class Student:
         The students first name
     activities : set()
         A set of all activities in which the student participates
+    courses : [Course objects]
+        List of courses that the student participates in
 
     METHODS:
+    add_course(course):
+        Add course to student object
     add_activity(activity):
         Adds activity to set of activities
     remove_activity(activity):
@@ -33,6 +37,11 @@ class Student:
         self.last_name = last_name
         self.first_name = first_name
         self.activities = set()
+        self.courses = []
+
+    def add_course(self, course):
+        '''Add course to student object'''
+        self.courses.append(course)
 
     def add_activity(self, activity):
         '''Adds activity to set of activities'''

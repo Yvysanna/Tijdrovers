@@ -1,9 +1,3 @@
-from math import floor
-
-import random
-#from code.objects.classroom import Classroom
-#from copy import copy
-
 class Planner:
 
     def __init__(self, rooms) -> None:
@@ -157,21 +151,3 @@ class Planner:
         seen = set()
         dups = [x for x in lst if x in seen or seen.add(x)]
         return len(dups) > 0
-
-
-if __name__ == '__main__':
-    pass
-    # plan = Planner([
-    #     Classroom('A',20),
-    #     Classroom('B',20),
-    #     Classroom('C',20),
-    #     Classroom('D',20),
-    #     Classroom('E',20),
-    #     Classroom('F',20),
-    #     Classroom('G',20)
-    # ])
-
-    # activity = 'Hallo ich bin eine Activity'
-    # index = plan.insert_activity(activity, 'F', 'vr', '13-15')
-    # print(index, plan.get_info(activity))
-    # print(plan.get_activities('vr', '13-15'))
