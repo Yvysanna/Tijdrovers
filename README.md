@@ -34,7 +34,7 @@ For this problem we have experimented with hill climbers, simulated annealing an
 
 For the begin position, we create a begin position with either random_method or semirandom. Random_method creates a completely random schedule, while semirandomtries to create a schedule with the least amount of conflicts.
 
-The hill climber keeps track of how many non-improvements are made after each state change. The algorithm keeps changing the state randomly and only keeps the state if an improvement is made. After the maximum number of non-improvements or 'streak' has been reached, the algorithm stops and a schedule is created from the last state.
+The hill climber keeps track of how many non-improvements are made after each state change. The algorithm keeps changing the state randomly with the aforementioned switch functions and only keeps the state if an improvement is made. After the maximum number of non-improvements or 'streak' has been reached, the algorithm stops and a schedule is created from the last state. The schedule will be saved as a csv in the code/results folder.
 
 Simulated annealing keeps changing the state randomly and decides based on a calculated chance if a state with a worse score will be accepted. States with a better score will always be accepted. The algorithm will stop after a determined number of iterations.
 

@@ -5,8 +5,8 @@
 #
 # - Usage: python3 main.py -s streak_limit (int) -p point_limit (int)
 #          -i iteration_limit (int) -t temperature_multiplier (float) 
-#          -c constraint (bool) -d distribution (bool) -g graph (bool) -n runs (int)
-#          -a algorithm (str)
+#          -c constraint (bool) -r semirandom_begin (bool) -d distribution (bool)
+#          -g graph (bool) -n runs (int) -a algorithm (str)
 #
 # - Creates class schedule using the provided data using a hill climber
 # - Reduces the number of maluspoints as much as possible, which are given for
@@ -19,6 +19,8 @@
 #   prevent out of range errors
 # - A hard constraint for the third break term can be set by setting constraint 
 #   to True
+# - The semirandom algorithm can be used instead of random_method for the begin state
+#   by setting semirandom_begin to True
 # - A line graph may be created with the graph argument which plots the number of
 #   maluspoints against the iterations
 # - A distribution graph may be created with the distribution argument which makes
@@ -45,7 +47,7 @@ class InvalidAlgorithm(Exception):
     pass
 
 
-def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint):
+def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperature_multiplier, constraint, semirandom_begin):
     """
     Main function for this programm
         * Loads and uses source information in hill climber
@@ -71,7 +73,10 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
     # Fill planner with semirandom method
     while points == False or points == 0:
         planner = Planner(classrooms_list)
-        semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
+        if semirandom_begin:
+            semirandom(course_set, classrooms_list, planner, planner.days, planner.times)
+        else:
+            random_method(course_set, classrooms_list, planner, planner.days, planner.times)
         student_dict = planner.create_student_dict(students_set)
         points = checker(planner.slots, student_dict, constraint)
 
@@ -102,6 +107,7 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--iteration_limit', type=int, default=10000,help='annealing iterations (default: 10000)')
     parser.add_argument('-t', '--temperature_multiplier', type=float, default=1,help='annealing temperature multiplier (default: 1)')
     parser.add_argument('-c', '--constraint', type=bool,default=False, help='use hard-constraint for third break term (default: False)')
+    parser.add_argument('-r', '--semirandom_begin', type=bool,default=False, help='use semirandom for begin state (default: False)')
     parser.add_argument('-d', '--distribution', type=bool,default=False, help='create distribution histogram (default: False)')
     parser.add_argument('-g', '--graph',   type=bool,default=False,
                         help='create lines graph for single run, do not use together with distribution! (default: False)')
@@ -114,7 +120,7 @@ if __name__ == '__main__':
     # Run main with provided arguments
     points, iterations = [], []
     for _ in range(args.runs):
-        new_points, i = main(args.graph, args.algorithm, args.streak_limit, args.iteration_limit, args.point_limit, args.temperature_multiplier, args.constraint)
+        new_points, i = main(args.graph, args.algorithm, args.streak_limit, args.iteration_limit, args.point_limit, args.temperature_multiplier, args.constraint, args.semirandom_begin)
         points.append(new_points)
         iterations.append(i)
 
