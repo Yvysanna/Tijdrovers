@@ -108,6 +108,8 @@ class Planner:
                 busy_slots.append(self.get_slot(idx))
         return {f"free slots: ({len(free_slots)})" :free_slots, "busy slots": len(busy_slots)}
 
+    def malus_points(self):
+        return sum(a.malus_points() for a in self.slots if a)
 
     def unplan(self):
 
