@@ -27,8 +27,8 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
     """
     
     # Find every pair of activities that can be taught in the same timeslot
-    not_scheduled = set()
     result = find_conflict_free_activities(course_set)
+    not_scheduled = set()
 
     for activities in result:
         for activity in activities:
