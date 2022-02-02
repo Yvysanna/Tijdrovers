@@ -1,7 +1,6 @@
 import sys
 import os
 
-from sqlalchemy import Constraint
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
