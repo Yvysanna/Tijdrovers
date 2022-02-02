@@ -6,7 +6,6 @@ parent = os.path.dirname(current)
 sys.path.append(parent)
 
 from random import choice, random, sample
-
 from checker import checker
 
 sys.setrecursionlimit(10000)
