@@ -118,7 +118,7 @@ if __name__ == '__main__':
                         help='create lines graph for single run, do not use together with distribution! (default: False)')
     parser.add_argument('-n', '--runs', type=int, default=1,
                         help='number of runs (default: 1)')
-    parser.add_argument('-a', '--algorithm', type=str, default='climber', 
+    parser.add_argument('-a', '--algorithm', type=str, default='climber',
                         help='select algorithm: climber, annealing or annealing_climber (default: climber)')
 
     # Read arguments from command line
