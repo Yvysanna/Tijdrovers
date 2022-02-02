@@ -1,7 +1,7 @@
 class Planner:
     '''
     The schedule for all days, times and classrooms
-    Holds all activity objects after an order according to at which day, 
+    Holds all activity objects after an order according to at which day,
     time and location they take place
 
     ATTRIBUTES:
@@ -48,7 +48,7 @@ class Planner:
 
         self.days = ['ma', 'di', 'wo', 'do', 'vr']
         self.times = ['9-11', '11-13', '13-15', '15-17', '17-19']
-        self.rooms = sorted(rooms, key=lambda c:c.capacity, reverse=True)
+        self.rooms = sorted(rooms, key=lambda c: c.capacity, reverse=True)
         self.create_slots()
 
     def create_slots(self):
