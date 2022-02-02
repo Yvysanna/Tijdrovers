@@ -5,7 +5,9 @@
 #
 # - Usage: python3 main.py
 #
-# - Creates schedule
+# - Creates multiple schedules over a given amount of time
+# - Records the score and number of iterations of every generated schedule
+# - Prints the mean score and number of iterations
 # ==================================================================================
 
 import time
@@ -40,7 +42,7 @@ def main():
         * stores results and plotting
 
     RETURNS:
-        Maluspoints
+        Maluspoints, number of iterations
     """
 
     # Load classrooms, students and courses
@@ -60,15 +62,15 @@ def main():
     # Create object of class hill climber
     hill = HillClimber(planner, course_set, students_set, streak_limit=100, iteration_limit=500, point_limit=200, temperature_multiplier=0.02)
     # Run hill climber method and evaluate its results
-    i = hill.run('climber')
+    iterations = hill.run('climber')
     student_dict = planner.create_student_dict(students_set)
     points = checker(planner.slots, student_dict)
 
     # Create visualisation and csv dataset from results
-    plot(hill.plotx, hill.ploty, hill.streak_limit)
+    # plot(hill.plotx, hill.ploty, hill.streak_limit)
     store(students_set, planner, points)
 
-    return points, i
+    return points, iterations
 
 
 if __name__ == '__main__':
@@ -78,17 +80,17 @@ if __name__ == '__main__':
     points = []
     iterations = []
 
-    # while time.time() - start < 3600:
-    new_points, i = main()
-    points.append(new_points)
-    iterations.append(i)
-    print(n_runs, i, points[n_runs])
-    n_runs += 1
+    while time.time() - start < 3600:
+        new_points, iterations = main()
+        points.append(new_points)
+        iterations.append(iterations)
+        print(n_runs, iterations, points[n_runs])
+        n_runs += 1
 
     print("\n Average: " + str(mean(points)))
     print("\n Average iterations: " + str(mean(iterations)))
 
     # Create probability distribution from all runs
-    distribution(points, n_runs)
+    # distribution(points, n_runs)
 
 
