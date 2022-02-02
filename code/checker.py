@@ -13,14 +13,19 @@ def checker(activities, student_dict, constraint):
     Checker function calculating maluspoints for schedule for each student
 
     ARGS:
-        Activities: Array of activity objects either from planner.timeslots or read and created out of csv
-        Student dict: format {Student : [{Day : [Timeslot]}]}
+        Activities: Iterable
+            Array of activity objects either from planner.timeslots or read and created out of csv
+        Student dict: Dictionary
+            format {Student : [{Day : [Timeslot]}]}
+        Constraint: Bool
+            Defines, whether too many breaks cause False result or result with more malus points
     RETURNS:
         False if invalid result,
         Malus points if valid result
     """
     malus = 0
 
+    # Hard or soft constraint
     if constraint == True:
         terms = 2
     elif constraint == False:
@@ -50,7 +55,7 @@ def checker(activities, student_dict, constraint):
                     check = [int(x.split('-')[0]) for x in conflicts.keys()]
                     check.sort()
 
-                    # Check that more than one activity per day
+                    # Check if several activities planned for one day
                     if len(check) > 1:
                         l1 = check[:-1]
                         l2 = check[1:]
@@ -60,9 +65,11 @@ def checker(activities, student_dict, constraint):
 
                         # Iterate over both lists to find difference between times
                         for l1, l2 in zlip:
-                            idx = int(((l2 - l1) / 2) - 1) # Idx just because one break gives -1 and two give -3 (not 2)
+                            idx = int(((l2 - l1) / 2) - 1) 
+                            
+                            # Depending on hard or soft constraint, return early
                             if idx > terms:
-                                return False # If more than 2 breaks, invalid result, thus return early and stop
+                                return False 
 
                             malus += points[idx]
 
