@@ -8,10 +8,9 @@
 
 from statistics import mean
 import matplotlib.pyplot as plt
-import time
-
 from main import main
 from store import store
+import time
 
 
 start = time.time()
@@ -38,4 +37,4 @@ plt.title(f"Probability distribution of maluspoints across {n_runs} runs")
 plt.xlabel("Maluspoints")
 plt.ylabel("Probability")
 plt.tight_layout()
-plt.savefig('data/distribution_random_climber_hardconstraint100000.png', dpi=1000)
+plt.savefig('code/algorithms/plots/distribution_random_climber_hardconstraint100000.png', dpi=1000)
