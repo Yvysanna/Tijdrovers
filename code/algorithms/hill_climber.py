@@ -5,7 +5,6 @@ parent = os.path.dirname(current)
 sys.path.append(parent)
 
 from random import choice, random, sample
-import matplotlib.pyplot as plt
 
 from checker import checker
 import time
@@ -144,7 +143,7 @@ class HillClimber:
         student.add_activity(new_group)
 
 
-    def run(self):
+    def run(self, n):
         # start = time.time()
         """
         ARGS:
@@ -166,7 +165,7 @@ class HillClimber:
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        while streak < 30:
+        while streak < n:
             # if i % 100000 == 0:
             #     print(time.time() - start, i, streak, old_points)
 
@@ -212,7 +211,7 @@ class HillClimber:
         return i
 
 
-    def run_annealing_climber(self):
+    def run_annealing_climber(self, n):
         streak = 0
         i = 0
         # Count current maluspoints
@@ -257,7 +256,7 @@ class HillClimber:
         x = 1
         Tstart = old_points
 
-        while streak < 100 or x < 20000:
+        while streak < n or x < 20000:
             print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
@@ -303,7 +302,7 @@ class HillClimber:
             # self.plotx.append(i)
             # self.ploty.append(new_points)
 
-        while streak < 100:
+        while streak < n:
             print(i, streak, old_points)
 
             index_activity_1, index_activity_2 = self.activity_switch()
@@ -339,14 +338,14 @@ class HillClimber:
         return i
 
 
-    def run_annealing(self):
+    def run_annealing(self, n):
         streak = 0
         # Count current maluspoints
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
         Tstart = old_points
-        for x in range(35000):
+        for x in range(n):
 
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)
@@ -497,9 +496,3 @@ class HillClimber:
             i += 1
             self.plotx.append(i)
             self.ploty.append(old_points)
-
-
-    def add_value(self, i, new_points):
-        i += 1
-        self.plotx.append(i)
-        self.ploty.append(new_points)
