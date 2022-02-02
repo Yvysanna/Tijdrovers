@@ -39,18 +39,21 @@ class Student:
         self.activities = set()
 
     def add_course(self, course):
+        """Add course to student object"""
         self.courses.append(course)
 
     def add_activity(self, activity):
+        """Add activity to student object"""
         self.activities.add(activity)
 
-    def print_schedule(self):
-        '''Hold schedule for each student'''
-        print('\n',self._last_name)
-        for course in self.courses:
-            print([activity for activity in course._activities if activity.confirm_registration(self)])
+    def remove_activity(self, activity):
+        """Remove activity from student object"""
+        self.activities.remove(activity)
 
-
+    def malus_points(self):
+        """Calculate maluspoints caused by each student object"""
+        #ct = Counter([f'{activity.get_day_time()}' for activity in self.activities]
+        return sum(c - 1 for c in Counter([f'{activity.get_day_time()}' for activity in self.activities]).values())
 
     def __str__(self) -> str:
         '''Represents the class as a string'''

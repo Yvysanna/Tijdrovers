@@ -35,6 +35,8 @@ class Classroom:
         self._plan = {}
         self._slot = 0
 
+    def get_capacity(self):
+        return self.capacity
 
     def __str__(self) -> str:
         '''Represents the class as a string'''

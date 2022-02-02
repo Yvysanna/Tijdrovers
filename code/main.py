@@ -17,7 +17,7 @@ from algorithms.randommethod import random_method
 from algorithms.hill_climber import HillClimber
 
 # Loader function to load all necessary information from dataset
-from loader import loadall
+from loader import load_all
 
 # Function to store results in csv
 from store import store
@@ -41,7 +41,7 @@ def main():
     """
 
     # Load classrooms, students and courses
-    classrooms_list, students_set, course_set = loadall()
+    classrooms_list, students_set, course_set = load_all()
 
     # Create planner object
     points = 0
@@ -56,11 +56,11 @@ def main():
 
     # Create object of class hill climber
     hill = HillClimber(planner, course_set, students_set)
-
     # Run hill climber method and evaluate its results
     i = hill.run()
     student_dict = planner.create_student_dict(students_set)
     points = checker(planner.slots, student_dict)
+    #print(planner.malus_points())
 
     # Create visualtization and csv dataset from results
     # hill.plot()
@@ -69,4 +69,5 @@ def main():
     return points, i
 
 if __name__ == '__main__':
-    main()
+    #main()
+    print(main())

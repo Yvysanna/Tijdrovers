@@ -41,6 +41,9 @@ class Activity:
         self._day = day
         self._timeslot = timeslot
 
+    def get_day_time(self):
+        return self._day, self._timeslot
+
     def confirm_registration(self, student):
         """Returns whether or not a student is registered to this activity"""
         if student in self._students_list:
@@ -60,14 +63,15 @@ class Activity:
 
     def malus_points(self):
         """Calculate and return maluspoints for late timeslot and room capacity issues"""
-        malus = 0
-        if self._timeslot == '17-19':
-            malus += 5
-        if len(self._students_list) > self._room.capacity:
-            malus += (len(self._students_list) - self._room.capacity)
+        capacity = self._room.get_capacity()
+
+        students_count = len(self._students_list)
+        malus = students_count - capacity if students_count > capacity else 0
+        malus += 5 if self._timeslot == '17-19' else 0
+        malus += sum(student.malus_points() for student in self._students_list)
+
         return malus
-    
-    
+
     def __str__(self):
         # return self._name
         return f'\n{self._name}'

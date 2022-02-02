@@ -3,8 +3,10 @@ import os
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
-from random import randrange, choice, random
+
+from random import randrange, choice, random, sample
 import matplotlib.pyplot as plt
+
 from checker import checker
 import time
 
@@ -22,32 +24,47 @@ class HillClimber:
 
 
     def activity_switch(self):
-        # Pick two random activities, making sure they are not the same activity
-        index_activity_1 = randrange(0, len(self.planner.slots))
-        random_activity_1 = self.planner.slots[index_activity_1]
-        while True:
-            index_activity_2 = randrange(0, len(self.planner.slots))
-            random_activity_2 = self.planner.slots[index_activity_2]
-            if random_activity_1 != random_activity_2:
-                break
+        """
+        ARGS: 
+            self 
+        USAGE:
+            Switching the timeslots for two activities with each other
+        RETURNS: 
+            index_activity_1, index_activity_2: indices of the two switched activity objects
+        """
+        # Pick two random activities, making sure they are not the same activity        
+        index_activity_1, index_activity_2 = sample(range(0, len(self.planner.slots)),2)
         
-        # Switch the position of the activities in the schedule
-        self.planner.slots[index_activity_1] = random_activity_2
-        self.planner.slots[index_activity_2] = random_activity_1
-
+        # Switch the position of the activities in the planner
+        self.planner.swap_activities(index_activity_1, index_activity_2)
         return(index_activity_1, index_activity_2)
 
 
     def undo_activity_switch(self, index_activity_1, index_activity_2):
+        """
+        ARGS: 
+            self
+            index_activity_1: int
+            index_activity_2  
+        USAGE:
+            Switching the timeslots for two activities with each other
+        RETURNS: 
+            index_activity_1, index_activity_2: the indices of the switched activities
+        """
         # Switch activities back to previous state
-        previous_activity_2 = self.planner.slots[index_activity_1]
-        previous_activity_1 = self.planner.slots[index_activity_2]
-
-        self.planner.slots[index_activity_1] = previous_activity_1
-        self.planner.slots[index_activity_2] = previous_activity_2
-
+        self.planner.swap_activities(index_activity_1, index_activity_2)
 
     def reassign(self):
+        """
+        ARGS: 
+            self
+        USAGE:
+            Switching a random student from a random course activity group with 
+            another random student from the same course activity but different group
+        RETURNS: 
+            random_group_1, random_group_2: activity objects for the groups from the switched students
+            random_student_1, random_student_2: student objects of the switched students
+        """
         # Pick a random tutorial or lab
         possible_activities = []
         possible_tutorials = []
@@ -95,6 +112,16 @@ class HillClimber:
 
 
     def undo_reassign(self, random_group_1, random_group_2, random_student_1, random_student_2):
+        """
+        ARGS: 
+            self
+            random_group_1, random_group_2: activity objects for the groups from the switched students
+            random_student_1, random_student_2: student objects of the switched students
+        USAGE:
+            Switching the previously switched students back into their previous activity groups
+        RETURNS: 
+            None
+        """
         # Undo reassignment
         self.student_switch(random_student_1, random_group_2, random_group_1)
         if random_student_2 != None:
@@ -109,14 +136,28 @@ class HillClimber:
         current_group._students_list.remove(student)
         new_group._students_list.append(student)
 
-        student.activities.remove(current_group)
-        student.activities.add(new_group)
+        student.remove_activity(current_group)
+        student.add_activity(new_group)
 
 
     def run(self):
         # start = time.time()
+        """
+        ARGS:
+            self
+        USAGE:
+            Improves a given schedule by:
+            * switching two activities in day and or time,
+            * evaluating improvement and undoing it if unsuccessful
+            * switching two students from the same activity but different groups
+            * evaluating improvement again and undoing it if unsuccessful
+
+        RETURNS:
+            i: the total count of iterations made
+        """
         streak = 0
         i = 0
+
         # Count current maluspoints
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
@@ -125,14 +166,18 @@ class HillClimber:
             # if i % 100000 == 0:
             #     print(time.time() - start, i, streak, old_points)
 
+            # Activity climber
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)
             new_points = checker(self.planner.slots, student_dict)
 
+            # Check if improvement was made, allows hard constraints
             if new_points == False or new_points > old_points:
                 self.undo_activity_switch(index_activity_1, index_activity_2)
                 streak += 1
+
             else:
+                # Only reset streak if improvement is made
                 if new_points < old_points:
                     streak = 0
                 old_points = new_points
@@ -141,10 +186,12 @@ class HillClimber:
             # self.plotx.append(i)
             # self.ploty.append(old_points)
 
+            # Student switch climber
             random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
             student_dict = self.planner.create_student_dict(self._students)
             new_points = checker(self.planner.slots, student_dict)
 
+            # Check if improvement was made, allows hard constraints
             if new_points == False or new_points > old_points:
                 self.undo_reassign(random_group_1, random_group_2, random_student_1, random_student_2)
                 streak += 1
@@ -340,7 +387,7 @@ class HillClimber:
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
         Tstart = old_points
-        for x in range(20000):
+        for x in range(10):
 
             index_activity_1, index_activity_2 = self.activity_switch()
             student_dict = self.planner.create_student_dict(self._students)

@@ -22,11 +22,11 @@ We also started making some SQL functions, but an assistant strongly advised aga
 
 The next step of the assignment was to fill in the schedule, while taking into account the number of students of each course.
 
-For this, we added a list to the classroom class that stores all possible subjects that could be hosted in that particular classroom. 
+For this, we added a list to the classroom class that stores all possible subjects that could be hosted in that particular classroom.
 
 We also added a counter to the load_students function, so we could get the accurate number of students per course. The manner in which the student objects were initialized changed, so the exact number of students per course is directly taken from the counter.
 
-In main.py, some lines were added to change the list of course names of every student to a list of course objects and directly create connections between the objects. 
+In main.py, some lines were added to change the list of course names of every student to a list of course objects and directly create connections between the objects.
 
 A simple greedy algorithm was created based on the course size and classroom capacity.
 

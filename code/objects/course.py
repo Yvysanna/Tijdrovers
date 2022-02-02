@@ -1,5 +1,4 @@
 import math
-import copy
 from random import choice
 
 from objects.activity import Activity
@@ -81,6 +80,14 @@ class Course:
         self._timeslots = 0
 
     def add_student(self, student):
+        """
+        ARGS: 
+            Student, object
+        USAGE:
+            Add student object into course's set of student objects for students enrolled into this course
+        RETURNS:
+            None
+        """
         self._students_set.add(student)
         self.students_number += 1
 

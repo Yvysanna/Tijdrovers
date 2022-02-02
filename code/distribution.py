@@ -8,10 +8,9 @@
 
 from statistics import mean
 import matplotlib.pyplot as plt
-import time
-
 from main import main
 from store import store
+import time
 
 
 start = time.time()
