@@ -66,10 +66,9 @@ class Activity:
         capacity = self._room.get_capacity()
 
         students_count = len(self._students_list)
-        malus = students_count - capacity if students_count > capacity else 0
-        malus += 5 if self._timeslot == '17-19' else 0
-        malus += sum(student.malus_points() for student in self._students_list)
-
+        malus1 = students_count - capacity if students_count > capacity else 0
+        malus2 = 5 if self._timeslot == '17-19' else 0
+        malus = malus1 + malus2
         return malus
 
     def __str__(self):
