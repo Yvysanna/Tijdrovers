@@ -16,6 +16,7 @@ def semirandom(course_set, classrooms_list, planner, days, timeslots):
     """
     Creates a schedule after certain constrains
     random schedules everything that cannot be planned under constrains
+    
     ARGS:
         course_set: set containing all course objects
         classrooms_list: list with all classroom objects 

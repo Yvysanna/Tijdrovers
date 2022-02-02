@@ -28,10 +28,10 @@ class HillClimber:
 
     def activity_switch(self):
         """
+        Switching the timeslots for two activities with each other
+
         ARGS: 
             self 
-        USAGE:
-            Switching the timeslots for two activities with each other
         RETURNS: 
             index_activity_1, index_activity_2: indices of the two switched activity objects
         """
@@ -46,11 +46,11 @@ class HillClimber:
 
     def undo_activity_switch(self, index_activity_1, index_activity_2):
         """
+        Switching the timeslots for two activities with each other
+
         ARGS: 
             self
             index_activity_1, index_activity_2: index number of switched activities
-        USAGE:
-            Switching the timeslots for two activities with each other
         RETURNS: 
             None
         """
@@ -59,11 +59,11 @@ class HillClimber:
 
     def reassign(self):
         """
+        Switching a random student from a random course activity group with 
+        another random student from the same course activity but different group
+
         ARGS: 
             self
-        USAGE:
-            Switching a random student from a random course activity group with 
-            another random student from the same course activity but different group
         RETURNS: 
             random_group_1, random_group_2: activity objects for the groups from the switched students
             random_student_1, random_student_2: student objects of the switched students
@@ -116,12 +116,12 @@ class HillClimber:
 
     def undo_reassign(self, random_group_1, random_group_2, random_student_1, random_student_2):
         """
+        Switching the previously switched students back into their previous activity groups
+
         ARGS: 
             self
             random_group_1, random_group_2: activity objects for the groups from the switched students
             random_student_1, random_student_2: student objects of the switched students
-        USAGE:
-            Switching the previously switched students back into their previous activity groups
         RETURNS: 
             None
         """
@@ -136,12 +136,12 @@ class HillClimber:
 
     def student_switch(self, student, current_group, new_group):
         """
+        Switching the activity group for student
+
         ARGS: 
             self
             student: student object
             current_group, new_group: activity objects for the groups from the switched student
-        USAGE:
-            Switching the activity group for student
         RETURNS: 
             None
         """
@@ -155,14 +155,14 @@ class HillClimber:
     
     def activity_climber(self, current_streak, old_points, X=None, Tstart=None):
         """
+        Generating the next activity switch and determining if change will be kept
+
         ARGS: 
             self
             current_streak: current number of consecutive non-improvements
             old_points: number of points
             X: current iteration in simulated annealing
             Tstart: start temperature in simulated annealing
-        USAGE:
-            Generating the next activity switch and determining if change will be kept
         RETURNS: 
             current_streak, old_points: updated values
         """
@@ -198,14 +198,14 @@ class HillClimber:
 
     def student_climber(self, current_streak, old_points, X=None, Tstart=None):
         """
+        Generating the next student switch and determining if change will be kept
+
         ARGS: 
             self
             current_streak: current number of consecutive non-improvements
             old_points: number of points
             X: current iteration in simulated annealing
             Tstart: start temperature in simulated annealing
-        USAGE:
-            Generating the next student switch and determining if change will be kept
         RETURNS: 
             current_streak, old_points: updated values
         """
@@ -240,12 +240,12 @@ class HillClimber:
 
     def add_value(self, iteration, old_points):
         """
+        Saves data point for graph
+
         ARGS: 
             self
             i: current iteration
             old_points: number of points
-        USAGE:
-            Saves data point for graph
         RETURNS: 
             None
         """
@@ -255,15 +255,15 @@ class HillClimber:
 
     def run(self, algorithm):
         """
+        Improves a given schedule by:
+        * switching two activities in day and or time,
+        * evaluating improvement and undoing it if unsuccessful
+        * switching two students from the same activity but different groups
+        * evaluating improvement again and undoing it if unsuccessful
+        
         ARGS:
             self
             algorithm: algorithm type to run
-        USAGE:
-            Improves a given schedule by:
-            * switching two activities in day and or time,
-            * evaluating improvement and undoing it if unsuccessful
-            * switching two students from the same activity but different groups
-            * evaluating improvement again and undoing it if unsuccessful
 
         RETURNS:
             iteration: the total count of iterations made
