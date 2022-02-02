@@ -81,9 +81,9 @@ class HillClimber:
 
         # Pick a random group and determine which type of activity the next group needs to be
         random_group_1 = choice(possible_activities)
-        if random_group_1._type == 'Werkcollege':
+        if random_group_1.type == 'Werkcollege':
             possible_activities = possible_tutorials
-        elif random_group_1._type == 'Practica':
+        elif random_group_1.type == 'Practica':
             possible_activities = possible_labs
         else:
             raise Exception("Group typing incorrect or could not copy activities")
@@ -93,19 +93,19 @@ class HillClimber:
 
         # Pick group 2 and a student from group 1 and move the student to group 2
         random_group_2 = choice(possible_activities)
-        random_student_1 = choice(random_group_1._students_list)
+        random_student_1 = choice(random_group_1.student_list)
         random_student_2 = None
 
         self.student_switch(random_student_1, random_group_1, random_group_2)
 
         # If group 2 was already full, move a random student from group 2 to group 1
-        if random_group_2._max_capacity <= len(random_group_2._students_list):
-            random_student_2 = choice(random_group_2._students_list)
+        if random_group_2.max_students <= len(random_group_2.student_list):
+            random_student_2 = choice(random_group_2.student_list)
 
             self.student_switch(random_student_2, random_group_2, random_group_1)
 
-        assert len(random_group_1._students_list) <= random_group_1._max_capacity, f"Too many students in {random_group_1}: {len(random_group_1._students_list)}"
-        assert len(random_group_2._students_list) <= random_group_2._max_capacity, f"Too many students in {random_group_2}: {len(random_group_2._students_list)}"
+        assert len(random_group_1.student_list) <= random_group_1.max_students, f"Too many students in {random_group_1}: {len(random_group_1.student_list)}"
+        assert len(random_group_2.student_list) <= random_group_2.max_students, f"Too many students in {random_group_2}: {len(random_group_2.student_list)}"
 
         return random_group_1, random_group_2, random_student_1, random_student_2
 
@@ -126,14 +126,14 @@ class HillClimber:
         if random_student_2 != None:
             self.student_switch(random_student_2, random_group_1, random_group_2)
 
-        assert len(random_group_1._students_list) <= random_group_1._max_capacity, f"Too many students in {random_group_1}: {len(random_group_1._students_list)}"
-        assert len(random_group_2._students_list) <= random_group_2._max_capacity, f"Too many students in {random_group_2}: {len(random_group_2._students_list)}"
+        assert len(random_group_1.student_list) <= random_group_1.max_students, f"Too many students in {random_group_1}: {len(random_group_1.student_list)}"
+        assert len(random_group_2.student_list) <= random_group_2.max_students, f"Too many students in {random_group_2}: {len(random_group_2.student_list)}"
 
 
     def student_switch(self, student, current_group, new_group):
 
-        current_group._students_list.remove(student)
-        new_group._students_list.append(student)
+        current_group.student_list.remove(student)
+        new_group.student_list.append(student)
 
         student.remove_activity(current_group)
         student.add_activity(new_group)
@@ -160,7 +160,7 @@ class HillClimber:
         student_dict = self.planner.create_student_dict(self._students)
         old_points = checker(self.planner.slots, student_dict)
 
-        while streak < 1:
+        while streak < 3000:
             print(i, streak, old_points)
 
             # Activity climber
@@ -187,6 +187,7 @@ class HillClimber:
             random_group_1, random_group_2, random_student_1, random_student_2 = self.reassign()
             student_dict = self.planner.create_student_dict(self._students)
             new_points = checker(self.planner.slots, student_dict)
+            print(i, streak, old_points)
 
             # Check if improvement was made, allows hard constraints
             if new_points == False or new_points > old_points:
