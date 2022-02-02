@@ -23,7 +23,6 @@
 #   may cause bugs
 # ==================================================================================
 
-import time
 from statistics import mean
 import argparse
 
