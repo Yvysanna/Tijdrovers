@@ -1,5 +1,3 @@
-from collections import Counter
-
 class Student:
     '''
     Represents a student at the campus

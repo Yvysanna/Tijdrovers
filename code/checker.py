@@ -13,22 +13,24 @@ def checker(activities, student_dict, constraint):
     Checker function calculating maluspoints for schedule for each student
 
     ARGS:
-        Activities: Iterable
-            Array of activity objects either from planner.timeslots or read and created out of csv
-        Student dict: Dictionary
-            format {Student : [{Day : [Timeslot]}]}
-        Constraint: Bool
-            Defines, whether too many breaks cause False result or result with more malus points
+    activities: [Activity objects]
+        Array of activity objects either from planner.timeslots or read and created out of csv
+    student_dict: {Student : [{Day : [Timeslot]}]}
+        A dictionary containing every timeslot for every student
+    constraint : bool
+        True if three consecutive gaps in schedule should be considered a hard constraint, False otherwise
+
     RETURNS:
         False if invalid result,
-        Malus points if valid result
+        Maluspoints if valid result
     """
+
     malus = 0
 
     # Hard or soft constraint
     if constraint == True:
         terms = 2
-    elif constraint == False:
+    else:
         terms = 3
 
     for activity in activities:
@@ -37,15 +39,15 @@ def checker(activities, student_dict, constraint):
             # Calculate maluspoints for room capacity and late timeslot
             malus += activity.maluspoints()
 
-     # Maluspoint values
+    # 0 maluspoints for 0 consecutive gaps, 1 maluspoint for 1 consecutive gap, etc.
     points = [0,1,3,1000]
 
-    # Iterate over student's individual schedule
+    # Check for timeslots in each day for each student
     for student in student_dict.values():
         for day in student:
             for timeslots in day.values():
 
-                # For conflict comparison        
+                # For conflict comparison
                 if len(timeslots) > 1:
 
                     # Add maluspoint for every conflict
@@ -54,11 +56,11 @@ def checker(activities, student_dict, constraint):
                         if x > 1:
                             malus += (x - 1)
 
-                    # Calculate maluspoints for free periods
+                    # Calculate maluspoints for gaps in the schedule
                     check = [int(x.split('-')[0]) for x in conflicts.keys()]
                     check.sort()
 
-                    # Check if several activities planned for one day
+                    # Check for more than one activity per day
                     if len(check) > 1:
                         l1 = check[:-1]
                         l2 = check[1:]
@@ -68,11 +70,11 @@ def checker(activities, student_dict, constraint):
 
                         # Iterate over both lists to find difference between times
                         for l1, l2 in zlip:
-                            idx = int(((l2 - l1) / 2) - 1) 
-                            
+                            idx = int(((l2 - l1) / 2) - 1)
+
                             # Depending on hard or soft constraint, return early
                             if idx > terms:
-                                return False 
+                                return False
 
                             malus += points[idx]
 

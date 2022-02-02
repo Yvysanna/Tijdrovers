@@ -52,7 +52,7 @@ Install dependencies<br>
 *This code is written in Python 3.8.10 and 3.10.1. To run this code, the required packages are noted down in requirements.txt and can be installed easily via pip with this command:*
 
 ```bash
-  pip install -r requirements.txt
+  pip3 install -r requirements.txt
 ```
 
 Run the program

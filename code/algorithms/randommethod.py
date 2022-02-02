@@ -10,10 +10,11 @@
 from itertools import chain
 from random import shuffle, choice
 
+
 def random_method(course_set, classrooms_list, planner, days, timeslots):
     """
     Creates a random schedule
-    
+
     ARGS:
     course_set: set(Course objects)
         set containing all course objects
@@ -30,7 +31,7 @@ def random_method(course_set, classrooms_list, planner, days, timeslots):
     # Add activities to list and randomly shuffle
     activity_list = []
     for course in course_set:
-        for activity in chain(course.lectures,course.tutorials,course.labs):
+        for activity in chain(course.lectures, course.tutorials, course.labs):
             activity_list.append(activity)
     shuffle(activity_list)
 
@@ -39,6 +40,6 @@ def random_method(course_set, classrooms_list, planner, days, timeslots):
         while planner.get_info(activity) == (None, None, None):
             room = choice(classrooms_list)
             day = choice(days)
-            time = choice (timeslots)
+            time = choice(timeslots)
             planner.insert_activity(activity, room, day, time)
             activity.room = room

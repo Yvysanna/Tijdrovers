@@ -6,7 +6,6 @@ parent = os.path.dirname(current)
 sys.path.append(parent)
 
 from random import choice, random, sample
-
 from checker import checker
 
 sys.setrecursionlimit(10000)
@@ -312,6 +311,7 @@ class HillClimber:
                 current_streak, old_points = self.student_climber(current_streak, old_points)
                 iteration += 1
                 self.add_value(iteration, old_points)
+                print(old_points)
 
         return iteration
 
