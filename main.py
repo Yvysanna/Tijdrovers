@@ -98,7 +98,7 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
 
     # Create visualisation and csv dataset from results
     if graph:
-        plot(hill.plotx, hill.ploty, hill.streak_limit, algorithm)
+        plot(hill.plotx, hill.ploty, algorithm)
 
     # Save to csv
     store(students_set, planner, points)
