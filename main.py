@@ -52,15 +52,25 @@ def main(graph, algorithm, streak_limit, iteration_limit, point_limit, temperatu
         * Stores results and plotting
 
     ARGS:
-    iterations : int
-        Number of iterations the algorithm will go through
     graph : bool
-        Wether or not a graph will be made for the hill climber
+        Whether or not a graph will be made for the hill climber
     algorithm : str
         The algorithm that will be used to create the schedule
-
+    streak_limit : int
+        Hill climber non-improvements limit
+    iteration_limit : int
+        Annealing total iterations
+    point_limit : int
+        Switching point from climber to annealing
+    temperature_multiplier : float
+        Annealing temperature multiplier
+    constraint : bool
+        Whether or not to use a hard-constraint for third break term
+    semirandom_begin : bool
+        Whether or not to use semirandom for begin state
     RETURNS:
-        Number of maluspoints
+        points : Number of maluspoints
+        iterations : Number of i
     """
 
     # Load classrooms, students and courses
