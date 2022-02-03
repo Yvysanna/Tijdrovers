@@ -382,7 +382,7 @@ class HillClimber:
 
         tstart = old_points
 
-        if algorithm == 'annealing' or algorithm == 'climber-annealing':
+        if algorithm == 'annealing' or algorithm == 'climber_annealing':
             for x in range(self.iteration_limit // 2):
                 if iteration % 1000 == 0:
                     print(f"Iteration: {iteration}, Streak: {current_streak}, Points: {old_points}")
@@ -396,7 +396,7 @@ class HillClimber:
                 iteration += 1
                 self.add_data_point(iteration, old_points)
 
-        if algorithm == 'climber' or algorithm == 'climber-annealing':
+        if algorithm == 'climber' or algorithm == 'climber_annealing':
             while current_streak < self.streak_limit:
                 if iteration % 1000 == 0:
                     print(f"Iteration: {iteration}, Streak: {current_streak}, Points: {old_points}")
