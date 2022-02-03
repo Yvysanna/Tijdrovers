@@ -66,7 +66,7 @@ def distribution(points, n):
     plt.xlabel("Maluspoints")
     plt.ylabel("Probability")
     plt.tight_layout()
-    plt.savefig('code/algorithms/plots/distribution.png', dpi=1000)
+    plt.savefig('code/algorithms/plots/distributionclimber3.png', dpi=1000)
 
 
 def plot(plotx, ploty, streak, algorithm):
