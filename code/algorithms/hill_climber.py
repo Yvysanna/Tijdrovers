@@ -1,3 +1,5 @@
+from random import choice, random, sample
+
 import sys
 import os
 
@@ -7,7 +9,6 @@ sys.path.append(parent)
 sys.setrecursionlimit(10000)
 
 from checker import checker
-from random import choice, random, sample
 
 
 class HillClimber:
@@ -373,7 +374,7 @@ class HillClimber:
                 current_streak, old_points = self.activity_climber(
                     current_streak, old_points)
                 iteration += 1
-                self.add_data_points(iteration, old_points)
+                self.add_data_point(iteration, old_points)
 
                 current_streak, old_points = self.student_climber(current_streak, old_points)
                 iteration += 1
