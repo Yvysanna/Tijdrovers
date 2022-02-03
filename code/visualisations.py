@@ -66,10 +66,10 @@ def distribution(points, n):
     plt.xlabel("Maluspoints")
     plt.ylabel("Probability")
     plt.tight_layout()
-    plt.savefig('code/algorithms/plots/distributionclimber3.png', dpi=1000)
+    plt.savefig('code/algorithms/plots/distributionclimber.png', dpi=1000)
 
 
-def plot(plotx, ploty, streak, algorithm):
+def plot(plotx, ploty, algorithm):
     """
     Creates a line graph from the amount of points over the iterations within the algorithm
 
